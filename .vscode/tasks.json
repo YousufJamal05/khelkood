@@ -1,0 +1,115 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "projectSelection",
+      "type": "pickString",
+      "options": ["khelkood", "packages/FlutterCommon"],
+      "description": "Select the Flutter project to run tasks on"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "Remove Existing Generated Dart Files",
+      "type": "shell",
+      // macOS/Linux
+      "command": "bash",
+      "args": [
+        "-lc",
+        // skip when admin
+        "if [ \"${input:projectSelection}\" != \"admin\" ]; then dart run build_runner clean; else echo \"Skipping build_runner clean for admin\"; fi"
+      ],
+      // Windows PowerShell
+      "windows": {
+        "command": "powershell",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-Command",
+          "if (\"${input:projectSelection}\" -ne \"admin\") { dart run build_runner clean } else { Write-Host \"Skipping build_runner clean for admin\" }"
+        ]
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/${input:projectSelection}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Flutter Clean, Pub Get & Pub Outdated",
+      "type": "shell",
+      "command": "flutter",
+      "args": ["clean", "&&", "flutter", "pub", "get", "&&", "flutter", "pub", "outdated"],
+      "windows": {
+        "command": "powershell",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-Command",
+          "flutter clean; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; flutter pub get; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; flutter pub outdated"
+        ]
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/${input:projectSelection}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Dart Build Runner",
+      "type": "shell",
+      // macOS/Linux
+      "command": "bash",
+      "args": [
+        "-lc",
+        "if [ \"${input:projectSelection}\" != \"admin\" ]; then dart run build_runner build --delete-conflicting-outputs; else echo \"Skipping build_runner build for admin\"; fi"
+      ],
+      // Windows
+      "windows": {
+        "command": "powershell",
+        "args": [
+          "-NoProfile",
+          "-ExecutionPolicy",
+          "Bypass",
+          "-Command",
+          "if (\"${input:projectSelection}\" -ne \"admin\") { dart run build_runner build --delete-conflicting-outputs } else { Write-Host \"Skipping build_runner build for admin\" }"
+        ]
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/${input:projectSelection}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "showReuseMessage": true,
+        "clear": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Full Flutter Setup",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Remove Existing Generated Dart Files",
+        "Flutter Clean, Pub Get & Pub Outdated",
+        "Dart Build Runner"
+      ],
+      "options": {  
+        "cwd": "${wo                  rkspaceFolder}/${input:projectSelection}"
+      },    
+      "group": { "kind": "build", "isDefault": true }
+    }
+  ]
+}

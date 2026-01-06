@@ -1,0 +1,47 @@
+{
+  "dart.flutterSdkPath": "",
+  "dart.debuggerHotReload": "always",
+  "dart.previewFlutterUiGuides": true,
+  "dart.previewFlutterUiGuidesCustomTracking": true,
+  
+  // File associations
+  "files.associations": {
+    "*.dart": "dart"
+  },
+  
+  // Exclude build directories
+  "files.exclude": {
+    "**/.dart_tool": true,
+    "**/build": true,
+    "**/android/.gradle": true,
+    "**/ios/.symlinks": true,
+    "**/ios/Pods": true,
+    "**/ios/Podfile.lock": true,
+    "**/node_modules": true
+  },
+  
+  // Search exclusion
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/build": true,
+    "**/.dart_tool": true,
+    "**/android/.gradle": true,
+    "**/ios/.symlinks": true,
+    "**/ios/Pods": true
+  },
+  
+  // Editor settings
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "Dart-Code.dart-code",
+  
+  // Dart/Flutter specific settings
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off"
+  }
+}
+

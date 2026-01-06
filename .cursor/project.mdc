@@ -1,0 +1,297 @@
+---
+alwaysApply: true
+---
+# Project-wide Coding and Architecture Rules (.mdc)
+
+## Ignore Patterns
+
+<!-- Flutter -->
+- `client/build/`
+- `client/.dart_tool/`
+- `client/.idea/`
+- `client/android/`
+- `client/ios/`
+- `client/web/`
+- `client/*.iml`
+- `client/lib/**/*.g.dart`
+- `admin/build/`
+- `admin/.dart_tool/`
+- `admin/.idea/`
+- `admin/android/`
+- `admin/ios/`
+- `admin/web/`
+- `admin/*.iml`
+- `admin/lib/**/*.g.dart`
+- `packages/FlutterCommon/build/`
+- `packages/FlutterCommon/.dart_tool/`
+- `packages/FlutterCommon/.idea/`
+- `packages/FlutterCommon/*.iml`
+- `packages/FlutterCommon/lib/**/*.g.dart`
+
+<!-- Node -->
+- `server/functions/node_modules/`
+- `server/functions/dist/`
+- `server/functions/generated/`
+- `server/functions/yarn.lock`
+- `packages/TSCommon/dist/`
+- `packages/TSCommon/node_modules/`
+- `packages/TSCommon/yarn.lock`
+- `scripts/node_modules/`
+- `scripts/yarn.lock`
+- `rules_testing/node_modules/`
+- `rules_testing/dist/`
+- `rules_testing/yarn.lock`
+- `rules_testing/reports/`
+
+## Lint Configurations
+
+- Dart/Flutter: [client/analysis_options.yaml](../../client/analysis_options.yaml), [admin/analysis_options.yaml](../../admin/analysis_options.yaml), and [packages/FlutterCommon/analysis_options.yaml](../../packages/FlutterCommon/analysis_options.yaml)
+- Node/TypeScript: [server/functions/eslint.config.ts](../../server/functions/eslint.config.ts), [packages/TSCommon/eslint.config.ts](../../packages/TSCommon/eslint.config.ts), [scripts/tsconfig.json](../../scripts/tsconfig.json), and [rules_testing/tsconfig.json](../../rules_testing/tsconfig.json)
+
+## Enforceable Rules
+
+- Use English for all code and documentation
+- Use relative import statements
+- Explicitly declare types for all variables, parameters, and return values (avoid `any` in TypeScript)
+- Use PascalCase for classes, camelCase for variables/functions, underscores_case for files/dirs
+- One export per file
+- No blank lines within functions
+- Name functions with verbs; use is/has/can for booleans
+- Use complete words, avoid abbreviations except for standard ones
+- Write short, single-purpose functions (<20 instructions)
+- Prefer early returns and avoid deep nesting
+- Use higher-order functions (map/filter/reduce) where possible
+- Use default parameter values
+- Use RO-RO (object in/object out) for functions with many params/results
+- Prefer immutability and encapsulation for data
+- Follow SOLID principles; prefer composition over inheritance; use interfaces for contracts
+- Keep classes small (<200 instructions, <10 public methods/properties)
+- Handle exceptions according to best practices
+- Use Arrange-Act-Assert in tests, maintain clear variable naming, and ensure test coverage for all public functions
+- Avoid deprecated and outdated methods/properties by following the latest documentation
+
+## File Header Standards
+
+- All source files must begin with the following comment block:
+- // This source code was written for the justpark monorepo.
+-
+- This applies to:
+- - Dart files in [client/lib/](../../client/lib/), [admin/lib/](../../admin/lib/), [packages/FlutterCommon/lib/](../../packages/FlutterCommon/lib/) and [packages/FlutterCommon/test/](../../packages/FlutterCommon/test/)
+- - TypeScript files in [server/functions/src/](../../server/functions/src/), [scripts/src/](../../scripts/src/), [rules_testing/src/](../../rules_testing/src/) and [packages/TSCommon/src/](../../packages/TSCommon/src/)
+- - Ignore generated code (e.g., `.g.dart`, `dist/`, `node_modules/`, `build/`, `yarn.lock`, `package-lock.json`, `package.json`, `README.md`) and ignore patterns in the [Ignore Patterns](#ignore-patterns) section
+-
+- This block must be the first lines of the file (before imports)
+- Do not remove or modify the wording except to update the year if needed
+
+### Flutter/Dart Specific
+
+- Use latest pub packages from [pub.dev](https://pub.dev) and keep similar packages grouped under comment
+- Use DRY, clean and Keep It Simple Stupid architecture approach for re-usability
+- Use the FlutterCommon package for shared UI components, themes, designs, validators for Flutter apps
+- Use Equatable for model classes that need to be compared for equality
+- Avoid over-engineering and over-complicating the code or re-inventing the wheel
+- Use the latest [Riverpod](https://riverpod.dev/) for state management, apply the latest best practices as per the documentation. Use AsyncNotifier, AutoDisposeNotifier, AsyncValue, AsyncData, AsyncError, AsyncLoading for async state management efficiently.
+- Use the latest [GoRouter](https://pub.dev/packages/go_router) for navigation, apply the latest best practices as per the documentation
+- Instead of Widget type methods, extract widgets to separate files and use them in the app
+- Use extensions, ThemeData, AppLocalizations, and constants
+- Keep widget trees shallow; break down large widgets; use const constructors where possible
+- Write unit tests against the code you write
+- Use barrel exports (index.dart) for clean imports and better organization
+- Implement responsive design patterns with proper breakpoints
+- Use centralized navigation service for consistent navigation handling
+
+#### **CRITICAL: FlutterCommon Package Import Rules**
+
+- **ALWAYS use specific imports** from FlutterCommon when importing 1-3 items from the same module
+- **ONLY use barrel export** `package:common/common.dart` when importing 4+ items from different modules
+- **NEVER mix** barrel imports with specific imports in the same file (linter will catch this as `unnecessary_import`)
+- **Examples:**
+  - ✅ Good (specific imports): `import 'package:common/designs/app_colors.dart';`
+  - ✅ Good (specific imports): `import 'package:common/providers/auth_state_provider.dart';`
+  - ✅ Good (barrel when using many): `import 'package:common/common.dart';` (when importing 4+ items from different modules)
+  - ❌ Bad (barrel for single import): `import 'package:common/common.dart';` (when only using 1-2 items)
+  - ❌ Bad (mixed imports): Using both `package:common/common.dart` and specific imports in the same file
+- **Rationale:** Specific imports improve compilation performance, make dependencies explicit, and keep import statements clean and intentional
+
+#### **CRITICAL: Flutter Architecture Rules**
+
+- **NEVER use StatefulWidget/ConsumerStatefulWidget** - Always use ConsumerWidget with Riverpod
+- **NEVER use WidgetsBinding.instance.addPostFrameCallback((_) {** - Use Riverpod providers instead
+- **NEVER use controllers** - Controllers are antipatterns; use Riverpod providers instead
+- **ALWAYS use proper Riverpod providers**: AsyncNotifier (async), AutoDisposeNotifier (temporary), StateNotifier (sync), Provider (computed)
+- **ALWAYS use AsyncValue/AsyncData/AsyncError/AsyncLoading** for async state management
+- **ALWAYS use `@riverpod` annotation** and `ref.watch()` for reactive state, `ref.read()` for one-time reads
+- **ALWAYS implement UIState pattern** with executeWithLoading() for async operations
+- **ALWAYS extend Equatable** for models with copyWith(), fromFirestore(), toFirestore()
+- **ALWAYS place models** in appropriate directories (client/admin/lib/models/ or FlutterCommon/lib/models/)
+- **ALWAYS use existing services** from FlutterCommon (FirestoreService, FunctionsService, AuthService, StorageService, etc.)
+- **ALWAYS extract reusable widgets** to separate files under widgets/ directory
+- **ALWAYS use const constructors** and barrel exports (index.dart) for clean imports
+- **ALWAYS implement responsive design** with proper breakpoints and accessibility support
+- **ALWAYS reuse existing patterns** - Don't reinvent the wheel, follow established UIState pattern
+
+#### **CRITICAL: Unified Architecture Pattern**
+
+- **ALWAYS follow the established generic architecture pattern** for all features across frontend and backend
+- **ALWAYS use the standard layer structure:**
+
+##### **Frontend (Flutter)**
+
+- **Entry Layer**: `FeaturePage` (StatelessWidget) → `FeatureView` (ConsumerWidget)
+- **State Management Layer**: `FeatureProvider` + `FeatureUIProvider` + `FeatureFormProvider`
+- **Service Layer**: `FeatureFunctionsService` (FlutterCommon) → Cloud Functions
+- **Model Layer**: `FeatureModel` (Equatable) with copyWith(), fromFirestore(), toFirestore()
+- **Widget Layer**: `FeatureCard` + `FeatureForm` + `FeatureActions` + `FeatureList`
+
+##### **Backend (Cloud Functions)**
+
+- **Function Layer**: `FeatureFunctions` (onCall/onRequest) with decorators
+- **Service Layer**: `FeatureService` (business logic) with proper error handling
+- **Interface Layer**: `FeatureInterfaces` (server-specific interfaces) + TSCommon imports
+- **Validator Layer**: `FeatureValidators` (input validation) with schemas
+- **Response Layer**: `ApiResponse<T>` (standardized responses) with error handling
+
+##### **Scripts (CLI Tools)**
+
+- **Entry Layer**: `index.ts` (CLI entry point) with interactive menu
+- **Command Layer**: `FeatureCommands` (CLI actions) with prompts and validation
+- **Service Layer**: `FeatureServices` (Firebase operations) with singleton pattern
+- **Story Layer**: `FeatureStories` (business logic) with proper error handling
+- **Type Layer**: `FeatureTypes` (TypeScript types) for CLI interfaces
+
+##### **Rules Testing (Firebase Rules)**
+
+- **Test Layer**: `FeatureSpec` (test files) with describe/it structure
+- **Helper Layer**: `TestHelpers` (setup/teardown) with test data management
+- **Assertion Layer**: `assertSucceeds/assertFails` (Firebase rules testing)
+- **Environment Layer**: `TestEnvironment` (Firebase emulator setup) with cleanup
+- **Data Layer**: `TestData` (mock data) with realistic test scenarios
+
+- **ALWAYS implement the UIState pattern** with executeWithLoading() for async operations
+- **ALWAYS use centralized navigation** with NavigationService and route constants
+- **ALWAYS follow single-operation CRUD** with automatic state management
+- **ALWAYS implement proper error handling** with user-friendly messages and logging
+- **ALWAYS use responsive design** with proper breakpoints and adaptive layouts
+- **ALWAYS implement proper accessibility** with semantic labels and screen reader support
+
+### Node/TypeScript Specific
+
+- Use TypeScript best practices for types, interfaces, and async code
+- Use DRY approach for re-usability
+- Use the TSCommon package for shared TypeScript enums and constants consumed by `server/functions`, `scripts`, and `rules_testing`
+- Use the latest NodeJS packages from [yarn](https://yarnpkg.com) and keep similar packages grouped under comment
+- Use ESLint with Google/TypeScript style guide
+- Use Yarn for package management
+- Organize code for clarity, scalability, and modularity
+- Try to achieve 100% test coverage for all public functions and classes
+- Use proper error handling with HttpsError for Cloud Functions
+- Implement proper logging with structured data using Firebase Functions logger
+- Use proper input validation with schemas and type checking
+- Implement proper authentication and authorization checks
+
+#### **CRITICAL: TypeScript Architecture Rules**
+
+- **ALWAYS use TypeScript** for all Cloud Functions, Scripts, and Rules Testing
+- **ALWAYS implement proper error handling** with HttpsError and structured error responses
+- **ALWAYS use proper logging** with Firebase Functions logger and structured data
+- **ALWAYS implement input validation** with schemas and type checking
+- **ALWAYS use proper authentication** and authorization checks
+- **ALWAYS use service classes** for business logic separation
+- **ALWAYS implement proper error responses** following ApiResponse pattern
+- **ALWAYS use JSDoc documentation** for all exported functions
+- **ALWAYS test both positive and negative cases** with proper test isolation
+- **ALWAYS generate test reports** for CI/CD integration
+
+#### **CRITICAL: Flutter Anti-Patterns**
+
+- **NEVER use static declarations** - Use Riverpod providers instead
+- **NEVER use static const for routes** - Use constants from `app_paths.dart` files
+- **NEVER instantiate TextEditingController in build()** - Use Riverpod providers or widget fields
+- **NEVER use GlobalKey&lt;FormState&gt; in build()** - Declare as widget field or use Riverpod provider
+- **ALWAYS use GoRouter** for navigation - Never use MaterialPageRoute or Navigator methods
+- **ALWAYS use NavigationService** for centralized navigation logic
+
+## Documentation Standards
+
+- **General**
+  - All code must be documented using standard comment formats (`///` for Dart, `/** */` for TypeScript)
+  - Comments should explain *why* something exists, not just *what* it does
+  - Use TODO/FIXME/NOTE tags with context when applicable
+  - Keep README files updated for major components and usage patterns
+
+- **Flutter/Dart**
+  - Document all public classes, methods, and widgets using Dart Docs (`///`) per Google's Effective Dart guide: <https://dart.dev/guides/language/effective-dart/documentation>
+  - Start with a concise one-line summary
+  - Use Markdown-style formatting (bold, code, lists) in additional explanations
+  - Provide usage examples using triple backtick fenced blocks (```dart)
+  - Avoid describing types (the analyzer handles that); instead explain purpose, usage, and behavior
+  - For parameters and return values:
+    - Use natural language in prose instead of tags like `@param` or `@return`
+    - Mention optional/default values clearly
+  - All exported public APIs should be documented
+
+- **Node/TypeScript**
+  - Use JSDoc (`/** */`) for all exported functions, interfaces, classes, and complex utilities
+  - Every function must include:
+    - Purpose summary
+    - `@param` tags with name and type
+    - `@returns` description
+    - `@example` block for usage where helpful
+  - Describe middleware and services: request/response shapes, business logic, and dependencies
+  - Interfaces should include `@description` for clarity where not self-evident
+
+## Code Quality Enforcement
+
+### **ANTI-PATTERNS TO AVOID**
+
+- ❌ **Flutter**: StatefulWidget, static declarations, controllers in build(), GlobalKey in build(), direct Firebase calls, widget-type methods, missing const constructors, dynamic type, missing error handling
+- ❌ **TypeScript**: Standalone functions, missing error handling, direct Firebase calls, missing input validation, missing logging, missing interfaces, missing authentication, missing JSDoc
+
+### **REQUIRED PATTERNS**
+
+- ✅ **Flutter**: ConsumerWidget, Riverpod providers, service classes, proper error handling, const constructors, extracted widgets, type-safe code, UIState pattern, AutoDispose providers, copyWith() methods, responsive design, accessibility support
+- ✅ **TypeScript**: Class-based services, proper error handling with HttpsError, input validation, structured logging, TypeScript interfaces, authentication middleware, ApiResponse pattern, JSDoc documentation, proper test coverage
+
+## Included Paths
+
+<!-- Flutter -->
+- [client/lib/](../../client/lib/)
+- [client/pubspec.yaml](../../client/pubspec.yaml)
+- [client/pubspec.lock](../../client/pubspec.lock)
+- [client/README.md](../../client/README.md)
+- [client/analysis_options.yaml](../../client/analysis_options.yaml)
+- [admin/lib/](../../admin/lib/)
+- [admin/pubspec.yaml](../../admin/pubspec.yaml)
+- [admin/pubspec.lock](../../admin/pubspec.lock)
+- [admin/README.md](../../admin/README.md)
+- [admin/analysis_options.yaml](../../admin/analysis_options.yaml)
+- [packages/FlutterCommon/lib/](../../packages/FlutterCommon/lib/)
+- [packages/FlutterCommon/test/](../../packages/FlutterCommon/test/)
+- [packages/FlutterCommon/pubspec.yaml](../../packages/FlutterCommon/pubspec.yaml)
+- [packages/FlutterCommon/README.md](../../packages/FlutterCommon/README.md)
+- [packages/FlutterCommon/analysis_options.yaml](../../packages/FlutterCommon/analysis_options.yaml)
+
+<!-- Node -->
+- [server/functions/src/](../../server/functions/src/)
+- [server/functions/package.json](../../server/functions/package.json)
+- [server/functions/tsconfig.json](../../server/functions/tsconfig.json)
+- [server/functions/tsconfig.dev.json](../../server/functions/tsconfig.dev.json)
+- [server/functions/README.md](../../server/functions/README.md)
+- [server/functions/eslint.config.ts](../../server/functions/eslint.config.ts)
+- [scripts/src/](../../scripts/src/)
+- [scripts/package.json](../../scripts/package.json)
+- [scripts/tsconfig.json](../../scripts/tsconfig.json)
+- [scripts/README.md](../../scripts/README.md)
+- [rules_testing/src/](../../rules_testing/src/)
+- [rules_testing/package.json](../../rules_testing/package.json)
+- [rules_testing/tsconfig.json](../../rules_testing/tsconfig.json)
+- [rules_testing/README.md](../../rules_testing/README.md)
+- [packages/TSCommon/src/](../../packages/TSCommon/src/)
+- [packages/TSCommon/package.json](../../packages/TSCommon/package.json)
+- [packages/TSCommon/tsconfig.json](../../packages/TSCommon/tsconfig.json)
+- [packages/TSCommon/tsconfig.dev.json](../../packages/TSCommon/tsconfig.dev.json)
+- [packages/TSCommon/README.md](../../packages/TSCommon/README.md)
+
+## Monorepo Structure
+
+For full guidelines, see: [README.md](../../README.md)

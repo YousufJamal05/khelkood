@@ -1,0 +1,42 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "[khelkood] Debug App (Development)",
+      "type": "dart",
+      "request": "launch",
+      "program": "client/lib/main.dart",
+      "args": ["--dart-define", "FLAVOR=development"],
+      "flutterMode": "debug"
+    },
+    {
+      "name": "[khelkood] Run App (Production)",
+      "type": "dart",
+      "request": "launch",
+      "program": "client/lib/main.dart",
+      "args": ["--dart-define", "FLAVOR=production"],
+      "flutterMode": "release"
+    },
+    {
+      "name": "[Server] Run Firebase Emulators",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "firebase emulators:start",
+      "cwd": "${workspaceFolder}/server/functions"
+    },
+    {
+      "name": "[Server] Run Firebase Emulators with Imported Data",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "firebase emulators:start --import=\"./firebase-export-17653971512406Kqkm3\"",
+      "cwd": "${workspaceFolder}/server/functions"
+    },
+    {
+      "name": "Export Firebase Emulators Data",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "firebase emulators:export data/firebase"
+      },
+  ],
+}
+

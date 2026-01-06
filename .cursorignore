@@ -1,0 +1,39 @@
+# Cursor ignore file
+# Files and directories to be excluded from AI assistant context
+
+# Build artifacts
+**/build/
+**/.dart_tool/
+**/dist/
+**/node_modules/
+
+# IDE files
+**/.vscode/
+**/.idea/
+**/*.iml
+**/*.ipr
+**/*.iws
+
+# Platform-specific
+**/android/.gradle/
+**/android/.cxx/
+**/ios/.symlinks/
+**/ios/Pods/
+**/ios/build/
+**/linux/flutter/ephemeral/
+**/macos/Flutter/ephemeral/
+**/windows/flutter/ephemeral/
+
+# Dependencies
+**/pubspec.lock
+**/package-lock.json
+**/yarn.lock
+
+# Generated files
+**/*.g.dart
+**/*.freezed.dart
+**/*.mocks.dart
+
+# Coverage and logs
+**/coverage/
+**/*.log
