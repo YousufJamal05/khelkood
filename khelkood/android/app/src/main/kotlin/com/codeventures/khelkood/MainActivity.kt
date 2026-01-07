@@ -1,5 +1,6 @@
-package com.example.khelkood
+package com.codeventures.khelkood
 
 import io.flutter.embedding.android.FlutterActivity
 
 class MainActivity : FlutterActivity()
+
