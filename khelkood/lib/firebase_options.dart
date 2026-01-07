@@ -17,23 +17,26 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for android - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return android;
       case TargetPlatform.iOS:
+        return ios;
+      case TargetPlatform.macOS:
         throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
+          'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
-      case TargetPlatform.macOS:
-        return macos;
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -46,16 +49,15 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBrFgwMxCGoz6DU3ZCq-PPYHvOyOJw53Yw',
-    appId: '1:893400213606:web:cbb7e9479a541dfd8fe5a7',
+  static const FirebaseOptions android = FirebaseOptions(
+    apiKey: 'AIzaSyBvYjrVbv-IWgbEOGvXu25z9ppbkgIqJqI',
+    appId: '1:893400213606:android:8cabf8b03c332ec98fe5a7',
     messagingSenderId: '893400213606',
     projectId: 'khelkood-926c6',
-    authDomain: 'khelkood-926c6.firebaseapp.com',
     storageBucket: 'khelkood-926c6.firebasestorage.app',
   );
 
-  static const FirebaseOptions macos = FirebaseOptions(
+  static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCCPnp4EKaGJJ0KArNu8fFG4jaBb6vWtWk',
     appId: '1:893400213606:ios:b32db693031ea8f68fe5a7',
     messagingSenderId: '893400213606',
@@ -64,12 +66,4 @@ class DefaultFirebaseOptions {
     iosBundleId: 'com.example.khelkood',
   );
 
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBrFgwMxCGoz6DU3ZCq-PPYHvOyOJw53Yw',
-    appId: '1:893400213606:web:fd88a11161ef6a388fe5a7',
-    messagingSenderId: '893400213606',
-    projectId: 'khelkood-926c6',
-    authDomain: 'khelkood-926c6.firebaseapp.com',
-    storageBucket: 'khelkood-926c6.firebasestorage.app',
-  );
 }
