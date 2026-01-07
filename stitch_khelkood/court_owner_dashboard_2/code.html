@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood - Court Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00C853",
+                        "primary-dark": "#009624",
+                        "primary-light": "#B9F6CA",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#102218",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e3326",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 min-h-screen flex flex-col overflow-hidden relative">
+<header class="flex items-center justify-between px-6 pt-12 pb-4 bg-surface-light dark:bg-surface-dark sticky top-0 z-10 shadow-sm border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-center gap-3">
+<button class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors mr-1">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">arrow_back</span>
+</button>
+<h2 class="text-slate-900 dark:text-white text-xl font-bold leading-tight">Analytics</h2>
+</div>
+<button class="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">download</span>
+</button>
+</header>
+<main class="flex-1 overflow-y-auto pb-24 hide-scrollbar">
+<section class="mt-4 px-6 flex gap-3 overflow-x-auto hide-scrollbar pb-2">
+<button class="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+                Last 30 Days
+            </button>
+<button class="flex items-center gap-2 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">sports_tennis</span>
+                All Courts
+            </button>
+<button class="flex items-center gap-2 bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                Filter
+            </button>
+</section>
+<section class="mt-4 px-6 grid grid-cols-2 gap-4">
+<div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+<p class="text-gray-500 dark:text-gray-400 text-xs font-medium">Total Revenue</p>
+<div class="flex items-end gap-2 mt-2">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">PKR 145K</h3>
+</div>
+<div class="mt-2 flex items-center text-xs text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-md w-fit">
+<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+                    +12.5%
+                </div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+<p class="text-gray-500 dark:text-gray-400 text-xs font-medium">Total Bookings</p>
+<div class="flex items-end gap-2 mt-2">
+<h3 class="text-xl font-bold text-slate-900 dark:text-white">342</h3>
+</div>
+<div class="mt-2 flex items-center text-xs text-green-600 bg-green-50 dark:bg-green-900/20 px-2 py-1 rounded-md w-fit">
+<span class="material-symbols-outlined text-[14px] mr-1">trending_up</span>
+                    +8.2%
+                </div>
+</div>
+</section>
+<section class="mt-6 px-6">
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-bold text-slate-900 dark:text-white">Revenue Trends</h3>
+<span class="material-symbols-outlined text-gray-400">more_horiz</span>
+</div>
+<div class="h-40 flex items-end justify-between gap-2 px-2 relative pt-8">
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none pb-6 pt-4 px-2">
+<div class="w-full h-px bg-gray-100 dark:bg-gray-800 border-t border-dashed border-gray-200 dark:border-gray-700"></div>
+<div class="w-full h-px bg-gray-100 dark:bg-gray-800 border-t border-dashed border-gray-200 dark:border-gray-700"></div>
+<div class="w-full h-px bg-gray-100 dark:bg-gray-800 border-t border-dashed border-gray-200 dark:border-gray-700"></div>
+</div>
+<div class="flex flex-col items-center gap-1 w-full">
+<div class="h-[30%] w-2 bg-primary/30 rounded-t-sm relative group">
+<div class="opacity-0 group-hover:opacity-100 absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded">25k</div>
+</div>
+<span class="text-[10px] text-gray-400">1</span>
+</div>
+<div class="flex flex-col items-center gap-1 w-full">
+<div class="h-[45%] w-2 bg-primary/40 rounded-t-sm relative group"></div>
+<span class="text-[10px] text-gray-400">5</span>
+</div>
+<div class="flex flex-col items-center gap-1 w-full">
+<div class="h-[35%] w-2 bg-primary/30 rounded-t-sm relative group"></div>
+<span class="text-[10px] text-gray-400">10</span>
+</div>
+<div class="flex flex-col items-center gap-1 w-full">
+<div class="h-[60%] w-2 bg-primary/60 rounded-t-sm relative group"></div>
+<span class="text-[10px] text-gray-400">15</span>
+</div>
+<div class="flex flex-col items-center gap-1 w-full">
+<div class="h-[50%] w-2 bg-primary/50 rounded-t-sm relative group"></div>
+<span class="text-[10px] text-gray-400">20</span>
+</div>
+<div class="flex flex-col items-center gap-1 w-full">
+<div class="h-[80%] w-2 bg-primary rounded-t-sm relative group">
+<div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-white border-2 border-primary rounded-full z-10 shadow-sm"></div>
+</div>
+<span class="text-[10px] text-gray-400 font-bold text-primary">25</span>
+</div>
+<div class="flex flex-col items-center gap-1 w-full">
+<div class="h-[70%] w-2 bg-primary/70 rounded-t-sm relative group"></div>
+<span class="text-[10px] text-gray-400">30</span>
+</div>
+</div>
+</div>
+</section>
+<section class="mt-6 px-6 grid grid-cols-1 gap-6">
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+<h3 class="font-bold text-slate-900 dark:text-white mb-4">Utilization by Sport</h3>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">sports_soccer</span>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Futsal</span>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">78%</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 78%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-orange-500 text-sm">sports_cricket</span>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Cricket</span>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">65%</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2">
+<div class="bg-orange-500 h-2 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-500 text-sm">sports_tennis</span>
+<span class="text-sm font-medium text-slate-700 dark:text-slate-300">Tennis</span>
+</div>
+<span class="text-sm font-bold text-slate-900 dark:text-white">42%</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-2">
+<div class="bg-blue-500 h-2 rounded-full" style="width: 42%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-bold text-slate-900 dark:text-white">Peak Hours</h3>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="w-2 h-2 rounded-full bg-primary"></span> High
+                        <span class="w-2 h-2 rounded-full bg-primary/30 ml-2"></span> Low
+                    </div>
+</div>
+<div class="flex items-end justify-between h-32 gap-1">
+<div class="w-full bg-primary/10 rounded-t-md h-[20%] group relative"></div>
+<div class="w-full bg-primary/20 rounded-t-md h-[30%] group relative"></div>
+<div class="w-full bg-primary/10 rounded-t-md h-[15%] group relative"></div>
+<div class="w-full bg-primary/40 rounded-t-md h-[45%] group relative"></div>
+<div class="w-full bg-primary/80 rounded-t-md h-[85%] group relative">
+<div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] px-2 py-1 rounded">8PM</div>
+</div>
+<div class="w-full bg-primary rounded-t-md h-[95%] group relative">
+<div class="hidden group-hover:block absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] px-2 py-1 rounded">9PM</div>
+</div>
+<div class="w-full bg-primary/70 rounded-t-md h-[75%] group relative"></div>
+<div class="w-full bg-primary/30 rounded-t-md h-[40%] group relative"></div>
+</div>
+<div class="flex justify-between mt-2 text-[10px] text-gray-400 font-medium">
+<span>4PM</span>
+<span>6PM</span>
+<span>8PM</span>
+<span>10PM</span>
+<span>12AM</span>
+</div>
+</div>
+</section>
+<section class="mt-6 px-6 mb-6">
+<h3 class="text-slate-900 dark:text-white text-base font-bold mb-3">Customer Segments</h3>
+<div class="flex gap-4 overflow-x-auto hide-scrollbar pb-2">
+<div class="min-w-[140px] bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center text-center">
+<div class="w-12 h-12 rounded-full bg-purple-50 dark:bg-purple-900/20 flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-purple-500">groups</span>
+</div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Regulars</h4>
+<p class="text-xs text-gray-500 mt-1">45% of bookings</p>
+</div>
+<div class="min-w-[140px] bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center text-center">
+<div class="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-blue-500">person_add</span>
+</div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">New Users</h4>
+<p class="text-xs text-gray-500 mt-1">20% this month</p>
+</div>
+<div class="min-w-[140px] bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col items-center text-center">
+<div class="w-12 h-12 rounded-full bg-yellow-50 dark:bg-yellow-900/20 flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-yellow-600">corporate_fare</span>
+</div>
+<h4 class="text-sm font-bold text-slate-900 dark:text-white">Corporate</h4>
+<p class="text-xs text-gray-500 mt-1">15% revenue</p>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 w-full bg-surface-light dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 pb-5 pt-3 px-6 z-20">
+<div class="flex justify-between items-end">
+<button class="flex flex-col items-center gap-1 w-12 group">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-12 group">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">calendar_month</span>
+<span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">Bookings</span>
+</button>
+<div class="relative -top-6">
+<button class="flex items-center justify-center w-14 h-14 bg-primary rounded-full shadow-lg shadow-primary/40 text-white hover:bg-primary-dark transition-colors transform hover:-translate-y-1">
+<span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 w-12 group">
+<span class="material-symbols-outlined text-primary transition-colors filled" style="font-variation-settings: 'FILL' 1;">bar_chart</span>
+<span class="text-[10px] font-semibold text-primary">Analytics</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-12 group">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">person</span>
+<span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">Profile</span>
+</button>
+</div>
+</nav>
+
+</body></html>

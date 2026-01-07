@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood - Search &amp; Filter</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00c753",
+                        "primary-dark": "#00a344",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f2317",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a2e22",
+                        "text-main": "#0c1d13",
+                        "text-main-dark": "#e6f4ec",
+                        "text-sub": "#5a6b61",
+                        "text-sub-dark": "#a0b3a9",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for horizontal scroll areas */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-text-main-dark font-display antialiased pb-24">
+<!-- Sticky Header Section -->
+<header class="sticky top-0 z-30 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm pt-2 pb-2 border-b border-gray-200/50 dark:border-white/5 transition-colors duration-300">
+<!-- Search Bar -->
+<div class="px-4 py-2">
+<div class="relative flex w-full items-center rounded-xl bg-surface-light dark:bg-surface-dark shadow-sm h-12 border border-gray-100 dark:border-white/5 group focus-within:ring-2 focus-within:ring-primary/50 transition-all">
+<div class="flex items-center justify-center pl-4 text-primary">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="flex w-full bg-transparent border-none text-base text-text-main dark:text-text-main-dark placeholder:text-text-sub dark:placeholder:text-text-sub-dark focus:ring-0 px-3 h-full" placeholder="Arenas, areas, or sports..." value=""/>
+<button class="pr-4 text-text-sub dark:text-text-sub-dark">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+</div>
+<!-- Primary Filters (Sport Type) -->
+<div class="flex gap-2 px-4 py-2 overflow-x-auto hide-scrollbar">
+<button class="flex shrink-0 items-center justify-center h-9 px-5 rounded-full bg-primary text-white font-medium text-sm shadow-md shadow-primary/20 transition-transform active:scale-95">
+                All
+            </button>
+<button class="flex shrink-0 items-center justify-center gap-x-2 h-9 px-5 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-text-main dark:text-text-main-dark text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-primary text-[18px]">sports_cricket</span>
+                Cricket
+            </button>
+<button class="flex shrink-0 items-center justify-center gap-x-2 h-9 px-5 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-text-main dark:text-text-main-dark text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-primary text-[18px]">sports_soccer</span>
+                Futsal
+            </button>
+<button class="flex shrink-0 items-center justify-center gap-x-2 h-9 px-5 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-text-main dark:text-text-main-dark text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-primary text-[18px]">sports_tennis</span>
+                Padel
+            </button>
+<button class="flex shrink-0 items-center justify-center gap-x-2 h-9 px-5 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-white/10 text-text-main dark:text-text-main-dark text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-primary text-[18px]">pool</span>
+                Swimming
+            </button>
+</div>
+<!-- Secondary Filters / Sort -->
+<div class="flex gap-2 px-4 pb-2 overflow-x-auto hide-scrollbar border-t border-dashed border-gray-200 dark:border-white/10 pt-2 mt-1">
+<button class="flex h-7 shrink-0 items-center justify-center gap-x-1 rounded-lg bg-gray-100 dark:bg-white/5 pl-3 pr-2">
+<p class="text-text-sub dark:text-text-sub-dark text-xs font-medium">Sort: Recommended</p>
+<span class="material-symbols-outlined text-text-sub dark:text-text-sub-dark text-[16px]">keyboard_arrow_down</span>
+</button>
+<button class="flex h-7 shrink-0 items-center justify-center gap-x-1 rounded-lg bg-gray-100 dark:bg-white/5 pl-3 pr-2">
+<p class="text-text-sub dark:text-text-sub-dark text-xs font-medium">Price Range</p>
+<span class="material-symbols-outlined text-text-sub dark:text-text-sub-dark text-[16px]">keyboard_arrow_down</span>
+</button>
+<button class="flex h-7 shrink-0 items-center justify-center gap-x-1 rounded-lg bg-gray-100 dark:bg-white/5 pl-3 pr-2">
+<p class="text-text-sub dark:text-text-sub-dark text-xs font-medium">Area</p>
+<span class="material-symbols-outlined text-text-sub dark:text-text-sub-dark text-[16px]">keyboard_arrow_down</span>
+</button>
+<button class="flex h-7 shrink-0 items-center justify-center gap-x-1 rounded-lg bg-gray-100 dark:bg-white/5 pl-3 pr-2">
+<p class="text-text-sub dark:text-text-sub-dark text-xs font-medium">Date</p>
+<span class="material-symbols-outlined text-text-sub dark:text-text-sub-dark text-[16px]">calendar_today</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="w-full">
+<!-- Results Count -->
+<div class="px-4 py-3 flex items-center justify-between">
+<h3 class="text-text-main dark:text-white text-lg font-bold">24 Venues found</h3>
+<button class="text-primary text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">map</span> View Map
+            </button>
+</div>
+<!-- Venue Cards List -->
+<div class="flex flex-col gap-4 px-4 pb-4">
+<!-- Card 1 -->
+<div class="group flex flex-col items-stretch justify-start rounded-xl bg-surface-light dark:bg-surface-dark shadow-[0_2px_8px_rgba(0,0,0,0.06)] dark:shadow-none dark:border dark:border-white/5 overflow-hidden transition-all hover:shadow-lg">
+<div class="relative w-full aspect-[16/9] bg-gray-200 dark:bg-gray-800 overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Indoor cricket pitch with green turf and bright led lighting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCWIwjoIRuJoyuAY_W9YhBxQMDS9kt933AuOES5kSc5qcoNWLcFC7Id2SC3nvdLHQ3yopbQ_U_zZrWl2Be0yQ5hsdqV3QQv6Cz2WSVOJva0qXQHQOiVElS5myahcQEJ0n9T6QkpfEuzodeQXMAex4rsSxgYWEhjxJ4uhfAqyYW4fTHb0T7ECsqdlNCyCPXf0f0A6QIn8HhloR-7aKGVnc3qUMi9wQKiihfFr16qC7GZJxAY_kPD_oMQd2zvkL4zXMqncJvXpaAmi7Q");'></div>
+<div class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-500 text-[16px] fill-current">star</span>
+<span class="text-xs font-bold text-text-main dark:text-white">4.8</span>
+<span class="text-xs text-text-sub dark:text-text-sub-dark">(120)</span>
+</div>
+<div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg">
+<span class="text-xs font-medium text-white">Indoor Cricket</span>
+</div>
+</div>
+<div class="flex flex-col p-4 gap-2">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-text-main dark:text-white text-lg font-bold leading-tight">Smash Arena DHA</h4>
+<div class="flex items-center gap-1 mt-1 text-text-sub dark:text-text-sub-dark">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<p class="text-sm">Phase 6, 2.5km away</p>
+</div>
+</div>
+</div>
+<div class="h-px bg-gray-100 dark:bg-white/10 my-1"></div>
+<div class="flex items-end justify-between gap-3">
+<div class="flex flex-col">
+<p class="text-xs text-text-sub dark:text-text-sub-dark">Starting from</p>
+<p class="text-primary text-lg font-bold">Rs. 2500 <span class="text-sm font-normal text-text-sub dark:text-text-sub-dark">/ hr</span></p>
+</div>
+<button class="flex-1 max-w-[120px] h-9 items-center justify-center rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-semibold shadow-md shadow-primary/20 transition-colors">
+                            Book Now
+                        </button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group flex flex-col items-stretch justify-start rounded-xl bg-surface-light dark:bg-surface-dark shadow-[0_2px_8px_rgba(0,0,0,0.06)] dark:shadow-none dark:border dark:border-white/5 overflow-hidden transition-all hover:shadow-lg">
+<div class="relative w-full aspect-[16/9] bg-gray-200 dark:bg-gray-800 overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Modern indoor futsal court with artificial grass" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAmZPyhaYEALk3pkZcegnCQKw0IYJSJs52ClO0sKoDhImitEsvLIwuncQ-Dava5gCn2jgP4cUWiBLNNezWuDfRw-yNY9zVo-JHRj17zs8w8TZRPyz5Z3zK-PdS94Ceg-xy-PgWzYE99YE1efkjFqigFrabcIMXHjwD3zCJIEMVgccIWaWi-1Q1QTKay0muidDApVJLjJEgutl6NVrfBAAR-pz6KqMkRCgtDHWUtmqNUb7c-Jz8g3tKlr-P8k3Jgjcz862qdZ918bYg");'></div>
+<div class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-500 text-[16px] fill-current">star</span>
+<span class="text-xs font-bold text-text-main dark:text-white">4.9</span>
+<span class="text-xs text-text-sub dark:text-text-sub-dark">(85)</span>
+</div>
+<div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg">
+<span class="text-xs font-medium text-white">Futsal 5v5</span>
+</div>
+</div>
+<div class="flex flex-col p-4 gap-2">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-text-main dark:text-white text-lg font-bold leading-tight">Powerplay North</h4>
+<div class="flex items-center gap-1 mt-1 text-text-sub dark:text-text-sub-dark">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<p class="text-sm">North Nazimabad, 8km away</p>
+</div>
+</div>
+</div>
+<div class="h-px bg-gray-100 dark:bg-white/10 my-1"></div>
+<div class="flex items-end justify-between gap-3">
+<div class="flex flex-col">
+<p class="text-xs text-text-sub dark:text-text-sub-dark">Starting from</p>
+<p class="text-primary text-lg font-bold">Rs. 3000 <span class="text-sm font-normal text-text-sub dark:text-text-sub-dark">/ hr</span></p>
+</div>
+<button class="flex-1 max-w-[120px] h-9 items-center justify-center rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-semibold shadow-md shadow-primary/20 transition-colors">
+                            Book Now
+                        </button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group flex flex-col items-stretch justify-start rounded-xl bg-surface-light dark:bg-surface-dark shadow-[0_2px_8px_rgba(0,0,0,0.06)] dark:shadow-none dark:border dark:border-white/5 overflow-hidden transition-all hover:shadow-lg">
+<div class="relative w-full aspect-[16/9] bg-gray-200 dark:bg-gray-800 overflow-hidden">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Blue padel tennis court with glass walls" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAiIxWdKsFrX17l2uXhXqf68yM4pade_ySOX1jlCsm0xUq3o4C8XwJmIibhupgLbQF8vQL6D8pjVGWHyMx4Ig7MHl-tWPBklwtrA8_97UwvBVo7yrgK98nj7kPJpqFsWNO7S-3B1zVVbu80SumAgQcDOK8ewCv0LdjOo-0DTpM9yworStn63-K2Z0owkWVqNREFdnPJllZoTW8I7NXJRlvNRZQuUKfemDWBFyS93pz_LrA0msiJnG-KgyhLo_XAbVAn61BKVNw3Frw");'></div>
+<div class="absolute top-3 left-3 bg-white/90 dark:bg-black/80 backdrop-blur-sm px-2 py-1 rounded-lg flex items-center gap-1">
+<span class="material-symbols-outlined text-orange-500 text-[16px] fill-current">star</span>
+<span class="text-xs font-bold text-text-main dark:text-white">5.0</span>
+<span class="text-xs text-text-sub dark:text-text-sub-dark">(42)</span>
+</div>
+<div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg">
+<span class="text-xs font-medium text-white">Padel Court</span>
+</div>
+</div>
+<div class="flex flex-col p-4 gap-2">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-text-main dark:text-white text-lg font-bold leading-tight">Ace Padel Club</h4>
+<div class="flex items-center gap-1 mt-1 text-text-sub dark:text-text-sub-dark">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<p class="text-sm">Clifton Block 4, 3.2km away</p>
+</div>
+</div>
+</div>
+<div class="h-px bg-gray-100 dark:bg-white/10 my-1"></div>
+<div class="flex items-end justify-between gap-3">
+<div class="flex flex-col">
+<p class="text-xs text-text-sub dark:text-text-sub-dark">Starting from</p>
+<p class="text-primary text-lg font-bold">Rs. 4500 <span class="text-sm font-normal text-text-sub dark:text-text-sub-dark">/ hr</span></p>
+</div>
+<button class="flex-1 max-w-[120px] h-9 items-center justify-center rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-semibold shadow-md shadow-primary/20 transition-colors">
+                            Book Now
+                        </button>
+</div>
+</div>
+</div>
+<!-- Loader / End of List -->
+<div class="py-4 flex justify-center">
+<div class="animate-pulse flex gap-2">
+<div class="h-2 w-2 rounded-full bg-primary/40"></div>
+<div class="h-2 w-2 rounded-full bg-primary/40"></div>
+<div class="h-2 w-2 rounded-full bg-primary/40"></div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full z-40 bg-surface-light/90 dark:bg-background-dark/95 backdrop-blur-lg border-t border-gray-200 dark:border-white/5 pb-5 pt-2">
+<div class="grid grid-cols-4 h-full">
+<button class="flex flex-col items-center justify-center gap-1 group">
+<span class="material-symbols-outlined text-text-sub dark:text-text-sub-dark group-hover:text-primary transition-colors">home</span>
+<span class="text-[10px] font-medium text-text-sub dark:text-text-sub-dark group-hover:text-primary">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 group">
+<span class="material-symbols-outlined text-primary fill-current">search</span>
+<span class="text-[10px] font-bold text-primary">Search</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 group">
+<span class="material-symbols-outlined text-text-sub dark:text-text-sub-dark group-hover:text-primary transition-colors">calendar_month</span>
+<span class="text-[10px] font-medium text-text-sub dark:text-text-sub-dark group-hover:text-primary">Bookings</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 group">
+<span class="material-symbols-outlined text-text-sub dark:text-text-sub-dark group-hover:text-primary transition-colors">person</span>
+<span class="text-[10px] font-medium text-text-sub dark:text-text-sub-dark group-hover:text-primary">Profile</span>
+</button>
+</div>
+</nav>
+</body></html>

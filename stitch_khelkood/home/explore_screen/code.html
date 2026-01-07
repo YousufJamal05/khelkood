@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood - Home</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00c753",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f2317",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1a3525",
+                        "text-main-light": "#0c1d13",
+                        "text-main-dark": "#e0ebe5",
+                        "text-sec-light": "#6b7280",
+                        "text-sec-dark": "#a1aab3",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main-light dark:text-text-main-dark selection:bg-primary selection:text-white pb-24">
+<!-- Header Section -->
+<header class="sticky top-0 z-30 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm pt-safe-top">
+<div class="flex items-center justify-between p-4 pb-2">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-primary" data-alt="User profile avatar showing a smiling young man" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuApjhvZQBlUtgEPBMV0Z4oOgy0WbV4F2nLl714gndZQLitZzmaEsfZEbEXtkXrcMNfoVHh9XiB-BVoyHn7Hzz9AGfAygLPyPFWH5vTouDLkAZQnLSasGZwQVblMOYtdc-TeqsIZFxFo9ALPskJt8AwBwy_mECWaMeqAj5oD-x6vBnzpDGvZMO7WJSop_gNgWhoeuBbg6JCVK2-rOxQ4NZ7vZSqbnV389vRoKwlrVxlliXsnpLk1gXkL_amhYRtEhUrV6JEGganIa2A");'>
+</div>
+<div class="flex flex-col">
+<h2 class="text-sm text-text-sec-light dark:text-text-sec-dark font-medium">Let's Play,</h2>
+<h1 class="text-lg font-bold leading-none tracking-tight">Ali!</h1>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1 bg-surface-light dark:bg-surface-dark px-2 py-1 rounded-full shadow-sm border border-gray-100 dark:border-gray-800">
+<span class="material-symbols-outlined text-primary text-[18px]">location_on</span>
+<span class="text-xs font-semibold pr-1">Karachi</span>
+</div>
+<button class="flex items-center justify-center size-10 rounded-full bg-surface-light dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-gray-800 relative hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-text-main-light dark:text-text-main-dark">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-surface-dark"></span>
+</button>
+</div>
+</div>
+<!-- Search Bar -->
+<div class="px-4 pb-3">
+<div class="flex w-full items-center rounded-xl bg-surface-light dark:bg-surface-dark shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden h-12 transition-all focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary">
+<div class="flex items-center justify-center pl-4 pr-2">
+<span class="material-symbols-outlined text-primary">search</span>
+</div>
+<input class="w-full bg-transparent border-none focus:ring-0 text-base placeholder:text-text-sec-light dark:placeholder:text-text-sec-dark/50 text-text-main-light dark:text-text-main-dark h-full py-0" placeholder="Search courts, sports, or location" type="text"/>
+<div class="pr-4 flex items-center border-l border-gray-100 dark:border-gray-700 pl-3 h-6 my-auto">
+<span class="material-symbols-outlined text-text-sec-light dark:text-text-sec-dark text-[20px]">tune</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Categories / Chips -->
+<div class="w-full overflow-x-auto no-scrollbar pb-2 pt-1">
+<div class="flex px-4 gap-3 min-w-max">
+<!-- Active Chip -->
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-primary px-5 shadow-md shadow-primary/20 transition-transform active:scale-95">
+<span class="text-white text-sm font-semibold">All</span>
+</button>
+<!-- Inactive Chips -->
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 px-5 transition-transform active:scale-95 hover:bg-gray-50 dark:hover:bg-gray-800">
+<span class="text-lg">🏏</span>
+<span class="text-text-main-light dark:text-text-main-dark text-sm font-medium">Cricket</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 px-5 transition-transform active:scale-95 hover:bg-gray-50 dark:hover:bg-gray-800">
+<span class="text-lg">⚽</span>
+<span class="text-text-main-light dark:text-text-main-dark text-sm font-medium">Futsal</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 px-5 transition-transform active:scale-95 hover:bg-gray-50 dark:hover:bg-gray-800">
+<span class="text-lg">🎾</span>
+<span class="text-text-main-light dark:text-text-main-dark text-sm font-medium">Padel</span>
+</button>
+<button class="flex h-9 items-center justify-center gap-x-2 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 px-5 transition-transform active:scale-95 hover:bg-gray-50 dark:hover:bg-gray-800">
+<span class="text-lg">🏸</span>
+<span class="text-text-main-light dark:text-text-main-dark text-sm font-medium">Badminton</span>
+</button>
+</div>
+</div>
+<!-- Featured Section -->
+<section class="mt-6">
+<div class="flex items-center justify-between px-4 mb-3">
+<h2 class="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">Featured Courts</h2>
+<button class="text-primary text-sm font-semibold hover:text-primary/80">See All</button>
+</div>
+<div class="flex overflow-x-auto no-scrollbar snap-x snap-mandatory px-4 pb-4 gap-4">
+<!-- Card 1 -->
+<div class="snap-start shrink-0 w-[280px] flex flex-col gap-3 group cursor-pointer">
+<div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-sm">
+<div class="absolute top-3 right-3 z-10 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-colors">
+<span class="material-symbols-outlined text-[20px] block" style="font-variation-settings: 'FILL' 0;">favorite</span>
+</div>
+<div class="absolute bottom-3 left-3 z-10 px-2 py-1 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-sm rounded-lg flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-yellow-500 text-[16px] block" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-text-main-light dark:text-text-main-dark">4.8</span>
+<span class="text-[10px] text-text-sec-light dark:text-text-sec-dark">(120+)</span>
+</div>
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Indoor cricket court with green turf and bright lighting" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAdqxXpj-kNDa6cFN2A44b0Iq5BFv8I28_34LdJ0OHE04XwpMU878f__2bYr6QpHy7csLwaPvPNMZQeiXeLxBhQoh5raKPutoeiHmh3s1vC13YkgbkJ6FgaSR-c8ncN_rO_hcIRD5vugkLaoDl6TkoG_OZ9eXYa74gOXweKsHe4yY7jc7I6CZ6uGZsBliVYhX-L4oSbjlLBpnVH8wEDBMqQcCc5Gmc4qzF5Aso8E1XyfLoCaFumNAxeTOEC_EEC31qnBybA4XCVdqU");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-start">
+<h3 class="text-base font-bold text-text-main-light dark:text-text-main-dark leading-tight">Smash Arena</h3>
+<p class="text-primary font-bold text-sm">PKR 3,000<span class="text-xs font-normal text-text-sec-light dark:text-text-sec-dark">/hr</span></p>
+</div>
+<p class="text-sm text-text-sec-light dark:text-text-sec-dark mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                        DHA Phase 6
+                    </p>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="snap-start shrink-0 w-[280px] flex flex-col gap-3 group cursor-pointer">
+<div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-sm">
+<div class="absolute top-3 right-3 z-10 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-colors">
+<span class="material-symbols-outlined text-[20px] block" style="font-variation-settings: 'FILL' 0;">favorite</span>
+</div>
+<div class="absolute bottom-3 left-3 z-10 px-2 py-1 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-sm rounded-lg flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-yellow-500 text-[16px] block" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-text-main-light dark:text-text-main-dark">4.5</span>
+<span class="text-[10px] text-text-sec-light dark:text-text-sec-dark">(85)</span>
+</div>
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Outdoor padel tennis court with blue surface and glass walls" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD7bbjgoFbTlSvuFEaxt6zS41lKkdpJKXKnUCIWVQmIqqfex2alyJvB_piKdf_nrmjbawluqUtfNFUQx20RgrGFAAc5XlPOiOgI8XfAPkH4j71Ks7CTL8G9OHibxJDwPxJi2DKePe9ktxZL01-t5H3b56rSQzXRisCtbnCVUwo1TpwjzVYlVcCWn5A25Koe2S8-brlwIR1nrwXR6oPHoyOXWpfB5K58MhOjwgwjfpTYJ0e7SVBZi7gflH9_-0n7fx1I3u7FJy6qV3E");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-start">
+<h3 class="text-base font-bold text-text-main-light dark:text-text-main-dark leading-tight">Ace Padel Club</h3>
+<p class="text-primary font-bold text-sm">PKR 4,500<span class="text-xs font-normal text-text-sec-light dark:text-text-sec-dark">/hr</span></p>
+</div>
+<p class="text-sm text-text-sec-light dark:text-text-sec-dark mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                        Clifton Block 4
+                    </p>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="snap-start shrink-0 w-[280px] flex flex-col gap-3 group cursor-pointer">
+<div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden shadow-sm">
+<div class="absolute top-3 right-3 z-10 p-2 bg-white/20 backdrop-blur-md rounded-full text-white hover:bg-white/40 transition-colors">
+<span class="material-symbols-outlined text-[20px] block" style="font-variation-settings: 'FILL' 0;">favorite</span>
+</div>
+<div class="absolute bottom-3 left-3 z-10 px-2 py-1 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-sm rounded-lg flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-yellow-500 text-[16px] block" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold text-text-main-light dark:text-text-main-dark">4.9</span>
+<span class="text-[10px] text-text-sec-light dark:text-text-sec-dark">(200+)</span>
+</div>
+<div class="w-full h-full bg-center bg-cover transition-transform duration-500 group-hover:scale-105" data-alt="Indoor futsal court with artificial grass" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDWhoGsFbtE8h5x9SoG-iR3U6P30fpgFLhzTDwwiW4RuqrDx1R2CCeu7hPQlO3pxLst7DE0IyD71mED_nV6VpW_VqB9jN1VJjEJj9p4SBV9xQ8diaaGJLDGbEmzI2AvkxtfCjP9Bpnf4eKfEJdWGPqY5Dx8EtFPm_JnCgRfnNjs7qFs49Xe0O4zEuAxU2RfNHhGjSC_oQXLkOi0BEPW4AtBw6HXOUSWBiGMOWA8vK7EhCsH45qrxBjbdZDtSnqyo7NOXAZIxDN-BkA");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-start">
+<h3 class="text-base font-bold text-text-main-light dark:text-text-main-dark leading-tight">Goalazo Futsal</h3>
+<p class="text-primary font-bold text-sm">PKR 2,500<span class="text-xs font-normal text-text-sec-light dark:text-text-sec-dark">/hr</span></p>
+</div>
+<p class="text-sm text-text-sec-light dark:text-text-sec-dark mt-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+                        North Nazimabad
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Courts Near You Section -->
+<section class="mt-4 px-4">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-xl font-bold tracking-tight text-text-main-light dark:text-text-main-dark">Courts Near You</h2>
+</div>
+<div class="flex flex-col gap-4">
+<!-- List Item 1 -->
+<div class="flex items-center gap-4 p-3 bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="w-24 h-24 shrink-0 rounded-lg bg-center bg-cover" data-alt="Net enclosed cricket practice area outdoors" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAVkiviyEEfa_D-odhbEJR1taRU0ZNR2cygmSQE5YuytOiGKAOs97pACkTnxkR6sbwiBSqMTqCJBZzEyfR7Sa7uVaiPQBDrAeF-VDjMuE4awZGpeU7KeP45Gsz_PsMzuSgwCmgq9kMPjCTEP3uOGBWuuxrYpiEMoneLVXc7xKrWUrRd_tyZirfCMWXiay1QUpiEjprsX4e4K0OKcS2C09ga4mSa-2s62NRrwxrOPshDy6yaMQxL9eacUg6iBmVTeSXIDthNrKx9E9c");'></div>
+<div class="flex-1 min-w-0 py-1">
+<h3 class="text-base font-bold text-text-main-light dark:text-text-main-dark truncate">Powerplay Nets</h3>
+<div class="flex items-center gap-1 mt-1 text-sm text-text-sec-light dark:text-text-sec-dark">
+<span class="material-symbols-outlined text-[16px]">distance</span>
+<span>1.2 km • Gulshan-e-Iqbal</span>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-yellow-500 text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.5</span>
+</div>
+<span class="text-primary font-bold text-sm">PKR 1,500/hr</span>
+</div>
+</div>
+</div>
+<!-- List Item 2 -->
+<div class="flex items-center gap-4 p-3 bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="w-24 h-24 shrink-0 rounded-lg bg-center bg-cover" data-alt="Night view of a futsal court with lights" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCoNTO5OMtSypIwzOq1_TpgCN9sU6x1Gyd8dcpITOY0Fxlrl0eNbc79c3zvj8uZOPke1JyjKIXf1udktIonKXMRi2nUgLfgpnLjINDUFoim8udSZE8FGEO5ppLJJnzgmAmbTa0v6_s2zCbzdKfwEzqP1f2pKaSmAqku_WCSA9d4MtyJ9cXf3oZsdLYYwUTLcVZsGnyqdWQBFsNrdcE6EY19NS98TxCnlezfIbmQj2Cjl5jH5zqgPiuCFoPQH1MOK187PCT65VzCkKE");'></div>
+<div class="flex-1 min-w-0 py-1">
+<h3 class="text-base font-bold text-text-main-light dark:text-text-main-dark truncate">North Walk Futsal</h3>
+<div class="flex items-center gap-1 mt-1 text-sm text-text-sec-light dark:text-text-sec-dark">
+<span class="material-symbols-outlined text-[16px]">distance</span>
+<span>3.5 km • North Nazimabad</span>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-yellow-500 text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.2</span>
+</div>
+<span class="text-primary font-bold text-sm">PKR 2,000/hr</span>
+</div>
+</div>
+</div>
+<!-- List Item 3 -->
+<div class="flex items-center gap-4 p-3 bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="w-24 h-24 shrink-0 rounded-lg bg-center bg-cover" data-alt="Modern indoor badminton court with wooden floor" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDi-gL2i02XQw3C7PYPiCAuGmlKIc-l9ooby11tUnN4AnH4xqtyMmo63THsy0FZkQWBI_LAQT4wKnkWnO8XsfNJ9GVN5go8hq2f3gd0WmFilv3lcQurwAULqX3ck7RAvFEcDCROEDRkGLM9WhNi58-hNA_RdKHUMRQ5srBAQVlrIsSbznNaFOUvmbcxN4GXzTmdaP6F-PWfFDOjsPSnrDCzn4_ipvr9OuhuEJqUJRUlUWh_CVek21DVsg7eY5LvlOl-Eq5aZu8Dmq4");'></div>
+<div class="flex-1 min-w-0 py-1">
+<h3 class="text-base font-bold text-text-main-light dark:text-text-main-dark truncate">Legends Arena</h3>
+<div class="flex items-center gap-1 mt-1 text-sm text-text-sec-light dark:text-text-sec-dark">
+<span class="material-symbols-outlined text-[16px]">distance</span>
+<span>5.0 km • DHA Phase 8</span>
+</div>
+<div class="flex items-center justify-between mt-2">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-yellow-500 text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="text-xs font-bold">4.7</span>
+</div>
+<span class="text-primary font-bold text-sm">PKR 3,500/hr</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 pb-safe-bottom z-50">
+<div class="flex justify-around items-center h-[72px] px-2">
+<button class="flex flex-col items-center justify-center w-full h-full gap-1 text-primary">
+<span class="material-symbols-outlined text-[26px]" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-medium">Explore</span>
+</button>
+<button class="flex flex-col items-center justify-center w-full h-full gap-1 text-text-sec-light dark:text-text-sec-dark hover:text-text-main-light dark:hover:text-text-main-dark transition-colors">
+<span class="material-symbols-outlined text-[26px]">calendar_month</span>
+<span class="text-[10px] font-medium">Bookings</span>
+</button>
+<button class="flex flex-col items-center justify-center w-full h-full gap-1 text-text-sec-light dark:text-text-sec-dark hover:text-text-main-light dark:hover:text-text-main-dark transition-colors">
+<span class="material-symbols-outlined text-[26px]">map</span>
+<span class="text-[10px] font-medium">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center w-full h-full gap-1 text-text-sec-light dark:text-text-sec-dark hover:text-text-main-light dark:hover:text-text-main-dark transition-colors">
+<span class="material-symbols-outlined text-[26px]">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</div>
+</nav>
+<!-- Safe Area Spacing -->
+<div class="h-6"></div>
+</body></html>

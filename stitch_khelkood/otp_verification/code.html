@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OTP Verification - KhelKhood</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#00c753",
+              "background-light": "#ffffff", 
+              "background-dark": "#0f2317",
+              "text-main": "#0c1d13",
+              "text-sub": "#6b7280",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-main dark:text-white antialiased transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto shadow-sm">
+<!-- TopAppBar -->
+<div class="flex items-center px-4 pt-6 pb-2 justify-between">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary/50">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 flex flex-col items-center w-full px-6">
+<!-- Hero Illustration -->
+<div class="w-full flex justify-center py-6">
+<div class="relative w-48 h-48 rounded-full bg-primary/10 flex items-center justify-center">
+<!-- Abstract illustration representing secure message -->
+<div class="w-32 h-32 bg-contain bg-center bg-no-repeat" data-alt="3d illustration of a smartphone receiving a secure message notification" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC6b2ZG32UUMt7icis6unE_8UsaK4ew1fUCJRLDDSvKjzU_PhSwz1-hYIAAz7NrzBDrVd5TbUwj-J6Pt9iABH7lC5Fz5zTQHdnOx6pkUOOJOheNZU3cH6wxaujTNIg4cNXJGN8jx1foKgKgxr1iBlk1UHNQt_6-Ji2uQCu2TopJw97I_NvMOIl6LGn677w7Ff9-0mXLOT-lcxkAfvRZHW2XGvaZf5qwLz1DAuaxZJrF0tTjnou_pkdGfo5yPF2_b-4VZPUhjxQGaEE");'>
+</div>
+</div>
+</div>
+<!-- Text Content -->
+<div class="w-full text-center space-y-2 mb-8">
+<h2 class="text-2xl font-bold tracking-tight text-text-main dark:text-white">Enter Verification Code</h2>
+<p class="text-text-sub dark:text-gray-400 text-sm leading-relaxed px-4">
+                    We have sent a 6-digit verification code to the number ending in <span class="font-semibold text-text-main dark:text-white">8901</span>.
+                </p>
+</div>
+<!-- OTP Input Fields -->
+<div class="w-full mb-8">
+<div class="flex justify-center gap-2 sm:gap-3">
+<input autocomplete="one-time-code" class="flex h-12 w-10 sm:h-14 sm:w-12 text-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-lg font-semibold text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm placeholder-gray-400" inputmode="numeric" maxlength="1" pattern="[0-9]*" placeholder="-" type="text"/>
+<input class="flex h-12 w-10 sm:h-14 sm:w-12 text-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-lg font-semibold text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm placeholder-gray-400" inputmode="numeric" maxlength="1" pattern="[0-9]*" placeholder="-" type="text"/>
+<input class="flex h-12 w-10 sm:h-14 sm:w-12 text-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-lg font-semibold text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm placeholder-gray-400" inputmode="numeric" maxlength="1" pattern="[0-9]*" placeholder="-" type="text"/>
+<input class="flex h-12 w-10 sm:h-14 sm:w-12 text-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-lg font-semibold text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm placeholder-gray-400" inputmode="numeric" maxlength="1" pattern="[0-9]*" placeholder="-" type="text"/>
+<input class="flex h-12 w-10 sm:h-14 sm:w-12 text-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-lg font-semibold text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm placeholder-gray-400" inputmode="numeric" maxlength="1" pattern="[0-9]*" placeholder="-" type="text"/>
+<input class="flex h-12 w-10 sm:h-14 sm:w-12 text-center rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-lg font-semibold text-text-main dark:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm placeholder-gray-400" inputmode="numeric" maxlength="1" pattern="[0-9]*" placeholder="-" type="text"/>
+</div>
+</div>
+<!-- Resend Timer -->
+<div class="mb-8 text-center">
+<p class="text-sm text-text-sub dark:text-gray-400">
+                    Didn't receive the code? 
+                    <button class="font-semibold text-primary ml-1 hover:text-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        Resend
+                    </button>
+</p>
+<p class="text-xs text-text-sub/70 dark:text-gray-500 mt-1">Resend code in 00:59</p>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2 group">
+<span>Verify &amp; Continue</span>
+<span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</div>
+<!-- Bottom spacing/padding for safer mobile view -->
+<div class="h-8 w-full"></div>
+</div>
+<!-- Script to handle OTP Input Focus Logic -->
+<script>
+        const inputs = document.querySelectorAll('input[type="text"]');
+        
+        inputs.forEach((input, index) => {
+            // Auto-focus logic
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+                if (value.length === 1) {
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                }
+            });
+
+            // Backspace logic
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !e.target.value) {
+                    if (index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                }
+            });
+            
+            // Paste logic
+            input.addEventListener('paste', (e) => {
+                e.preventDefault();
+                const pasteData = e.clipboardData.getData('text').slice(0, inputs.length).split('');
+                if(pasteData.length > 0) {
+                    pasteData.forEach((char, i) => {
+                         if(inputs[i]) inputs[i].value = char;
+                    });
+                    const lastIndex = Math.min(pasteData.length, inputs.length) - 1;
+                    inputs[lastIndex].focus();
+                }
+            });
+        });
+
+        // Focus first input on load
+        window.onload = () => {
+            if(inputs[0]) inputs[0].focus();
+        };
+    </script>
+</body></html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood - Add Court</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00C853", 
+                        "primary-dark": "#009624",
+                        "primary-light": "#B9F6CA",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#102218",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e3326",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }.toggle-checkbox:checked {
+            right: 0;
+            border-color: #00C853;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #00C853;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 min-h-screen flex flex-col overflow-hidden relative">
+<header class="flex items-center gap-4 px-6 pt-12 pb-4 bg-surface-light dark:bg-surface-dark sticky top-0 z-20 shadow-sm border-b border-gray-100 dark:border-gray-800">
+<button class="p-2 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-slate-900 dark:text-white">arrow_back</span>
+</button>
+<h1 class="text-xl font-bold text-slate-900 dark:text-white">Add New Court</h1>
+</header>
+<main class="flex-1 overflow-y-auto hide-scrollbar pb-32">
+<form class="p-6 flex flex-col gap-6">
+<section>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Court Images</label>
+<div class="flex gap-3 overflow-x-auto pb-2 hide-scrollbar">
+<div class="flex-none w-28 h-28 rounded-2xl border-2 border-dashed border-primary/50 bg-primary/5 hover:bg-primary/10 transition-colors flex flex-col items-center justify-center cursor-pointer group">
+<div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-md">
+<span class="material-symbols-outlined text-lg">add_a_photo</span>
+</div>
+<span class="text-[10px] font-medium text-primary">Add Photo</span>
+</div>
+<div class="flex-none w-28 h-28 rounded-2xl bg-gray-200 dark:bg-gray-700 relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBLG7AWxmKyggNZ3CDrpKO6m6ZDKwLDO0WSulz4T19_0iuZiGIJRlIXo8ujF-1SwHboJzg2_UkA9z1r6LtMad1mRdNoHYfvbRkf5ZWOpvYHBphU5EnYEVuDMKfa6Khuutb1xnR1bWBzuvoTD_az7CJhgJl8CnNfiytfQ9793WLjT9Oizx1xtrkyERj6O7dA8e3sbcjrQhbOLfXXh6Lj40LHLgfUvAhpDxe1gFaUsYjgfSGszUm8-yX9fTMVTexms3YlJAPLn0jpw10'); opacity: 0.8;"></div>
+<button class="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-red-500 transition-colors">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+<div class="flex-none w-28 h-28 rounded-2xl bg-gray-200 dark:bg-gray-700 relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAY01BT97KxZ2rszgJrRACrqlqOGfSPOkA_cK0I86j-Nq26E_5zubbCs6OVkZWLxuEZLYaXENPI8DtylEbL_NtZjePfDqpUjHu0hC3N5Ec7As0qmB5g4cex5G7blYMGKWfOEyYInNwMjKC_4Z_8XnXScLQcuesUrtaJr93W0VpECB-vZubPt4zi9T96tU2Yl55jvr4Kq5tuGmQyoQJebzD-S6R5palEpgEH8WOGDzHptiXzU7W95e-yra0POObIQ2VOrPu6qMZrTnU'); opacity: 0.8;"></div>
+<button class="absolute top-1 right-1 bg-black/50 text-white rounded-full p-1 hover:bg-red-500 transition-colors">
+<span class="material-symbols-outlined text-xs">close</span>
+</button>
+</div>
+</div>
+<p class="text-xs text-gray-400 mt-2">Upload at least one high-quality image of the facility.</p>
+</section>
+<section class="space-y-5">
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2" for="courtName">Court Name</label>
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all shadow-sm" id="courtName" placeholder="e.g. Downtown Futsal Arena" type="text"/>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2" for="sportType">Sport Type</label>
+<div class="relative">
+<select class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white appearance-none focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all shadow-sm" id="sportType">
+<option disabled="" selected="" value="">Select a sport</option>
+<option value="futsal">Futsal</option>
+<option value="cricket">Cricket</option>
+<option value="badminton">Badminton</option>
+<option value="tennis">Tennis</option>
+<option value="basketball">Basketball</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">expand_more</span>
+</div>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2" for="location">Location</label>
+<div class="relative">
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 pl-11 text-slate-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all shadow-sm" id="location" placeholder="e.g. Block 4, Clifton, Karachi" type="text"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">location_on</span>
+</div>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2" for="pricing">Pricing per Hour (PKR)</label>
+<div class="relative">
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 pl-11 text-slate-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all shadow-sm" id="pricing" placeholder="0" type="number"/>
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-sm">Rs</span>
+</div>
+</div>
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Operating Hours</label>
+<div class="flex gap-4">
+<div class="flex-1">
+<label class="text-xs text-gray-500 mb-1 block ml-1">Opens at</label>
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none shadow-sm" type="time" value="09:00"/>
+</div>
+<div class="flex-1">
+<label class="text-xs text-gray-500 mb-1 block ml-1">Closes at</label>
+<input class="w-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-xl px-4 py-3 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none shadow-sm" type="time" value="23:00"/>
+</div>
+</div>
+</div>
+</section>
+<section>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Amenities</label>
+<div class="grid grid-cols-1 gap-3">
+<div class="flex items-center justify-between bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded-lg text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined">local_parking</span>
+</div>
+<span class="font-medium text-slate-900 dark:text-white">Parking Area</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="bg-orange-50 dark:bg-orange-900/20 p-2 rounded-lg text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined">checkroom</span>
+</div>
+<span class="font-medium text-slate-900 dark:text-white">Changing Room</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="bg-yellow-50 dark:bg-yellow-900/20 p-2 rounded-lg text-yellow-600 dark:text-yellow-400">
+<span class="material-symbols-outlined">lightbulb</span>
+</div>
+<span class="font-medium text-slate-900 dark:text-white">Floodlights</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between bg-surface-light dark:bg-surface-dark p-4 rounded-xl border border-gray-100 dark:border-gray-800 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="bg-cyan-50 dark:bg-cyan-900/20 p-2 rounded-lg text-cyan-600 dark:text-cyan-400">
+<span class="material-symbols-outlined">water_drop</span>
+</div>
+<span class="font-medium text-slate-900 dark:text-white">Drinking Water</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/20 dark:peer-focus:ring-primary/30 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</section>
+</form>
+</main>
+<div class="fixed bottom-0 w-full bg-surface-light dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 p-4 pb-8 z-20">
+<button class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/30 active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">save</span>
+            Save Court
+        </button>
+</div>
+
+</body></html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood - Splash Screen</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00c753",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f2317",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display antialiased text-background-dark dark:text-background-light">
+<div class="relative flex h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-hidden group/design-root justify-between">
+<!-- Top Spacer (Pushes content to visual center) -->
+<div class="flex-1"></div>
+<!-- Center Content Block -->
+<div class="flex flex-col items-center justify-center w-full px-6 z-10 animate-fade-in-up">
+<!-- Logo Component -->
+<div class="relative mb-8">
+<!-- Outer Glow -->
+<div class="absolute -inset-6 bg-primary/20 rounded-full blur-2xl opacity-70"></div>
+<!-- Logo Container -->
+<div class="relative w-32 h-32 bg-white dark:bg-[#1a3b2a] rounded-3xl shadow-xl flex items-center justify-center p-6 border border-primary/10 dark:border-primary/20 transform transition-transform duration-700 hover:scale-105">
+<div class="w-full h-full bg-center bg-contain bg-no-repeat" data-alt="KhelKhood stylized sports logo abstract icon" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1fKwVBZkUqFecxYBTmKjdh9OpcSKcKodYzST_5JefFveNOgMXcEW5kHFr4uRylYTcOKHWbCjTjUIZRkg95g4ObBTfD_uo4_npxivDZU5iaI7-vZPXyvzsY_y3ZYNY9CkLmNioqOhHc2IhesTIsCHAzqiRH6BrkMBtjm9_3weykKay27lgOYph8gEsqhfpI363FPv0OvrdvHnk8a5JyRcHRcYWlymacY6ySo3OtFE0xZ5FdN7B2jng6J-itYILJPZW6n1zijeWodg");'>
+</div>
+</div>
+</div>
+<!-- HeadlineText Component -->
+<div class="flex flex-col items-center text-center space-y-2">
+<h1 class="text-background-dark dark:text-white tracking-tight text-4xl font-extrabold leading-tight">
+                    KhelKhood
+                </h1>
+<!-- BodyText Component -->
+<p class="text-background-dark/70 dark:text-white/70 text-lg font-medium leading-normal max-w-[280px]">
+                    Book Your Game, Play Your Way
+                </p>
+</div>
+</div>
+<!-- Bottom Content Block -->
+<div class="flex-1 flex flex-col justify-end items-center pb-12 px-12 w-full">
+<div class="w-full max-w-[180px] flex flex-col gap-4">
+<!-- ProgressBar Component -->
+<div class="flex flex-col items-center gap-2">
+<div class="h-1.5 w-full bg-primary/20 dark:bg-white/10 rounded-full overflow-hidden">
+<div class="h-full rounded-full bg-primary animate-[shimmer_2s_infinite] w-[45%] relative overflow-hidden">
+<div class="absolute top-0 left-0 bottom-0 right-0 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 animate-[spin_1s_linear_infinite]"></div>
+</div>
+</div>
+<!-- Minimal Loading Text -->
+<p class="text-primary text-xs font-semibold tracking-widest uppercase opacity-90">Loading...</p>
+</div>
+</div>
+<!-- MetaText Component -->
+<p class="text-background-dark/30 dark:text-white/20 text-[11px] font-medium leading-normal pt-8 text-center font-mono">
+                v1.0.0
+            </p>
+</div>
+</div>
+<!-- Animation Keyframes included for shimmer effect -->
+<style>
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 20px, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+    </style>
+</body></html>

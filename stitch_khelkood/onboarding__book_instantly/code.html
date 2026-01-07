@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00c753",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f2317",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom utilities if needed */
+        body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body>
+<div class="relative flex h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-hidden font-display transition-colors duration-300">
+<!-- Top Navigation -->
+<div class="flex items-center justify-end p-6 pt-12 z-10">
+<button class="text-primary hover:text-green-700 dark:hover:text-green-400 text-base font-bold leading-normal tracking-[0.015em] shrink-0 transition-colors">
+                Skip
+            </button>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col items-center justify-center px-6 pb-4">
+<!-- Central Illustration -->
+<!-- Using a decorative div for the illustration as requested by component structure style -->
+<div class="w-full max-w-[320px] aspect-square relative mb-8 animate-fade-in-up">
+<!-- Abstract circular decorative background -->
+<div class="absolute inset-0 bg-primary/5 dark:bg-primary/10 rounded-full scale-90 blur-3xl"></div>
+<div class="relative z-10 w-full h-full bg-center bg-contain bg-no-repeat" data-alt="Modern vector illustration showing a smartphone with a calendar interface and a confirmed checkmark" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAJOUXj-hC_yibPW_zVr_qRtcEXrtXfQ_GRsbAWV31HMsYTzoYN3WKRVEgo0LkaaRpgAdc0QXLFzKV2fQ_qfW-Y9FaWWHJkzKNG9WZVBuStapZxF2V9zJZ4vOBdU1yHLzo3Tdn0od0lFg0RawLyUwR_O1OUg--Xw8Tuf3itjzR93HTFR5PsbASKmX2IgtZmeIot1nCN7Zfn1ZDNcldtYI09dlj9cBsajbqGOLZQedpXQlQV95Lscp76avYs3G7bCsNXkhEY_4Gp35A");'>
+</div>
+</div>
+<!-- Typography Block -->
+<div class="flex flex-col items-center gap-3 w-full max-w-md">
+<h1 class="text-gray-900 dark:text-white tracking-tight text-[32px] font-extrabold leading-tight text-center">
+                    Book Instantly
+                </h1>
+<p class="text-gray-600 dark:text-gray-300 text-base font-normal leading-relaxed text-center px-4">
+                    Browse available slots for cricket, futsal, and padel. Secure your court in just a few taps.
+                </p>
+</div>
+</div>
+<!-- Bottom Actions -->
+<div class="w-full flex flex-col items-center justify-end p-6 pb-10 gap-8 bg-background-light dark:bg-background-dark">
+<!-- Pagination Indicators -->
+<div class="flex flex-row items-center justify-center gap-3">
+<div class="h-2.5 w-2.5 rounded-full bg-primary/20 dark:bg-white/20 transition-all"></div>
+<!-- Active Indicator -->
+<div class="h-2.5 w-8 rounded-full bg-primary shadow-sm shadow-primary/30 transition-all"></div>
+<div class="h-2.5 w-2.5 rounded-full bg-primary/20 dark:bg-white/20 transition-all"></div>
+</div>
+<!-- Primary Action Button -->
+<button class="w-full max-w-md bg-primary hover:bg-green-600 active:scale-[0.98] text-white h-14 rounded-full font-bold text-lg shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all duration-200 group">
+<span>Next</span>
+<span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform duration-200">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

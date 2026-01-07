@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood - Onboarding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#00c753",
+              "primary-dark": "#00a344", 
+              "background-light": "#ffffff",
+              "background-dark": "#0f2317",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar hide for cleaner UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-hidden max-w-md mx-auto shadow-2xl bg-background-light dark:bg-background-dark">
+<!-- Top Bar / Skip -->
+<header class="flex w-full items-center justify-end px-6 pt-12 pb-4 z-10">
+<button class="flex items-center justify-center rounded-full px-3 py-1.5 text-sm font-semibold text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors">
+                Skip
+            </button>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center w-full px-6 pb-6 pt-2">
+<!-- Hero Illustration Container -->
+<div class="@container w-full flex justify-center items-center mb-8 relative">
+<!-- Decorative background blob -->
+<div class="absolute inset-0 bg-primary/10 dark:bg-primary/5 rounded-full blur-3xl scale-90 transform translate-y-4"></div>
+<!-- Image Wrapper -->
+<div class="relative z-10 w-full aspect-square max-w-[320px] rounded-3xl overflow-hidden shadow-sm bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700">
+<div class="w-full h-full bg-center bg-no-repeat bg-cover flex flex-col justify-end" data-alt="Map illustration with location pins showing sports courts" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA5nWMcbc-IaManIzT0KCahPkcDC_2ApniDdZBRm_y5cAnX6irbxxTy4P0LY35oIuaCif3h_TaO_vq-VlG4wJsGXjsM6Xrons6kaYd2E7Ekga6N2UYFALk80ynNbQP1Uyg197jUx5dHmR93OrbtweRWkOlkUt2kIWLzJ6Y99VlZ2EzQR-mcqcEHi1rDcDsm9CMjNXMqjSxxRiyJaOBbVilyiUpk_S_wV79GrreUANmaYABBexm--w-xzd6SDQ6Czpludsvwx7LsVHg");'>
+<div class="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent dark:from-black/20"></div>
+<!-- Overlay illustrative elements simulating map pins -->
+<div class="absolute top-1/4 left-1/4 animate-bounce duration-1000">
+<div class="bg-primary text-white p-2 rounded-full shadow-lg border-2 border-white dark:border-gray-800">
+<span class="material-symbols-outlined text-xl block">sports_cricket</span>
+</div>
+<div class="w-2 h-2 bg-primary mx-auto mt-1 rounded-full"></div>
+</div>
+<div class="absolute bottom-1/3 right-1/3 animate-bounce duration-1000 delay-150">
+<div class="bg-primary text-white p-2 rounded-full shadow-lg border-2 border-white dark:border-gray-800">
+<span class="material-symbols-outlined text-xl block">sports_soccer</span>
+</div>
+<div class="w-2 h-2 bg-primary mx-auto mt-1 rounded-full"></div>
+</div>
+<div class="absolute top-1/3 right-1/4 animate-bounce duration-1000 delay-300">
+<div class="bg-white dark:bg-gray-700 text-primary p-1.5 rounded-full shadow-md">
+<span class="material-symbols-outlined text-lg block">location_on</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Text Content -->
+<div class="w-full text-center space-y-4 mt-2">
+<h1 class="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+                    Discover Courts <br/><span class="text-primary">Near You</span>
+</h1>
+<p class="text-base md:text-lg text-gray-500 dark:text-gray-400 font-normal leading-relaxed max-w-xs mx-auto">
+                    Find the best indoor cricket nets, futsal grounds, and padel courts right in your neighborhood.
+                </p>
+</div>
+<!-- Page Indicators -->
+<div class="flex w-full flex-row items-center justify-center gap-2.5 py-8 mt-auto">
+<div class="h-2.5 w-8 rounded-full bg-primary transition-all duration-300"></div>
+<div class="h-2.5 w-2.5 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+<div class="h-2.5 w-2.5 rounded-full bg-gray-200 dark:bg-gray-700"></div>
+</div>
+</main>
+<!-- Bottom Action Area -->
+<footer class="w-full px-6 pb-10 pt-2">
+<button class="w-full bg-primary hover:bg-primary-dark active:scale-[0.98] transition-all duration-200 text-white font-semibold text-lg py-4 rounded-xl shadow-lg shadow-primary/25 flex items-center justify-center group">
+<span>Next</span>
+<span class="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+</footer>
+</div>
+</body></html>

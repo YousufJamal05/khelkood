@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood - Court Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00c753",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f2317",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#182e21",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-gray-900 dark:text-gray-100 overflow-x-hidden selection:bg-primary/30">
+<!-- Top Navigation & Hero Section -->
+<div class="relative w-full h-[320px] group/design-root">
+<!-- Hero Image Carousel (Scrollable) -->
+<div class="absolute inset-0 w-full h-full overflow-x-auto flex snap-x snap-mandatory scrollbar-hide">
+<div class="min-w-full h-full snap-center relative">
+<img alt="Indoor sports arena with green flooring" class="w-full h-full object-cover" data-alt="Indoor sports arena with green flooring" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkqdh1vkt4uYvffL8gWWm7BE4nJN7fQJIAk6ut9DQBGI4DyKVzGzYaoT5WIOG6PExKE-ZglNTC0qxzyPzSQ0ir0vWvMJ7mlbKLQRrCWK9_e_hcWRtjcMUK8Sc5pYbWDK7O2cxpTx-5eVU9I9U0po8hKN_SkXjzR2eTNnxhF6S1G9TOVT-UbhxZ6dZ1aMYWsOFbo7Ze4X1Q6TYjjotnzzOrHy7n1EgTHZcp7VeaPmJzD46sU3c67lPj8xbnBBlo6IqGiT8YE1WQW8k"/>
+<div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60"></div>
+</div>
+<div class="min-w-full h-full snap-center relative">
+<img alt="Futsal court markings and goal post" class="w-full h-full object-cover" data-alt="Futsal court markings and goal post" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGAgZ763BgyxUc1-FT05us6Oerj-ScaIxSgjeXfvXR3Dyijuea-SkAQpd-7874ciPEhF4FqWXae4NyksKOSjvPPyG5bbm3OX-edSurjXYAbVDfmfyl_qv5eswT-9zVKYN4dw0XWjSNglohfb05GMQzO8LLB8PNH7SOwVIhV9Wqn2MbhOLfkZKCmV6SBjFkDLeQC8T72WlldhAunVS7AVw7cUpT6vn2sIpc_J92GCfPm2Fd6ajYhFcRqR4DbCcYfqVqvzL72G2cerA"/>
+<div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60"></div>
+</div>
+<div class="min-w-full h-full snap-center relative">
+<img alt="Close up of cricket bat and ball on turf" class="w-full h-full object-cover" data-alt="Close up of cricket bat and ball on turf" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1xV2GWIKIO28BboZSk6TZ7BIUTnmZEFyswKJNyJmxhptuvtg0dYT7T855NTmGxPEBRW0vfy1txj_-E47vCD37ZSTkjVTQsyO1z2zNxKR4iPrNcAz_Ilqie5gbASMsRJ_lP4lA3RJO38MvNsNUkW-J93Id74an8p6L5yrRE95SgnDoj-vVKP_qwGFHoX3kzM0shnZLNdHQv5pXS5m0XfkJRrTzBAZRzZqEarso4YJbEHS2GVk4BoyjoJOJKbEbVRUp6oio_PSi4XQ"/>
+<div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60"></div>
+</div>
+</div>
+<!-- Pagination Dots -->
+<div class="absolute bottom-10 left-0 w-full flex justify-center gap-2 z-10">
+<div class="w-2 h-2 rounded-full bg-white"></div>
+<div class="w-2 h-2 rounded-full bg-white/50"></div>
+<div class="w-2 h-2 rounded-full bg-white/50"></div>
+</div>
+<!-- Top Nav Buttons -->
+<div class="absolute top-0 left-0 w-full p-4 pt-12 flex justify-between items-center z-20">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white border border-white/10 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="flex gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white border border-white/10 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md text-white border border-white/10 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">favorite_border</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Content Sheet -->
+<div class="relative -mt-6 bg-background-light dark:bg-background-dark rounded-t-[32px] w-full min-h-screen pb-32 z-30 shadow-inner">
+<!-- Drag Handle Indicator -->
+<div class="w-full flex justify-center pt-3 pb-1">
+<div class="w-12 h-1.5 rounded-full bg-gray-300 dark:bg-gray-700"></div>
+</div>
+<!-- Header Info -->
+<div class="px-5 pt-2 pb-4">
+<div class="flex justify-between items-start gap-4">
+<h1 class="text-2xl font-bold text-gray-900 dark:text-white leading-tight">DHA Sports Complex - Net A</h1>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-lg">
+<span class="material-symbols-outlined text-primary text-sm fill-current">star</span>
+<span class="text-sm font-bold text-primary">4.5</span>
+</div>
+<span class="text-xs text-gray-500 mt-1">124 reviews</span>
+</div>
+</div>
+<div class="flex items-center gap-1 mt-2 text-gray-500 dark:text-gray-400 cursor-pointer hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+<p class="text-sm font-medium">Phase 6, Karachi • 1.2km away</p>
+<span class="material-symbols-outlined text-[16px] text-primary ml-1">open_in_new</span>
+</div>
+<!-- Tags / Quick Info -->
+<div class="flex gap-2 mt-4 overflow-x-auto scrollbar-hide pb-2">
+<span class="flex-shrink-0 px-3 py-1.5 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 text-xs font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">sports_cricket</span> Indoor Cricket
+                </span>
+<span class="flex-shrink-0 px-3 py-1.5 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 text-xs font-medium text-green-600 dark:text-green-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span> Open 24/7
+                </span>
+<span class="flex-shrink-0 px-3 py-1.5 rounded-full bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-800 text-xs font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">local_parking</span> Free Parking
+                </span>
+</div>
+</div>
+<!-- Sticky Tab Bar -->
+<div class="sticky top-0 z-40 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 px-5">
+<div class="flex items-center justify-between gap-6 overflow-x-auto scrollbar-hide">
+<button class="py-3 text-sm font-semibold text-primary border-b-2 border-primary whitespace-nowrap">Overview</button>
+<button class="py-3 text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap hover:text-gray-900 dark:hover:text-white transition-colors">Amenities</button>
+<button class="py-3 text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap hover:text-gray-900 dark:hover:text-white transition-colors">Reviews</button>
+<button class="py-3 text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap hover:text-gray-900 dark:hover:text-white transition-colors">Location</button>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="px-5 py-6 space-y-8">
+<!-- Description -->
+<section>
+<p class="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                    Premium indoor facility featuring professional-grade turf, high-intensity LED floodlights, and shock-absorbent flooring. Perfect for 6-a-side cricket or 5-a-side futsal matches. Bookings include equipment rental.
+                </p>
+<button class="text-primary text-sm font-semibold mt-2">Read more</button>
+</section>
+<!-- Amenities -->
+<section>
+<h3 class="text-base font-bold text-gray-900 dark:text-white mb-4">Amenities</h3>
+<div class="grid grid-cols-4 gap-4">
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 rounded-2xl bg-white dark:bg-surface-dark shadow-sm flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">wifi</span>
+</div>
+<span class="text-[11px] text-gray-500 text-center">Free Wi-Fi</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 rounded-2xl bg-white dark:bg-surface-dark shadow-sm flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">ac_unit</span>
+</div>
+<span class="text-[11px] text-gray-500 text-center">AC</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 rounded-2xl bg-white dark:bg-surface-dark shadow-sm flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">shower</span>
+</div>
+<span class="text-[11px] text-gray-500 text-center">Showers</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 rounded-2xl bg-white dark:bg-surface-dark shadow-sm flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">local_cafe</span>
+</div>
+<span class="text-[11px] text-gray-500 text-center">Cafe</span>
+</div>
+</div>
+</section>
+<div class="w-full h-px bg-gray-200 dark:bg-gray-800"></div>
+<!-- Booking Section -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Select Date</h3>
+<div class="flex items-center gap-1 text-primary text-sm font-medium">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+                        October 2023
+                    </div>
+</div>
+<!-- Date Scroller -->
+<div class="flex gap-3 overflow-x-auto scrollbar-hide pb-2 -mx-5 px-5">
+<!-- Active Date -->
+<div class="flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-[84px] rounded-2xl bg-primary text-white shadow-lg shadow-primary/30 cursor-pointer">
+<span class="text-xs font-medium opacity-80">Today</span>
+<span class="text-2xl font-bold">24</span>
+<span class="text-xs font-medium opacity-80">Mon</span>
+</div>
+<!-- Inactive Dates -->
+<div class="flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-[84px] rounded-2xl bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400 cursor-pointer">
+<span class="text-xs font-medium">Tue</span>
+<span class="text-2xl font-bold text-gray-900 dark:text-white">25</span>
+<span class="text-xs font-medium opacity-0">.</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-[84px] rounded-2xl bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400 cursor-pointer">
+<span class="text-xs font-medium">Wed</span>
+<span class="text-2xl font-bold text-gray-900 dark:text-white">26</span>
+<span class="text-xs font-medium opacity-0">.</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-[84px] rounded-2xl bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400 cursor-pointer">
+<span class="text-xs font-medium">Thu</span>
+<span class="text-2xl font-bold text-gray-900 dark:text-white">27</span>
+<span class="text-xs font-medium opacity-0">.</span>
+</div>
+<div class="flex-shrink-0 flex flex-col items-center justify-center w-[72px] h-[84px] rounded-2xl bg-white dark:bg-surface-dark border border-gray-100 dark:border-gray-800 text-gray-500 dark:text-gray-400 cursor-pointer">
+<span class="text-xs font-medium">Fri</span>
+<span class="text-2xl font-bold text-gray-900 dark:text-white">28</span>
+<span class="text-xs font-medium opacity-0">.</span>
+</div>
+</div>
+<!-- Time Slots -->
+<h3 class="text-lg font-bold text-gray-900 dark:text-white mt-8 mb-4">Available Slots</h3>
+<div class="grid grid-cols-3 gap-3">
+<!-- Booked Slot -->
+<button class="flex flex-col items-center justify-center py-3 rounded-xl bg-gray-100 dark:bg-gray-800 border border-transparent text-gray-400 cursor-not-allowed opacity-60" disabled="">
+<span class="text-sm font-medium line-through">06:00 PM</span>
+<span class="text-[10px]">Booked</span>
+</button>
+<!-- Booked Slot -->
+<button class="flex flex-col items-center justify-center py-3 rounded-xl bg-gray-100 dark:bg-gray-800 border border-transparent text-gray-400 cursor-not-allowed opacity-60" disabled="">
+<span class="text-sm font-medium line-through">07:00 PM</span>
+<span class="text-[10px]">Booked</span>
+</button>
+<!-- Available Slot -->
+<button class="group flex flex-col items-center justify-center py-3 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white hover:border-primary hover:bg-primary/5 transition-all active:scale-95">
+<span class="text-sm font-bold">08:00 PM</span>
+<span class="text-[10px] text-primary group-hover:font-bold">PKR 2,000</span>
+</button>
+<!-- Selected Slot -->
+<button class="relative flex flex-col items-center justify-center py-3 rounded-xl bg-primary text-white border border-primary shadow-lg shadow-primary/25 transform scale-[1.02]">
+<div class="absolute -top-2 -right-2 bg-white text-primary rounded-full p-0.5 shadow-sm">
+<span class="material-symbols-outlined text-[14px] block">check</span>
+</div>
+<span class="text-sm font-bold">09:00 PM</span>
+<span class="text-[10px] opacity-90">PKR 2,500</span>
+</button>
+<!-- Available Slot -->
+<button class="group flex flex-col items-center justify-center py-3 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white hover:border-primary hover:bg-primary/5 transition-all active:scale-95">
+<span class="text-sm font-bold">10:00 PM</span>
+<span class="text-[10px] text-primary group-hover:font-bold">PKR 2,000</span>
+</button>
+<!-- Available Slot -->
+<button class="group flex flex-col items-center justify-center py-3 rounded-xl bg-white dark:bg-surface-dark border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white hover:border-primary hover:bg-primary/5 transition-all active:scale-95">
+<span class="text-sm font-bold">11:00 PM</span>
+<span class="text-[10px] text-primary group-hover:font-bold">PKR 2,000</span>
+</button>
+</div>
+<!-- Pricing Note -->
+<div class="mt-4 flex items-center gap-2 text-xs text-gray-500">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<p>Prices may vary for Peak hours (6 PM - 12 AM)</p>
+</div>
+</section>
+<div class="w-full h-px bg-gray-200 dark:bg-gray-800"></div>
+<!-- Reviews Section (Preview) -->
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold text-gray-900 dark:text-white">Reviews (124)</h3>
+<button class="text-primary text-sm font-medium">See all</button>
+</div>
+<!-- Review Card -->
+<div class="bg-white dark:bg-surface-dark rounded-2xl p-4 border border-gray-100 dark:border-gray-800">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-gray-200 bg-cover bg-center" data-alt="Portrait of a user" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDNF_BMnVri2I1Tj1szhy_GEOvFD_6hgNiycjpuw3EzjfKAAzOjXd36ZznvtZXdMdCQhBwVZYAxRkwwR6aYvL-Q4iGoDEIcModNaYF6r_CMMcuKPOtXD3wUzFKdQIgcZL49sAfRJpYwK6GOwIcbPUHOcM2JG8qlaVQ0LcfCKe9QrG5s7PFykOnX5Dj7vXXQ_jmrMldQ0HSAWG0s054JYPJYcD2yarw_fcMeBlbGUWp8m1xV7RSChYuKJV9xRB3gfjNwHoIBnUJMnCw')"></div>
+<div>
+<p class="text-sm font-bold text-gray-900 dark:text-white">Ahmed K.</p>
+<p class="text-[10px] text-gray-500">2 days ago</p>
+</div>
+</div>
+<div class="flex text-yellow-400">
+<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+<span class="material-symbols-outlined text-[16px] fill-current">star</span>
+<span class="material-symbols-outlined text-[16px] fill-current">star_half</span>
+</div>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-300 leading-snug">Great court quality, lighting is perfect for night matches. Just wish the parking was a bit closer.</p>
+</div>
+</section>
+</div>
+</div>
+<!-- Sticky Booking Action Bar -->
+<div class="fixed bottom-0 left-0 w-full z-50 bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 px-5 py-4 pb-8 shadow-[0_-5px_20px_rgba(0,0,0,0.05)]">
+<div class="flex items-center justify-between max-w-2xl mx-auto">
+<div class="flex flex-col">
+<span class="text-xs text-gray-500 dark:text-gray-400 font-medium">Total Price</span>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-black text-gray-900 dark:text-white tracking-tight">PKR 2,500</span>
+<span class="text-xs text-gray-400 font-normal">/ hr</span>
+</div>
+</div>
+<button class="flex items-center gap-2 bg-primary hover:bg-green-600 text-white px-8 py-3.5 rounded-2xl font-bold text-base shadow-lg shadow-primary/30 active:scale-95 transition-all">
+                Book Now
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</body></html>

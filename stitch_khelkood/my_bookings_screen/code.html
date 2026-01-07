@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Bookings - KhelKhood</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00c753",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f2317",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1a2c23",
+                        "text-main-light": "#0c1d13",
+                        "text-main-dark": "#f0fdf4",
+                        "text-sub-light": "#45a16b",
+                        "text-sub-dark": "#86efac",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Hide scrollbar for clean horizontal scroll if needed */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden pb-24 mx-auto max-w-md bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- Header -->
+<header class="sticky top-0 z-20 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 transition-colors">
+<div class="flex items-center p-4 justify-between">
+<div class="w-10"></div> <!-- Spacer for centering -->
+<h2 class="text-lg font-bold leading-tight tracking-tight flex-1 text-center text-text-main-light dark:text-text-main-dark">My Bookings</h2>
+<div class="w-10 flex justify-end">
+<!-- Notification Icon placeholder -->
+<span class="material-symbols-outlined text-text-main-light dark:text-text-main-dark cursor-pointer">notifications</span>
+</div>
+</div>
+<!-- Tabs -->
+<div class="px-2">
+<div class="flex justify-between items-end">
+<button class="flex flex-col items-center justify-center border-b-[3px] border-primary text-text-main-light dark:text-white pb-3 pt-2 flex-1 transition-all">
+<p class="text-sm font-bold leading-normal tracking-wide">Upcoming</p>
+</button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary pb-3 pt-2 flex-1 transition-all">
+<p class="text-sm font-medium leading-normal tracking-wide">Completed</p>
+</button>
+<button class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-gray-500 dark:text-gray-400 hover:text-primary dark:hover:text-primary pb-3 pt-2 flex-1 transition-all">
+<p class="text-sm font-medium leading-normal tracking-wide">Cancelled</p>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content: Booking Cards -->
+<main class="flex flex-col gap-5 p-4 mt-2">
+<!-- Card 1: Futsal (Upcoming) -->
+<div class="flex flex-col rounded-xl bg-card-light dark:bg-card-dark shadow-sm dark:shadow-none border border-gray-100 dark:border-gray-800 overflow-hidden transition-all hover:shadow-md">
+<!-- Image Header -->
+<div class="h-40 w-full bg-cover bg-center relative group" data-alt="Indoor futsal court with artificial turf and goal posts" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD0hRfIHAmA5T64ZaeyNqdJsDsKbrCyq-_58ty6yH-vhNWY2zeBtYmANhLTT1gHm266dWJ4LeOier6zVhol5guwdPFUWBfST5S97wLT9-CnO9nWCtCLUlkj2M1CZpcP-BlpbBH4410BaeDs0UEtrZWlDlNOeMY764LzPMDQhUs8Ql9CuaDrnL1ejHXHlSoQeClqiRQsSQQKheL2n7mCpQPjYOrEpu3A6YY6NTGredX6Bj2p9cvF7DaharrxWF4UtINx_WvBMHOy7mE");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-3 left-4 right-4 flex justify-between items-end">
+<div class="flex gap-2">
+<div class="flex h-6 items-center justify-center gap-x-1.5 rounded-full bg-white/20 backdrop-blur-sm pl-2 pr-3 border border-white/30">
+<span class="material-symbols-outlined text-white text-[16px]">sports_soccer</span>
+<p class="text-white text-xs font-semibold">Futsal</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Card Body -->
+<div class="p-4 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<h3 class="text-text-main-light dark:text-white text-lg font-bold leading-tight">Smash Arena - Court A</h3>
+<div class="flex items-center gap-1 mt-1 text-text-sub-light dark:text-gray-400">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<p class="text-sm font-medium">Gulshan-e-Iqbal, Block 13</p>
+</div>
+</div>
+<div class="flex h-7 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 pl-2 pr-3 text-primary">
+<span class="material-symbols-outlined text-[16px] mr-1">check_circle</span>
+<p class="text-xs font-bold uppercase tracking-wide">Confirmed</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg bg-background-light dark:bg-background-dark/50 border border-gray-100 dark:border-gray-800">
+<div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+<div>
+<p class="text-text-main-light dark:text-white text-sm font-bold">Sat, 14 Oct</p>
+<p class="text-text-sub-light dark:text-gray-400 text-xs font-medium">08:00 PM - 09:00 PM</p>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500 font-medium px-1">
+<span>ID: #BK-2023-889</span>
+<span>$12.00 Paid</span>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-2 gap-3 pt-1">
+<button class="flex items-center justify-center gap-2 rounded-xl h-10 px-4 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<span>Cancel</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-green-600 transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]">airplane_ticket</span>
+<span>View Ticket</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2: Cricket (Upcoming) -->
+<div class="flex flex-col rounded-xl bg-card-light dark:bg-card-dark shadow-sm dark:shadow-none border border-gray-100 dark:border-gray-800 overflow-hidden transition-all hover:shadow-md">
+<!-- Image Header -->
+<div class="h-40 w-full bg-cover bg-center relative" data-alt="Indoor cricket nets facility with green turf" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDaHsNnhzWOiwfXcxPg7mLnAhrd-7913po_V5pciOkoiOdHCEFz0o7iUtbW8oANX6HhNPXE0QmijSI8mt_46sx_fwxLMcWyQADusDugODOe6j31_s37BF3j8_FU93Wjof_VEl0TLkDthmYwEYjFueSl3ZOlFh8uYZww9ewS0rsQo7tO4i4BJPwZsg7pRNfjh3EmuOaUSyOMwIagz-SlfizMjoN-KRcfR2VnZfNzRlpbjM102VFOtsEX5VsPxWn2-109aaFLCpI0w5A");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-3 left-4 right-4 flex justify-between items-end">
+<div class="flex gap-2">
+<div class="flex h-6 items-center justify-center gap-x-1.5 rounded-full bg-white/20 backdrop-blur-sm pl-2 pr-3 border border-white/30">
+<span class="material-symbols-outlined text-white text-[16px]">sports_cricket</span>
+<p class="text-white text-xs font-semibold">Cricket</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Card Body -->
+<div class="p-4 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<h3 class="text-text-main-light dark:text-white text-lg font-bold leading-tight">CricBash Nets</h3>
+<div class="flex items-center gap-1 mt-1 text-text-sub-light dark:text-gray-400">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<p class="text-sm font-medium">DHA Phase 6, Karachi</p>
+</div>
+</div>
+<div class="flex h-7 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30 pl-2 pr-3 text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined text-[16px] mr-1">schedule</span>
+<p class="text-xs font-bold uppercase tracking-wide">Pending</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg bg-background-light dark:bg-background-dark/50 border border-gray-100 dark:border-gray-800">
+<div class="h-10 w-10 rounded-full bg-orange-100 dark:bg-orange-900/20 flex items-center justify-center text-orange-600 dark:text-orange-400">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+<div>
+<p class="text-text-main-light dark:text-white text-sm font-bold">Sun, 15 Oct</p>
+<p class="text-text-sub-light dark:text-gray-400 text-xs font-medium">06:00 PM - 07:00 PM</p>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500 font-medium px-1">
+<span>ID: #BK-2023-902</span>
+<span>Pay at venue</span>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-2 gap-3 pt-1">
+<button class="flex items-center justify-center gap-2 rounded-xl h-10 px-4 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<span>Modify</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-green-600 transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]">directions</span>
+<span>Directions</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: Padel (Upcoming) -->
+<div class="flex flex-col rounded-xl bg-card-light dark:bg-card-dark shadow-sm dark:shadow-none border border-gray-100 dark:border-gray-800 overflow-hidden transition-all hover:shadow-md mb-4">
+<!-- Image Header -->
+<div class="h-40 w-full bg-cover bg-center relative" data-alt="Modern padel court with glass walls" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCau69ktMghX140R7LTfYqVcbdRbjMF60umeLNPrTpEakEsXoDRiMQgpooKuMEKgDG3inFUpKCxbq4Fr0XXn8oYuFNhBUPcnUrejibFsRBfiUoQPF0aHE3ZzMkq8X0ppaWcVcbZtTt6ekZGc2vVvtKLICUgj9NJKnmNVKdmFQ1PXfsM1Vn3yAoqr81Rob2oUDX-aUr8IVGbJI4f6wh_gzaWB-V6_vIY7KOdt0cK9rY_TOHPZ7cQ6d3POi6uCV9hTRfaeEtz6v_2OTc");'>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-3 left-4 right-4 flex justify-between items-end">
+<div class="flex gap-2">
+<div class="flex h-6 items-center justify-center gap-x-1.5 rounded-full bg-white/20 backdrop-blur-sm pl-2 pr-3 border border-white/30">
+<span class="material-symbols-outlined text-white text-[16px]">sports_tennis</span>
+<p class="text-white text-xs font-semibold">Padel</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Card Body -->
+<div class="p-4 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div class="flex flex-col">
+<h3 class="text-text-main-light dark:text-white text-lg font-bold leading-tight">Padel Pro Club</h3>
+<div class="flex items-center gap-1 mt-1 text-text-sub-light dark:text-gray-400">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<p class="text-sm font-medium">Clifton, Block 4</p>
+</div>
+</div>
+<div class="flex h-7 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30 pl-2 pr-3 text-primary">
+<span class="material-symbols-outlined text-[16px] mr-1">check_circle</span>
+<p class="text-xs font-bold uppercase tracking-wide">Confirmed</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-lg bg-background-light dark:bg-background-dark/50 border border-gray-100 dark:border-gray-800">
+<div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">calendar_today</span>
+</div>
+<div>
+<p class="text-text-main-light dark:text-white text-sm font-bold">Wed, 18 Oct</p>
+<p class="text-text-sub-light dark:text-gray-400 text-xs font-medium">09:00 PM - 10:30 PM</p>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500 font-medium px-1">
+<span>ID: #BK-2023-955</span>
+<span>$25.00 Paid</span>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-2 gap-3 pt-1">
+<button class="flex items-center justify-center gap-2 rounded-xl h-10 px-4 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+<span>Cancel</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-green-600 transition-colors shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]">airplane_ticket</span>
+<span>View Ticket</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#15231b] border-t border-gray-200 dark:border-gray-800 pb-safe pt-2 mx-auto max-w-md">
+<div class="flex justify-around items-center px-2 pb-3">
+<a class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 w-16" href="#">
+<span class="material-symbols-outlined text-2xl">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 w-16" href="#">
+<span class="material-symbols-outlined text-2xl">search</span>
+<span class="text-[10px] font-medium">Explore</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-primary w-16 relative" href="#">
+<!-- Active Indicator Effect -->
+<div class="absolute -top-2 w-8 h-1 bg-primary rounded-b-lg shadow-[0_0_8px_rgba(0,199,83,0.6)]"></div>
+<span class="material-symbols-outlined text-2xl fill-current">calendar_month</span>
+<span class="text-[10px] font-bold">Bookings</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 w-16" href="#">
+<span class="material-symbols-outlined text-2xl">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood User Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00c753",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f2317",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#163321",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#0c1d13] dark:text-gray-100 antialiased selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden max-w-md mx-auto shadow-2xl pb-24">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-20 flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between">
+<div class="flex size-10 shrink-0 items-center justify-center">
+<!-- Placeholder for symmetry or back button if needed -->
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Profile</h2>
+<div class="flex size-10 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-[#0c1d13] dark:text-white" style="font-size: 24px;">settings</span>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto px-4 pt-2">
+<!-- Profile Header -->
+<div class="flex flex-col items-center mb-8">
+<div class="relative group cursor-pointer">
+<div class="size-28 rounded-full bg-gray-200 ring-4 ring-white dark:ring-surface-dark overflow-hidden bg-cover bg-center shadow-lg" data-alt="Young man smiling in a profile portrait" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC-XOEIxzYdNwfczeZArxg5Oeh0RXt6GLHhw2Upi8ykU9cZnAPLR2BxIDmeQ2gy0wWKvxNreAW1PGNVUJom6XxF1ItvJFEvHsSsp4b7wDkhnlu0MhXojH-0P2npKbXQUapdlowZTi9LepzkcWrJyioSyoC84-_BdbrQus1zuizo-RhrKbkA2T1VFoV-8soKgMOjIvqqPE3pnCIBzOxoZQYbYJqu1PJtw51nnDqBjaQntinP63uBeVEmjXEbfFarZ_rxE9oV2J6D-5c');">
+</div>
+<div class="absolute bottom-1 right-1 bg-primary text-white p-2 rounded-full border-[3px] border-background-light dark:border-background-dark shadow-sm flex items-center justify-center">
+<span class="material-symbols-outlined" style="font-size: 18px;">edit</span>
+</div>
+</div>
+<div class="mt-4 text-center">
+<h1 class="text-2xl font-bold text-[#0c1d13] dark:text-white tracking-tight">Saad Ahmed</h1>
+<p class="text-primary font-medium mt-1">+92 300 1234567</p>
+</div>
+</div>
+<!-- Menu Group 1: Activity -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden mb-6">
+<!-- My Bookings -->
+<div class="group flex items-center gap-4 px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<p class="text-base font-medium flex-1 truncate">My Bookings</p>
+<span class="material-symbols-outlined text-gray-400">chevron_right</span>
+</div>
+<!-- Favorite Courts -->
+<div class="group flex items-center gap-4 px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined">favorite</span>
+</div>
+<p class="text-base font-medium flex-1 truncate">Favorite Courts</p>
+<span class="material-symbols-outlined text-gray-400">chevron_right</span>
+</div>
+<!-- Payment Methods -->
+<div class="group flex items-center gap-4 px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<div class="flex items-center justify-center rounded-full bg-primary/10 dark:bg-primary/20 shrink-0 size-10 text-primary">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<div class="flex flex-col flex-1 justify-center">
+<p class="text-base font-medium leading-tight">Payment Methods</p>
+<p class="text-primary text-xs font-normal mt-0.5">Coming soon in Phase 2</p>
+</div>
+<span class="material-symbols-outlined text-gray-400">chevron_right</span>
+</div>
+</div>
+<!-- Menu Group 2: Support & Info -->
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden mb-6">
+<!-- Notifications -->
+<div class="group flex items-center gap-4 px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/10 shrink-0 size-10 text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined">notifications</span>
+</div>
+<p class="text-base font-medium flex-1 truncate">Notifications Settings</p>
+<span class="material-symbols-outlined text-gray-400">chevron_right</span>
+</div>
+<!-- Help & Support -->
+<div class="group flex items-center gap-4 px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/10 shrink-0 size-10 text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined">help</span>
+</div>
+<p class="text-base font-medium flex-1 truncate">Help &amp; Support</p>
+<span class="material-symbols-outlined text-gray-400">chevron_right</span>
+</div>
+<!-- Terms & Privacy -->
+<div class="group flex items-center gap-4 px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/10 shrink-0 size-10 text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined">shield_lock</span>
+</div>
+<p class="text-base font-medium flex-1 truncate">Terms &amp; Privacy</p>
+<span class="material-symbols-outlined text-gray-400">chevron_right</span>
+</div>
+<!-- About -->
+<div class="group flex items-center gap-4 px-4 py-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+<div class="flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/10 shrink-0 size-10 text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined">info</span>
+</div>
+<p class="text-base font-medium flex-1 truncate">About KhelKhood</p>
+<span class="material-symbols-outlined text-gray-400">chevron_right</span>
+</div>
+</div>
+<!-- Logout Button -->
+<button class="w-full flex items-center justify-center gap-2 bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-gray-700 p-4 rounded-xl text-red-500 font-semibold mb-6 hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors shadow-sm">
+<span class="material-symbols-outlined">logout</span>
+                Logout
+            </button>
+<!-- Version -->
+<div class="flex justify-center pb-8">
+<p class="text-gray-400 text-xs">App Version 1.0.0</p>
+</div>
+</div>
+<!-- Bottom Navigation Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 pb-safe max-w-md mx-auto">
+<div class="flex justify-around items-center h-16">
+<!-- Home -->
+<button class="flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-primary transition-colors gap-1">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</button>
+<!-- Explore -->
+<button class="flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-primary transition-colors gap-1">
+<span class="material-symbols-outlined">search</span>
+<span class="text-[10px] font-medium">Explore</span>
+</button>
+<!-- Bookings -->
+<button class="flex flex-col items-center justify-center w-full h-full text-gray-400 dark:text-gray-500 hover:text-primary transition-colors gap-1">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="text-[10px] font-medium">Bookings</span>
+</button>
+<!-- Profile (Active) -->
+<button class="flex flex-col items-center justify-center w-full h-full text-primary gap-1">
+<span class="material-symbols-outlined fill-current">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</div>
+<!-- iPhone Home Indicator safe area spacing -->
+<div class="h-1 w-full bg-surface-light dark:bg-surface-dark"></div>
+</div>
+</div>
+</body></html>

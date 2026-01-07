@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood - Confirm Booking</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00c753",
+                        "primary-dark": "#00a142",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#0f2317",
+                        "card-light": "#ffffff",
+                        "card-dark": "#1a3826",
+                        "text-main": "#0c1d13",
+                        "text-muted": "#5c7566",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display antialiased h-screen flex flex-col overflow-hidden selection:bg-primary selection:text-white">
+<!-- Top App Bar -->
+<header class="flex items-center px-4 py-3 bg-background-light dark:bg-background-dark shrink-0 z-20">
+<button class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-text-main dark:text-white">arrow_back</span>
+</button>
+<h2 class="flex-1 text-center text-lg font-bold tracking-tight pr-10">Confirm Booking</h2>
+</header>
+<!-- Scrollable Content -->
+<main class="flex-1 overflow-y-auto pb-40 scrollbar-hide">
+<div class="px-4 pt-2 pb-6 space-y-6">
+<!-- Booking Summary Card -->
+<section class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm overflow-hidden">
+<!-- Venue Info -->
+<div class="flex gap-4 p-4 border-b border-gray-100 dark:border-white/5">
+<div class="w-24 h-24 shrink-0 rounded-lg bg-gray-200 bg-center bg-cover" data-alt="Indoor cricket court with green turf and nets" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDT1JK8qhU08BZa2GrJS3DpZCxj1AR2wXm30ydypOPkiiAQsL5rbHdkX6heemRxcCgHL8y4clXjDGXCfi-aWUX02i-bfPdQ68p6WAd9mZI4oE-DLyEEzPV6Cvx0f_7diXMyon6fyCDMAU7QJexTOUDqEeLBYBRapmx7PAqWHNs94gJqKlGbfybN5STg0PQsHOKxDrgHplAZisoIdtxDTVwLxzLtho7Y24feM9Nd5hLwreTDlUlCnOV6ieYXsYMOYpgdo-25ayHyjVI");'>
+</div>
+<div class="flex flex-col justify-center gap-1">
+<div class="flex items-center gap-1.5 text-primary font-medium text-xs uppercase tracking-wide">
+<span class="material-symbols-outlined text-[16px]">sports_cricket</span>
+<span>Indoor Cricket</span>
+</div>
+<h3 class="text-base font-bold leading-tight">Smash Arena - Court A</h3>
+<div class="flex items-center gap-1 text-text-muted dark:text-gray-400 text-sm mt-1">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span class="truncate">Gulshan-e-Iqbal, Karachi</span>
+</div>
+</div>
+</div>
+<!-- Date & Time Grid -->
+<div class="grid grid-cols-2 divide-x divide-gray-100 dark:divide-white/5 border-b border-gray-100 dark:border-white/5">
+<div class="p-4 flex flex-col items-center justify-center text-center gap-1">
+<span class="text-text-muted dark:text-gray-400 text-xs">Date</span>
+<div class="font-semibold text-sm">Oct 24, 2023</div>
+</div>
+<div class="p-4 flex flex-col items-center justify-center text-center gap-1">
+<span class="text-text-muted dark:text-gray-400 text-xs">Time</span>
+<div class="font-semibold text-sm">6:00 PM - 7:00 PM</div>
+</div>
+</div>
+<!-- Price Breakdown -->
+<div class="p-4 bg-gray-50/50 dark:bg-white/5 space-y-3">
+<div class="flex justify-between items-center text-sm">
+<span class="text-text-muted dark:text-gray-400">Court Fee (1h)</span>
+<span class="font-medium">PKR 2,500</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-text-muted dark:text-gray-400">Platform Fee</span>
+<span class="font-medium">PKR 150</span>
+</div>
+<div class="h-px bg-gray-200 dark:bg-white/10 my-2"></div>
+<div class="flex justify-between items-center">
+<span class="font-bold text-base">Total</span>
+<span class="font-bold text-lg text-primary">PKR 2,650</span>
+</div>
+</div>
+</section>
+<!-- Payment Method -->
+<section>
+<h3 class="text-lg font-bold mb-3 px-1">Payment Method</h3>
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm p-2 space-y-2">
+<!-- Cash (Active) -->
+<label class="relative flex items-center justify-between p-3 rounded-lg border-2 border-primary bg-primary/5 cursor-pointer transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">payments</span>
+<span class="font-medium text-sm">Cash at Venue</span>
+</div>
+<input checked="" class="w-5 h-5 text-primary border-gray-300 focus:ring-primary bg-transparent" name="payment" type="radio"/>
+</label>
+<!-- JazzCash (Disabled) -->
+<label class="relative flex items-center justify-between p-3 rounded-lg border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white/5 opacity-70 cursor-not-allowed">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-400">account_balance_wallet</span>
+<div class="flex flex-col">
+<span class="font-medium text-sm text-gray-500 dark:text-gray-400">JazzCash</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-200 text-gray-500 dark:bg-white/10 dark:text-gray-400">SOON</span>
+</label>
+<!-- EasyPaisa (Disabled) -->
+<label class="relative flex items-center justify-between p-3 rounded-lg border border-gray-100 dark:border-white/10 bg-gray-50 dark:bg-white/5 opacity-70 cursor-not-allowed">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-400">account_balance</span>
+<div class="flex flex-col">
+<span class="font-medium text-sm text-gray-500 dark:text-gray-400">EasyPaisa</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-gray-200 text-gray-500 dark:bg-white/10 dark:text-gray-400">SOON</span>
+</label>
+</div>
+</section>
+<!-- User Details -->
+<section>
+<h3 class="text-lg font-bold mb-3 px-1">Booking Details</h3>
+<div class="bg-card-light dark:bg-card-dark rounded-xl shadow-sm p-4 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">person</span>
+</div>
+<div>
+<p class="text-xs text-text-muted dark:text-gray-400">Name</p>
+<p class="text-sm font-medium">Ali Khan</p>
+</div>
+</div>
+<div class="w-full h-px bg-gray-100 dark:bg-white/5"></div>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">phone</span>
+</div>
+<div>
+<p class="text-xs text-text-muted dark:text-gray-400">Phone</p>
+<p class="text-sm font-medium">+92 300 1234567</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Policy Agreement -->
+<section class="px-1">
+<label class="flex items-start gap-3 cursor-pointer group">
+<input class="mt-0.5 rounded border-gray-300 text-primary focus:ring-primary bg-transparent w-5 h-5" type="checkbox"/>
+<span class="text-sm text-text-muted dark:text-gray-400 leading-snug">
+                        I agree to the <a class="text-primary underline decoration-primary/30 underline-offset-2" href="#">cancellation policy</a> and venue rules.
+                    </span>
+</label>
+</section>
+</div>
+</main>
+<!-- Bottom Action Bar & Navigation -->
+<div class="bg-card-light dark:bg-card-dark border-t border-gray-100 dark:border-white/5 z-20 shrink-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+<!-- CTA Section -->
+<div class="p-4 pb-2">
+<button class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3.5 px-4 rounded-xl shadow-lg shadow-primary/20 flex items-center justify-between transition-transform active:scale-[0.99]">
+<span>Confirm Booking</span>
+<span class="bg-white/20 px-2 py-0.5 rounded text-sm font-medium">PKR 2,650</span>
+</button>
+</div>
+<!-- Bottom Navigation -->
+<nav class="flex justify-around items-center pb-6 pt-2 text-xs font-medium text-text-muted dark:text-gray-400">
+<a class="flex flex-col items-center gap-1 p-2 w-16 text-text-main dark:text-white" href="#">
+<span class="material-symbols-outlined filled">home</span>
+<span>Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 w-16 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span>Bookings</span>
+</a>
+<a class="flex flex-col items-center gap-1 p-2 w-16 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span>Profile</span>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KhelKhood - Court Owner Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#00C853", // Using user requested color
+                        "primary-dark": "#009624",
+                        "primary-light": "#B9F6CA",
+                        "background-light": "#f5f8f7",
+                        "background-dark": "#102218",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#1e3326",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "2xl": "2rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-50 min-h-screen flex flex-col overflow-hidden relative">
+<!-- Top App Bar -->
+<header class="flex items-center justify-between px-6 pt-12 pb-4 bg-surface-light dark:bg-surface-dark sticky top-0 z-10 shadow-sm border-b border-gray-100 dark:border-gray-800">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="bg-center bg-no-repeat bg-cover rounded-full h-10 w-10 ring-2 ring-primary/20" data-alt="Profile picture of the court owner" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLG7AWxmKyggNZ3CDrpKO6m6ZDKwLDO0WSulz4T19_0iuZiGIJRlIXo8ujF-1SwHboJzg2_UkA9z1r6LtMad1mRdNoHYfvbRkf5ZWOpvYHBphU5EnYEVuDMKfa6Khuutb1xnR1bWBzuvoTD_az7CJhgJl8CnNfiytfQ9793WLjT9Oizx1xtrkyERj6O7dA8e3sbcjrQhbOLfXXh6Lj40LHLgfUvAhpDxe1gFaUsYjgfSGszUm8-yX9fTMVTexms3YlJAPLn0jpw10");'></div>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-surface-light dark:border-surface-dark"></div>
+</div>
+<div>
+<p class="text-xs text-gray-500 dark:text-gray-400 font-medium">Good Morning,</p>
+<h2 class="text-slate-900 dark:text-white text-base font-bold leading-tight">Ahmed Riaz</h2>
+</div>
+</div>
+<button class="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-slate-700 dark:text-slate-300">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+</button>
+</header>
+<!-- Main Content Scrollable Area -->
+<main class="flex-1 overflow-y-auto pb-24 hide-scrollbar">
+<!-- Stats Carousel -->
+<section class="mt-6 px-4">
+<div class="flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x">
+<!-- Revenue Card (Prominent) -->
+<div class="snap-start flex-none w-[280px] bg-surface-light dark:bg-surface-dark p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col justify-between h-32 relative overflow-hidden group">
+<div class="absolute right-0 top-0 w-24 h-24 bg-primary/5 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+<div class="flex justify-between items-start z-10">
+<div class="bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<span class="text-primary text-xs font-bold bg-primary/10 px-2 py-1 rounded-full">+15%</span>
+</div>
+<div class="z-10">
+<p class="text-gray-500 dark:text-gray-400 text-sm font-medium">Week Revenue</p>
+<p class="text-slate-900 dark:text-white text-2xl font-bold mt-1">PKR 45,000</p>
+</div>
+</div>
+<!-- Today's Bookings -->
+<div class="snap-start flex-none w-[160px] bg-surface-light dark:bg-surface-dark p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col justify-between h-32">
+<div class="bg-blue-50 dark:bg-blue-900/20 w-fit p-2 rounded-lg">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400">calendar_month</span>
+</div>
+<div>
+<p class="text-gray-500 dark:text-gray-400 text-xs font-medium">Today's Bookings</p>
+<div class="flex items-baseline gap-1 mt-1">
+<p class="text-slate-900 dark:text-white text-xl font-bold">12</p>
+<span class="text-xs text-green-600 font-medium">▲ 2</span>
+</div>
+</div>
+</div>
+<!-- Utilization -->
+<div class="snap-start flex-none w-[160px] bg-surface-light dark:bg-surface-dark p-5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col justify-between h-32">
+<div class="bg-orange-50 dark:bg-orange-900/20 w-fit p-2 rounded-lg">
+<span class="material-symbols-outlined text-orange-600 dark:text-orange-400">monitoring</span>
+</div>
+<div>
+<p class="text-gray-500 dark:text-gray-400 text-xs font-medium">Utilization</p>
+<div class="flex items-baseline gap-1 mt-1">
+<p class="text-slate-900 dark:text-white text-xl font-bold">68%</p>
+<span class="text-xs text-green-600 font-medium">▲ 5%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="px-6 py-2">
+<h3 class="text-slate-900 dark:text-white text-base font-bold mb-3">Quick Actions</h3>
+<div class="grid grid-cols-3 gap-3">
+<button class="flex flex-col items-center justify-center gap-2 bg-surface-light dark:bg-surface-dark p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 active:scale-95 transition-transform">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">add_business</span>
+</div>
+<span class="text-xs font-medium text-slate-700 dark:text-slate-300">Add Court</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 bg-surface-light dark:bg-surface-dark p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 active:scale-95 transition-transform">
+<div class="w-10 h-10 rounded-full bg-red-50 dark:bg-red-900/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-red-500">block</span>
+</div>
+<span class="text-xs font-medium text-slate-700 dark:text-slate-300">Block Slot</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 bg-surface-light dark:bg-surface-dark p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 active:scale-95 transition-transform">
+<div class="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-blue-500">bar_chart</span>
+</div>
+<span class="text-xs font-medium text-slate-700 dark:text-slate-300">Analytics</span>
+</button>
+</div>
+</section>
+<!-- Calendar Strip -->
+<section class="mt-4 px-4">
+<div class="flex items-center justify-between mb-4 px-2">
+<h3 class="text-slate-900 dark:text-white text-lg font-bold">Schedule</h3>
+<button class="text-primary text-sm font-semibold flex items-center">
+                    Oct 2023 <span class="material-symbols-outlined text-lg ml-1">expand_more</span>
+</button>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+<div class="flex justify-between items-center text-center">
+<div class="flex flex-col items-center gap-2 cursor-pointer opacity-50">
+<span class="text-xs font-medium text-gray-500 dark:text-gray-400">Mon</span>
+<div class="w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium text-slate-700 dark:text-slate-300">12</div>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer opacity-50">
+<span class="text-xs font-medium text-gray-500 dark:text-gray-400">Tue</span>
+<div class="w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium text-slate-700 dark:text-slate-300">13</div>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer">
+<span class="text-xs font-bold text-primary">Wed</span>
+<div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-white text-sm font-bold shadow-lg shadow-primary/30">14</div>
+<div class="w-1 h-1 rounded-full bg-primary mt-1"></div>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer opacity-50">
+<span class="text-xs font-medium text-gray-500 dark:text-gray-400">Thu</span>
+<div class="w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium text-slate-700 dark:text-slate-300">15</div>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer opacity-50">
+<span class="text-xs font-medium text-gray-500 dark:text-gray-400">Fri</span>
+<div class="w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium text-slate-700 dark:text-slate-300">16</div>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer opacity-50">
+<span class="text-xs font-medium text-gray-500 dark:text-gray-400">Sat</span>
+<div class="w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium text-slate-700 dark:text-slate-300">17</div>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer opacity-50">
+<span class="text-xs font-medium text-gray-500 dark:text-gray-400">Sun</span>
+<div class="w-8 h-8 flex items-center justify-center rounded-full text-sm font-medium text-slate-700 dark:text-slate-300">18</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Booking List -->
+<section class="mt-6 px-4">
+<h3 class="text-slate-900 dark:text-white text-base font-bold mb-3 px-2">Today's Bookings</h3>
+<div class="flex flex-col gap-3">
+<!-- Booking Item 1 -->
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border-l-4 border-primary">
+<div class="flex flex-col items-center justify-center w-14 h-14 bg-gray-50 dark:bg-gray-800 rounded-lg shrink-0">
+<span class="text-xs font-bold text-gray-500 dark:text-gray-400">START</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">17:00</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="text-slate-900 dark:text-white font-bold truncate">Futsal Court A</h4>
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Paid</span>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 truncate mt-1">Booked by Ali Khan</p>
+<div class="flex items-center gap-2 mt-2">
+<div class="h-6 w-6 rounded-full bg-cover bg-center" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAY01BT97KxZ2rszgJrRACrqlqOGfSPOkA_cK0I86j-Nq26E_5zubbCs6OVkZWLxuEZLYaXENPI8DtylEbL_NtZjePfDqpUjHu0hC3N5Ec7As0qmB5g4cex5G7blYMGKWfOEyYInNwMjKC_4Z_8XnXScLQcuesUrtaJr93W0VpECB-vZubPt4zi9T96tU2Yl55jvr4Kq5tuGmQyoQJebzD-S6R5palEpgEH8WOGDzHptiXzU7W95e-yra0POObIQ2VOrPu6qMZrTnU");'></div>
+<span class="text-xs text-gray-400 dark:text-gray-500">Cricket • 1h duration</span>
+</div>
+</div>
+</div>
+<!-- Booking Item 2 (Blocked) -->
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border-l-4 border-red-500 opacity-80">
+<div class="flex flex-col items-center justify-center w-14 h-14 bg-gray-50 dark:bg-gray-800 rounded-lg shrink-0">
+<span class="text-xs font-bold text-gray-500 dark:text-gray-400">START</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">18:00</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="text-slate-900 dark:text-white font-bold truncate">Badminton Court 2</h4>
+<span class="bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Blocked</span>
+</div>
+<p class="text-sm text-red-500 dark:text-red-400 truncate mt-1">Maintenance Scheduled</p>
+<div class="flex items-center gap-2 mt-2">
+<span class="material-symbols-outlined text-gray-400 text-sm">build</span>
+<span class="text-xs text-gray-400 dark:text-gray-500">Repair work • 1h duration</span>
+</div>
+</div>
+</div>
+<!-- Booking Item 3 -->
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border-l-4 border-primary">
+<div class="flex flex-col items-center justify-center w-14 h-14 bg-gray-50 dark:bg-gray-800 rounded-lg shrink-0">
+<span class="text-xs font-bold text-gray-500 dark:text-gray-400">START</span>
+<span class="text-sm font-bold text-slate-900 dark:text-white">19:30</span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="text-slate-900 dark:text-white font-bold truncate">Tennis Court B</h4>
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wider">Paid</span>
+</div>
+<p class="text-sm text-gray-500 dark:text-gray-400 truncate mt-1">Booked by Sara Ahmed</p>
+<div class="flex items-center gap-2 mt-2">
+<div class="h-6 w-6 rounded-full bg-cover bg-center" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBtn-B4pJR-Thg7D3YderPKm56UmwaJbi0PxUXDiTkaPLz26ZoXutBDseYOU5LjaOUhAgUpXpVBdL6NzeVr2TIx8mH9TesClGRUEGLDR5fJY8ewP8aNzY3eZD01CAvQ8Br5nsgmKjlqjRjw7JYqRyZh9Nu8M1GK4qSAcyw3Br7k0WaI0FwausdgrVMYT1ml3mP32nxCVUD3pkRdEnxLTf0ZNwiR8bN9pMDn--FNBqkAh6dJqsD1AEgCUS6TYK7Lqp35XC4xvlPsM10");'></div>
+<span class="text-xs text-gray-400 dark:text-gray-500">Tennis • 2h duration</span>
+</div>
+</div>
+</div>
+</div>
+<div class="h-6"></div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full bg-surface-light dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 pb-5 pt-3 px-6 z-20">
+<div class="flex justify-between items-end">
+<button class="flex flex-col items-center gap-1 w-12 group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform filled" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-semibold text-primary">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-12 group">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">calendar_month</span>
+<span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">Bookings</span>
+</button>
+<!-- Floating Action Button (Center) -->
+<div class="relative -top-6">
+<button class="flex items-center justify-center w-14 h-14 bg-primary rounded-full shadow-lg shadow-primary/40 text-white hover:bg-primary-dark transition-colors transform hover:-translate-y-1">
+<span class="material-symbols-outlined text-2xl">qr_code_scanner</span>
+</button>
+</div>
+<button class="flex flex-col items-center gap-1 w-12 group">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">stadium</span>
+<span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">Courts</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-12 group">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">person</span>
+<span class="text-[10px] font-medium text-gray-400 dark:text-gray-500 group-hover:text-primary transition-colors">Profile</span>
+</button>
+</div>
+</nav>
+</body></html>
