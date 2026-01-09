@@ -45,3 +45,8 @@ app.*.map.json
 /android/app/release
 /android/app/google-services.json
 GoogleService-Info.plist
+
+# Flutter generated plugin files
+**/GeneratedPluginRegistrant.*
+**/generated_plugin_registrant.*
+**/generated_plugins.cmake

@@ -58,7 +58,7 @@ class KhelkoodApp extends ConsumerWidget {
           theme: AppTheme.lightTheme,
           darkTheme: AppTheme.darkTheme,
           themeMode: ThemeMode.system,
-          routerConfig: AppRouter.router,
+          routerConfig: ref.watch(AppRouter.routerProvider),
         );
       },
     );

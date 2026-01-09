@@ -1,4 +1,4 @@
-// This source code was written for the justpark monorepo.
+// This source code was written for the khelkood monorepo.
 
 import 'dart:io' show Platform;
 
@@ -275,14 +275,14 @@ Future<void> _configureCrashlytics() async {
 /// This should be called after Firebase initialization and before making any requests
 /// that require App Check protection.
 Future<void> _activateAppCheck() async {
-  // Skip App Check in development/emulator mode
-  // Emulators automatically bypass App Check, so activation is not needed
+  // In development/debug mode, activate with the Debug Provider
   if (EnvConfig.isDevEnv || kDebugMode) {
     debugPrint(
-      'ℹ️  FirebaseProvider: Skipping App Check activation in development mode',
+      'ℹ️  FirebaseProvider: Activating App Check with Debug Provider',
     );
-    debugPrint(
-      'ℹ️  FirebaseProvider: Emulators automatically bypass App Check enforcement',
+    await FirebaseAppCheck.instance.activate(
+      androidProvider: AndroidProvider.debug,
+      appleProvider: AppleProvider.debug,
     );
     return;
   }

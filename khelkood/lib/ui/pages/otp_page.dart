@@ -1,47 +1,63 @@
+import 'package:common/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
-import '../../design/app_colors.dart';
-import '../widgets/khelkhood_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../routing/app_router.dart';
 
-class OtpPage extends StatefulWidget {
+import '../../design/app_colors.dart';
+import '../providers/auth_providers.dart';
+import '../widgets/khelkhood_button.dart';
+
+class OtpPage extends ConsumerWidget {
   final String phoneNumber;
-  const OtpPage({super.key, required this.phoneNumber});
+  final String verificationId;
 
-  @override
-  State<OtpPage> createState() => _OtpPageState();
-}
+  const OtpPage({
+    super.key,
+    required this.phoneNumber,
+    required this.verificationId,
+  });
 
-class _OtpPageState extends State<OtpPage> {
-  final List<TextEditingController> _controllers = List.generate(
-    6,
-    (_) => TextEditingController(),
-  );
-  final List<FocusNode> _focusNodes = List.generate(6, (_) => FocusNode());
-
-  @override
-  void dispose() {
-    for (var controller in _controllers) {
-      controller.dispose();
-    }
-    for (var node in _focusNodes) {
-      node.dispose();
-    }
-    super.dispose();
-  }
-
-  void _onChanged(String value, int index) {
+  void _onChanged(String value, int index, List<FocusNode> focusNodes) {
     if (value.length == 1 && index < 5) {
-      _focusNodes[index + 1].requestFocus();
+      focusNodes[index + 1].requestFocus();
     }
     if (value.isEmpty && index > 0) {
-      _focusNodes[index - 1].requestFocus();
+      focusNodes[index - 1].requestFocus();
+    }
+  }
+
+  Future<void> _verifyOtp(BuildContext context, WidgetRef ref) async {
+    final controllers = ref.read(otpControllersProvider);
+    final otp = controllers.map((c) => c.text).join();
+
+    if (otp.length != 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a complete 6-digit code')),
+      );
+      return;
+    }
+
+    ref.read(authLoadingProvider.notifier).setLoading(true);
+    try {
+      final authService = ref.read(authServiceProvider);
+      await authService.verifyOTP(verificationId: verificationId, smsCode: otp);
+      // Navigation handled by router
+    } catch (e) {
+      ref.read(authLoadingProvider.notifier).setLoading(false);
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Invalid code: $e')));
+      }
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isLoading = ref.watch(authLoadingProvider);
+    final controllers = ref.watch(otpControllersProvider);
+    final focusNodes = ref.watch(otpFocusNodesProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -103,11 +119,9 @@ class _OtpPageState extends State<OtpPage> {
                           "We have sent a 6-digit verification code to the number ending in ",
                     ),
                     TextSpan(
-                      text: widget.phoneNumber.length > 4
-                          ? widget.phoneNumber.substring(
-                              widget.phoneNumber.length - 4,
-                            )
-                          : widget.phoneNumber,
+                      text: phoneNumber.length > 4
+                          ? phoneNumber.substring(phoneNumber.length - 4)
+                          : phoneNumber,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: AppColors.primary,
@@ -127,12 +141,13 @@ class _OtpPageState extends State<OtpPage> {
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       child: TextField(
-                        controller: _controllers[index],
-                        focusNode: _focusNodes[index],
+                        controller: controllers[index],
+                        focusNode: focusNodes[index],
                         textAlign: TextAlign.center,
                         keyboardType: TextInputType.number,
                         maxLength: 1,
-                        onChanged: (value) => _onChanged(value, index),
+                        onChanged: (value) =>
+                            _onChanged(value, index, focusNodes),
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -197,11 +212,9 @@ class _OtpPageState extends State<OtpPage> {
 
               // Verify Button
               KhelKhoodButton(
-                text: "Verify & Continue",
-                onPressed: () {
-                  context.go(AppRouter.explore);
-                },
-                icon: Icons.arrow_forward,
+                text: isLoading ? "Verifying..." : "Verify & Continue",
+                onPressed: isLoading ? () {} : () => _verifyOtp(context, ref),
+                icon: isLoading ? null : Icons.arrow_forward,
               ),
               const SizedBox(height: 48),
             ],

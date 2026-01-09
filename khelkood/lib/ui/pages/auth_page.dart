@@ -1,29 +1,88 @@
+import 'package:common/providers/auth_state_provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+
 import '../../design/app_colors.dart';
+import '../../routing/app_router.dart';
+import '../providers/auth_providers.dart';
 import '../widgets/khelkhood_button.dart';
 import '../widgets/khelkhood_text_field.dart';
-import 'package:go_router/go_router.dart';
-import '../../routing/app_router.dart';
 
-class AuthPage extends StatefulWidget {
+class AuthPage extends ConsumerWidget {
   const AuthPage({super.key});
 
-  @override
-  State<AuthPage> createState() => _AuthPageState();
-}
+  Future<void> _handleGoogleSignIn(BuildContext context, WidgetRef ref) async {
+    ref.read(authLoadingProvider.notifier).setLoading(true);
+    try {
+      final authService = ref.read(authServiceProvider);
+      await authService.signInWithGoogle();
+      // Navigation handled by router
+    } catch (e) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Google Sign-In failed: $e')));
+      }
+    } finally {
+      ref.read(authLoadingProvider.notifier).setLoading(false);
+    }
+  }
 
-class _AuthPageState extends State<AuthPage> {
-  final TextEditingController _phoneController = TextEditingController();
+  Future<void> _handlePhoneSignIn(BuildContext context, WidgetRef ref) async {
+    final phoneController = ref.read(authPhoneControllerProvider);
 
-  @override
-  void dispose() {
-    _phoneController.dispose();
-    super.dispose();
+    if (phoneController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a phone number')),
+      );
+      return;
+    }
+
+    ref.read(authLoadingProvider.notifier).setLoading(true);
+    try {
+      final authService = ref.read(authServiceProvider);
+      final phoneNumber = '+92${phoneController.text.trim()}';
+
+      await authService.signInWithPhoneNumber(
+        phoneNumber,
+        onVerificationCompleted: (PhoneAuthCredential credential) async {
+          await FirebaseAuth.instance.signInWithCredential(credential);
+        },
+        onVerificationFailed: (FirebaseAuthException e) {
+          ref.read(authLoadingProvider.notifier).setLoading(false);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Verification failed: ${e.message}')),
+          );
+        },
+        onCodeSent: (String verificationId, int? resendToken) {
+          ref.read(authLoadingProvider.notifier).setLoading(false);
+          context.push(
+            AppRouter.otp,
+            extra: {
+              'phoneNumber': phoneNumber,
+              'verificationId': verificationId,
+            },
+          );
+        },
+        onCodeAutoRetrievalTimeout: (String verificationId) {},
+      );
+    } catch (e) {
+      ref.read(authLoadingProvider.notifier).setLoading(false);
+      if (context.mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Phone Sign-In failed: $e')));
+      }
+    }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isLoading = ref.watch(authLoadingProvider);
+    final phoneController = ref.watch(authPhoneControllerProvider);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -106,7 +165,7 @@ class _AuthPageState extends State<AuthPage> {
 
                   // Phone Input
                   KhelKhoodTextField(
-                    controller: _phoneController,
+                    controller: phoneController,
                     label: "Phone Number",
                     hint: "300 1234567",
                     keyboardType: TextInputType.phone,
@@ -136,11 +195,11 @@ class _AuthPageState extends State<AuthPage> {
 
                   // Send OTP Button
                   KhelKhoodButton(
-                    text: "Send OTP",
-                    onPressed: () {
-                      context.push(AppRouter.otp, extra: _phoneController.text);
-                    },
-                    icon: Icons.arrow_forward,
+                    text: isLoading ? "Processing..." : "Send OTP",
+                    onPressed: isLoading
+                        ? () {}
+                        : () => _handlePhoneSignIn(context, ref),
+                    icon: isLoading ? null : Icons.arrow_forward,
                   ),
                   const SizedBox(height: 24),
 
@@ -173,7 +232,9 @@ class _AuthPageState extends State<AuthPage> {
                   KhelKhoodButton(
                     text: "Google",
                     isSecondary: true,
-                    onPressed: () {},
+                    onPressed: isLoading
+                        ? () {}
+                        : () => _handleGoogleSignIn(context, ref),
                   ),
 
                   const SizedBox(height: 48),

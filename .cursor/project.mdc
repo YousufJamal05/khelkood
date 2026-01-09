@@ -73,7 +73,7 @@ alwaysApply: true
 ## File Header Standards
 
 - All source files must begin with the following comment block:
-- // This source code was written for the justpark monorepo.
+- // This source code was written for the khelkood monorepo.
 -
 - This applies to:
 - - Dart files in [client/lib/](../../client/lib/), [admin/lib/](../../admin/lib/), [packages/FlutterCommon/lib/](../../packages/FlutterCommon/lib/) and [packages/FlutterCommon/test/](../../packages/FlutterCommon/test/)
