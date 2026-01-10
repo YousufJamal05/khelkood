@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:khelkood/providers/auth_providers.dart';
+
 import '../../design/app_colors.dart';
 import '../../routing/app_router.dart';
-import '../providers/auth_providers.dart';
 import '../widgets/khelkhood_button.dart';
 import '../widgets/khelkhood_text_field.dart';
 

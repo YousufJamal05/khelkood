@@ -17,6 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../config/env_config.dart';
 import '../config/firebase_options.dart';
 import '../enums/env_key.dart';
+import 'auth_state_provider.dart';
 
 /// Provider to initialize Firebase (runs once and caches result)
 final firebaseProvider = FutureProvider<void>((ref) async {
@@ -26,6 +27,9 @@ final firebaseProvider = FutureProvider<void>((ref) async {
   // Configures Firebase to use local emulators or production services.
   // (Crashlytics/App Check) behaves consistently.
   await _configureEmulators();
+
+  // Initialize Google Sign In after Firebase Auth is configured
+  await _initializeGoogleSignIn(ref);
 
   // Only meaningful off the web.
   if (!kIsWeb) {
@@ -304,5 +308,27 @@ Future<void> _activateAppCheck() async {
       '❌ FirebaseProvider: CRITICAL: Firebase App Check failed in production.',
     );
     rethrow;
+  }
+}
+
+/// Initializes Google Sign In as part of Firebase initialization.
+///
+/// This method calls the AuthService's initializeGoogleSignIn method to set up
+/// the Google Sign In singleton and attempt lightweight authentication to restore
+/// any previous session. This should be called after Firebase Auth is configured
+/// to ensure emulator settings are applied first.
+///
+/// If initialization fails, the error is logged but the app continues to run,
+/// as Google Sign In is not critical for all app functionality.
+Future<void> _initializeGoogleSignIn(Ref ref) async {
+  try {
+    debugPrint('🔵 FirebaseProvider: Initializing Google Sign In...');
+    final authService = ref.read(authServiceProvider);
+    await authService.initializeGoogleSignIn();
+    debugPrint('✅ FirebaseProvider: Google Sign In initialized');
+  } catch (e, stack) {
+    debugPrint('❌ FirebaseProvider: Failed to initialize Google Sign In: $e');
+    debugPrint('❌ FirebaseProvider: Stack trace: $stack');
+    // Non-fatal; continue without Google Sign In
   }
 }

@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../design/app_colors.dart';
-import '../providers/auth_providers.dart';
+import 'package:khelkood/providers/auth_providers.dart';
 import '../widgets/khelkhood_button.dart';
 
 class OtpPage extends ConsumerWidget {
