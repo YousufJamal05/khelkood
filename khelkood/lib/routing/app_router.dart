@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:common/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +17,7 @@ import '../ui/pages/map_page.dart';
 import '../ui/pages/notifications_page.dart';
 import '../ui/pages/favorite_courts_page.dart';
 import '../ui/pages/reviews_page.dart';
+import '../ui/pages/complete_profile_page.dart';
 
 class AppRouter {
   static const String splash = '/';
@@ -35,34 +35,53 @@ class AppRouter {
   static const String notifications = '/notifications';
   static const String favorites = '/favorites';
   static const String reviews = '/reviews';
+  static const String completeProfile = '/complete-profile';
 
   static final Provider<GoRouter> routerProvider = Provider<GoRouter>((ref) {
-    final authState = ref.watch(authStateProvider);
+    final notifier = RouterNotifier(ref);
 
     return GoRouter(
       initialLocation: splash,
-      refreshListenable: _GoRouterRefreshStream(
-        ref.read(authServiceProvider).authStateChanges,
-      ),
+      refreshListenable: notifier,
       redirect: (context, state) {
+        final authState = ref.read(authStateProvider);
+        final currentUserAsync = ref.read(currentUserProvider);
+
         final isLoggedIn = authState.value != null;
         final isLoggingIn = state.uri.toString() == auth;
         final isSplash = state.uri.toString() == splash;
         final isOnboarding = state.uri.toString() == onboarding;
         final isOtp = state.uri.toString() == otp;
+        final isCompletingProfile = state.uri.toString() == completeProfile;
 
-        if (authState.isLoading) {
-          return null; // Let the splash screen stay or whatever is current
-        }
+        if (authState.isLoading) return null;
 
         if (!isLoggedIn) {
-          if (isLoggingIn || isSplash || isOnboarding || isOtp) {
-            return null;
-          }
+          if (isLoggingIn || isSplash || isOnboarding || isOtp) return null;
           return auth;
         }
 
-        if (isLoggedIn && (isLoggingIn || isSplash || isOnboarding)) {
+        // isLoggedIn == true
+        final isAtAuthFlow = isSplash || isLoggingIn || isOnboarding || isOtp;
+
+        // If we are at the auth flow, we wait for the profile to decide where to go
+        if (currentUserAsync.isLoading && isAtAuthFlow) {
+          return null;
+        }
+
+        final user = currentUserAsync.value;
+        final hasProfile =
+            user != null &&
+            user.displayName != null &&
+            user.displayName!.trim().isNotEmpty;
+
+        if (!hasProfile) {
+          if (!isCompletingProfile) return completeProfile;
+          return null;
+        }
+
+        // Profile exists/complete
+        if (isAtAuthFlow || isCompletingProfile) {
           return explore;
         }
 
@@ -125,30 +144,37 @@ class AppRouter {
           path: reviews,
           builder: (context, state) => const ReviewsPage(),
         ),
+        GoRoute(
+          path: completeProfile,
+          builder: (context, state) => const CompleteProfilePage(),
+        ),
       ],
     );
   });
 
-  // Static getter for legacy support if needed, but prefer routerProvider
-  // This might break if accessed directly before ref is available.
-  // Better to refactor main.dart to use the provider.
   static GoRouter get router =>
       throw UnimplementedError("Use routerProvider instead");
 }
 
-class _GoRouterRefreshStream extends ChangeNotifier {
-  _GoRouterRefreshStream(Stream<dynamic> stream) {
-    notifyListeners();
-    _subscription = stream.asBroadcastStream().listen(
-      (dynamic _) => notifyListeners(),
+class RouterNotifier extends ChangeNotifier {
+  RouterNotifier(Ref ref) {
+    _subscription1 = ref.listen(
+      authStateProvider,
+      (_, __) => notifyListeners(),
+    );
+    _subscription2 = ref.listen(
+      currentUserProvider,
+      (_, __) => notifyListeners(),
     );
   }
 
-  late final StreamSubscription<dynamic> _subscription;
+  late final ProviderSubscription _subscription1;
+  late final ProviderSubscription _subscription2;
 
   @override
   void dispose() {
-    _subscription.cancel();
+    _subscription1.close();
+    _subscription2.close();
     super.dispose();
   }
 }

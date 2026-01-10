@@ -21,24 +21,19 @@ final authStateProvider = StreamProvider<User?>((ref) {
 /// Stream of the current UserModel from Firestore
 /// This requires the user to be logged in and a Firestore document to exist
 final currentUserProvider = StreamProvider<UserModel?>((ref) {
-  final authState = ref.watch(authStateProvider);
-  final firestore = ref.watch(firestoreProvider);
+  final authState = ref.watch(authStateProvider).value;
 
-  return authState.when(
-    data: (user) {
-      if (user == null) {
-        return Stream.value(null);
-      }
-      return firestore
-          .collection('users')
-          .doc(user.uid)
-          .snapshots()
-          .map((snapshot) {
-        if (!snapshot.exists) return null;
-        return UserModel.fromFirestore(snapshot, null);
-      });
-    },
-    loading: () => const Stream.empty(),
-    error: (_, __) => Stream.value(null),
-  );
+  if (authState == null) {
+    return Stream.value(null);
+  }
+
+  final firestore = ref.watch(firestoreProvider);
+  return firestore
+      .collection('users')
+      .doc(authState.uid)
+      .snapshots()
+      .map((snapshot) {
+    if (!snapshot.exists) return null;
+    return UserModel.fromFirestore(snapshot, null);
+  });
 });

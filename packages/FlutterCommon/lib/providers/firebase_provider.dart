@@ -16,7 +16,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../config/env_config.dart';
 import '../config/firebase_options.dart';
-import '../enums/env_key.dart';
 import 'auth_state_provider.dart';
 
 /// Provider to initialize Firebase (runs once and caches result)
@@ -164,7 +163,7 @@ Future<void> _configureEmulators() async {
       debugPrint(
         '🔵 FirebaseProvider: Configuring Firestore emulator on $emulatorHost:8081',
       );
-      FirebaseFirestore.instance.useFirestoreEmulator(emulatorHost, 8081);
+      FirebaseFirestore.instance.useFirestoreEmulator(emulatorHost, 8080);
       debugPrint('✅ FirebaseProvider: Firestore emulator configured');
 
       // Realtime Database
@@ -172,13 +171,7 @@ Future<void> _configureEmulators() async {
         '🔵 FirebaseProvider: Configuring Realtime Database emulator on $emulatorHost:9001',
       );
       if (kIsWeb) {
-        final databaseUrl = EnvConfig.get(EnvKey.firebaseDatabaseUrl);
-        FirebaseDatabase.instanceFor(
-          app: Firebase.app(),
-          databaseURL: databaseUrl,
-        ).useDatabaseEmulator(emulatorHost, 9001);
-      } else {
-        FirebaseDatabase.instance.useDatabaseEmulator(emulatorHost, 9001);
+        FirebaseDatabase.instance.useDatabaseEmulator(emulatorHost, 9000);
       }
       debugPrint('✅ FirebaseProvider: Realtime Database emulator configured');
 
@@ -186,7 +179,7 @@ Future<void> _configureEmulators() async {
       debugPrint(
         '🔵 FirebaseProvider: Configuring Storage emulator on $emulatorHost:9198',
       );
-      await FirebaseStorage.instance.useStorageEmulator(emulatorHost, 9198);
+      await FirebaseStorage.instance.useStorageEmulator(emulatorHost, 9199);
       debugPrint('✅ FirebaseProvider: Storage emulator configured');
 
       // Functions - CRITICAL: Must be configured before any function calls

@@ -63,10 +63,32 @@ class UserModel extends Equatable {
       email: data?['email'],
       phoneNumber: data?['phoneNumber'],
       displayName: data?['displayName'],
-      photoUrl: data?['photoUrl'],
-      createdAt: (data?['createdAt'] as Timestamp?)?.toDate(),
-      lastLoginAt: (data?['lastLoginAt'] as Timestamp?)?.toDate(),
+      photoUrl: data?['photoUrl'] ?? data?['profileImageUrl'],
+      createdAt: _parseDateTime(data?['createdAt']),
+      lastLoginAt: _parseDateTime(data?['lastLoginAt']) ??
+          _parseDateTime(data?['lastLoginTime']),
     );
+  }
+
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['uid'] ?? map['id'] ?? '',
+      email: map['email'],
+      phoneNumber: map['phoneNumber'],
+      displayName: map['displayName'],
+      photoUrl: map['photoUrl'] ?? map['profileImageUrl'],
+      createdAt: _parseDateTime(map['createdAt']),
+      lastLoginAt: _parseDateTime(map['lastLoginAt']) ??
+          _parseDateTime(map['lastLoginTime']),
+    );
+  }
+
+  static DateTime? _parseDateTime(dynamic value) {
+    if (value == null) return null;
+    if (value is Timestamp) return value.toDate();
+    if (value is int) return DateTime.fromMillisecondsSinceEpoch(value);
+    if (value is String) return DateTime.tryParse(value);
+    return null;
   }
 
   Map<String, dynamic> toFirestore() {
