@@ -1,4 +1,6 @@
+import 'package:common/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../design/app_colors.dart';
 import '../widgets/khelkhood_chip.dart';
 import '../widgets/court_card_featured.dart';
@@ -7,14 +9,14 @@ import '../views/bottom_nav_view.dart';
 import 'package:go_router/go_router.dart';
 import '../../routing/app_router.dart';
 
-class ExplorePage extends StatefulWidget {
+class ExplorePage extends ConsumerStatefulWidget {
   const ExplorePage({super.key});
 
   @override
-  State<ExplorePage> createState() => _ExplorePageState();
+  ConsumerState<ExplorePage> createState() => _ExplorePageState();
 }
 
-class _ExplorePageState extends State<ExplorePage> {
+class _ExplorePageState extends ConsumerState<ExplorePage> {
   int _selectedCategoryIndex = 0;
   final List<Map<String, String>> _categories = [
     {'label': 'All', 'emoji': ''},
@@ -27,6 +29,9 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final currentUserAsync = ref.watch(currentUserProvider);
+    final user = currentUserAsync.value;
 
     return Scaffold(
       body: SafeArea(
@@ -45,13 +50,17 @@ class _ExplorePageState extends State<ExplorePage> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         border: Border.all(color: AppColors.primary, width: 2),
-                        image: const DecorationImage(
-                          image: NetworkImage(
-                            "https://lh3.googleusercontent.com/aida-public/AB6AXuApjhvZQBlUtgEPBMV0Z4oOgy0WbV4F2nLl714gndZQLitZzmaEsfZEbEXtkXrcMNfoVHh9XiB-BVoyHn7Hzz9AGfAygLPyPFWH5vTouDLkAZQnLSasGZwQVblMOYtdc-TeqsIZFxFo9ALPskJt8AwBwy_mECWaMeqAj5oD-x6vBnzpDGvZMO7WJSop_gNgWhoeuBbg6JCVK2-rOxQ4NZ7vZSqbnV389vRoKwlrVxlliXsnpLk1gXkL_amhYRtEhUrV6JEGganIa2A",
-                          ),
-                          fit: BoxFit.cover,
-                        ),
+                        image:
+                            user?.photoUrl != null && user!.photoUrl!.isNotEmpty
+                            ? DecorationImage(
+                                image: NetworkImage(user.photoUrl!),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                       ),
+                      child: user?.photoUrl == null || user!.photoUrl!.isEmpty
+                          ? const Icon(Icons.person, color: AppColors.primary)
+                          : null,
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -71,7 +80,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                 ),
                           ),
                           Text(
-                            "Ali!",
+                            user?.displayName ?? "Player",
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.titleLarge
                                 ?.copyWith(fontWeight: FontWeight.bold),

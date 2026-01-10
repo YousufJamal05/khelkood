@@ -1,16 +1,20 @@
+import 'package:common/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../design/app_colors.dart';
 import '../widgets/khelkhood_button.dart';
 import '../views/bottom_nav_view.dart';
 import 'package:go_router/go_router.dart';
 import '../../routing/app_router.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final currentUserAsync = ref.watch(currentUserProvider);
+    final user = currentUserAsync.value;
 
     return Scaffold(
       appBar: AppBar(
@@ -41,12 +45,13 @@ class ProfilePage extends StatelessWidget {
                       height: 120,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        image: const DecorationImage(
-                          image: NetworkImage(
-                            "https://lh3.googleusercontent.com/aida-public/AB6AXuC-XOEIxzYdNwfczeZArxg5Oeh0RXt6GLHhw2Upi8ykU9cZnAPLR2BxIDmeQ2gy0wWKvxNreAW1PGNVUJom6XxF1ItvJFEvHsSsp4b7wDkhnlu0MhXojH-0P2npKbXQUapdlowZTi9LepzkcWrJyioSyoC84-_BdbrQus1zuizo-RhrKbkA2T1VFoV-8soKgMOjIvqqPE3pnCIBzOxoZQYbYJqu1PJtw51nnDqBjaQntinP63uBeVEmjXEbfFarZ_rxE9oV2J6D-5c",
-                          ),
-                          fit: BoxFit.cover,
-                        ),
+                        image:
+                            user?.photoUrl != null && user!.photoUrl!.isNotEmpty
+                            ? DecorationImage(
+                                image: NetworkImage(user.photoUrl!),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.1),
@@ -55,6 +60,13 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ],
                       ),
+                      child: user?.photoUrl == null || user!.photoUrl!.isEmpty
+                          ? Icon(
+                              Icons.person,
+                              size: 60,
+                              color: AppColors.primary,
+                            )
+                          : null,
                     ),
                     Container(
                       padding: const EdgeInsets.all(8),
@@ -77,13 +89,16 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  "Saad Ahmed",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                Text(
+                  user?.displayName ?? "Player",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
                 ),
-                const Text(
-                  "+92 300 1234567",
-                  style: TextStyle(
+                Text(
+                  user?.phoneNumber ?? "No Phone Number",
+                  style: const TextStyle(
                     color: AppColors.primary,
                     fontWeight: FontWeight.bold,
                   ),
@@ -141,7 +156,10 @@ class ProfilePage extends StatelessWidget {
             KhelKhoodButton(
               text: "Logout",
               isSecondary: true,
-              onPressed: () {},
+              onPressed: () async {
+                final authService = ref.read(authServiceProvider);
+                await authService.signOut();
+              },
             ),
             const SizedBox(height: 24),
             Text(
