@@ -13,6 +13,8 @@ class CompleteProfileNotifier extends AsyncNotifier<void> {
 
   Future<void> onboard({
     required String displayName,
+    required String role,
+    String? email,
     List<int>? imageBytes,
     String? contentType,
   }) async {
@@ -38,6 +40,8 @@ class CompleteProfileNotifier extends AsyncNotifier<void> {
         phoneNumber: user?.phoneNumber ?? "",
         displayName: displayName,
         profileImageUrl: profileImageUrl,
+        role: role,
+        email: email,
       );
     });
   }

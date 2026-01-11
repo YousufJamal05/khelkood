@@ -7,6 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../design/app_colors.dart';
 import '../../providers/complete_profile_provider.dart';
+import '../../providers/user_role_provider.dart';
 import '../widgets/khelkhood_button.dart';
 
 class CompleteProfileView extends ConsumerStatefulWidget {
@@ -19,6 +20,7 @@ class CompleteProfileView extends ConsumerStatefulWidget {
 
 class _CompleteProfileViewState extends ConsumerState<CompleteProfileView> {
   final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
   File? _imageFile;
   final _picker = ImagePicker();
 
@@ -34,14 +36,25 @@ class _CompleteProfileViewState extends ConsumerState<CompleteProfileView> {
   @override
   void dispose() {
     _nameController.dispose();
+    _emailController.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
+    final selectedRole = ref.read(selectedRoleProvider);
+    final isOwner = selectedRole == UserRole.owner;
+
     if (_nameController.text.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('Please enter your name')));
+      return;
+    }
+
+    if (isOwner && _emailController.text.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please enter your email')));
       return;
     }
 
@@ -57,6 +70,8 @@ class _CompleteProfileViewState extends ConsumerState<CompleteProfileView> {
         .read(completeProfileProvider.notifier)
         .onboard(
           displayName: _nameController.text,
+          role: selectedRole == UserRole.owner ? 'owner' : 'player',
+          email: isOwner ? _emailController.text : null,
           imageBytes: imageBytes,
           contentType: contentType,
         );
@@ -65,6 +80,8 @@ class _CompleteProfileViewState extends ConsumerState<CompleteProfileView> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(completeProfileProvider);
+    final selectedRole = ref.watch(selectedRoleProvider);
+    final isOwner = selectedRole == UserRole.owner;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return SafeArea(
@@ -89,7 +106,9 @@ class _CompleteProfileViewState extends ConsumerState<CompleteProfileView> {
             ),
             const SizedBox(height: 8),
             Text(
-              "Add a photo and username to start booking facilities and finding matches in Karachi.",
+              isOwner
+                  ? "Complete your business setup to start managing your facilities."
+                  : "Add a photo and username to start booking facilities and finding matches in Karachi.",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: isDark
@@ -144,9 +163,9 @@ class _CompleteProfileViewState extends ConsumerState<CompleteProfileView> {
             const SizedBox(height: 16),
             TextButton(
               onPressed: _pickImage,
-              child: const Text(
-                "Change Profile Photo",
-                style: TextStyle(
+              child: Text(
+                isOwner ? "Upload Business Photo" : "Change Profile Photo",
+                style: const TextStyle(
                   color: AppColors.primary,
                   fontWeight: FontWeight.bold,
                 ),
@@ -198,7 +217,9 @@ class _CompleteProfileViewState extends ConsumerState<CompleteProfileView> {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "This is how other players will find you.",
+                isOwner
+                    ? "This will be displayed as your business name."
+                    : "This is how other players will find you.",
                 style: TextStyle(
                   color: isDark
                       ? AppColors.textTertiaryDark
@@ -208,11 +229,52 @@ class _CompleteProfileViewState extends ConsumerState<CompleteProfileView> {
                 ),
               ),
             ),
+            if (isOwner) ...[
+              const SizedBox(height: 24),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: const Text(
+                  "Business Email",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                ),
+              ),
+              const SizedBox(height: 8),
+              TextField(
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  hintText: "e.g., manager@arena.com",
+                  prefixIcon: const Icon(Icons.email, color: AppColors.primary),
+                  filled: true,
+                  fillColor: isDark ? AppColors.surfaceDark : Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: isDark
+                          ? AppColors.borderDark
+                          : AppColors.borderLight,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: isDark
+                          ? AppColors.borderDark
+                          : AppColors.borderLight,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: const BorderSide(color: AppColors.primary),
+                  ),
+                ),
+              ),
+            ],
             const SizedBox(height: 60),
             // Start Playing Button
             KhelKhoodButton(
-              text: "Start Playing",
-              icon: Icons.sports_soccer,
+              text: isOwner ? "Complete Setup" : "Start Playing",
+              icon: isOwner ? Icons.check_circle : Icons.sports_soccer,
               isLoading: state.isLoading,
               onPressed: _submit,
             ),

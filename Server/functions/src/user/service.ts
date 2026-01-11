@@ -53,6 +53,7 @@ export class UserService {
           phoneNumber: request.phoneNumber || authPhoneNumber || "",
           displayName: request.displayName || "",
           profileImageUrl: request.profileImageUrl || "",
+          email: request.email || "",
           role: request.role || UserRole.PLAYER,
           status: UserStatus.ACTIVE,
           createdAt: timestamp,
@@ -65,6 +66,7 @@ export class UserService {
           phoneNumber: request.phoneNumber || userSnap.data()?.phoneNumber || authPhoneNumber,
           displayName: request.displayName || userSnap.data()?.displayName,
           profileImageUrl: request.profileImageUrl || userSnap.data()?.profileImageUrl,
+          email: request.email || userSnap.data()?.email,
           lastLoginAt: timestamp,
         });
         logger.info(`User ${uid} profile updated with string dates.`);
