@@ -44,6 +44,7 @@ class UserService {
     String? displayName,
     String? profileImageUrl,
     String? role,
+    String? email,
   }) async {
     final HttpsCallable callable = _functions.httpsCallable('onboardUser');
     await callable.call({
@@ -51,6 +52,7 @@ class UserService {
       if (displayName != null) 'displayName': displayName,
       if (profileImageUrl != null) 'profileImageUrl': profileImageUrl,
       if (role != null) 'role': role,
+      if (email != null) 'email': email,
     });
   }
 

@@ -13,6 +13,7 @@ export class UserValidator {
       profileImageUrl: data.profileImageUrl,
       role: data.role,
       phoneNumber: data.phoneNumber,
+      email: data.email,
     };
   }
 

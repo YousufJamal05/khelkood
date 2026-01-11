@@ -56,7 +56,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   vertical: 8,
                 ),
                 child: TextButton(
-                  onPressed: () => _navigateToAuth(),
+                  onPressed: () => _navigateToRoleSelection(),
                   child: Text(
                     'Skip',
                     style: TextStyle(
@@ -201,7 +201,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                           curve: Curves.easeInOut,
                         );
                       } else {
-                        _navigateToAuth();
+                        _navigateToRoleSelection();
                       }
                     },
                     icon: Icons.arrow_forward,
@@ -215,7 +215,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
-  void _navigateToAuth() {
-    context.go(AppRouter.auth);
+  void _navigateToRoleSelection() {
+    context.go(AppRouter.roleSelection);
   }
 }

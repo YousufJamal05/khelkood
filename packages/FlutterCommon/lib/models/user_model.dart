@@ -9,6 +9,7 @@ class UserModel extends Equatable {
   final String? phoneNumber;
   final String? displayName;
   final String? photoUrl;
+  final String? role;
   final DateTime? createdAt;
   final DateTime? lastLoginAt;
 
@@ -18,6 +19,7 @@ class UserModel extends Equatable {
     this.phoneNumber,
     this.displayName,
     this.photoUrl,
+    this.role,
     this.createdAt,
     this.lastLoginAt,
   });
@@ -29,6 +31,7 @@ class UserModel extends Equatable {
         phoneNumber,
         displayName,
         photoUrl,
+        role,
         createdAt,
         lastLoginAt,
       ];
@@ -39,6 +42,7 @@ class UserModel extends Equatable {
     String? phoneNumber,
     String? displayName,
     String? photoUrl,
+    String? role,
     DateTime? createdAt,
     DateTime? lastLoginAt,
   }) {
@@ -48,6 +52,7 @@ class UserModel extends Equatable {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       displayName: displayName ?? this.displayName,
       photoUrl: photoUrl ?? this.photoUrl,
+      role: role ?? this.role,
       createdAt: createdAt ?? this.createdAt,
       lastLoginAt: lastLoginAt ?? this.lastLoginAt,
     );
@@ -64,6 +69,7 @@ class UserModel extends Equatable {
       phoneNumber: data?['phoneNumber'],
       displayName: data?['displayName'],
       photoUrl: data?['photoUrl'] ?? data?['profileImageUrl'],
+      role: data?['role'],
       createdAt: _parseDateTime(data?['createdAt']),
       lastLoginAt: _parseDateTime(data?['lastLoginAt']) ??
           _parseDateTime(data?['lastLoginTime']),
@@ -77,6 +83,7 @@ class UserModel extends Equatable {
       phoneNumber: map['phoneNumber'],
       displayName: map['displayName'],
       photoUrl: map['photoUrl'] ?? map['profileImageUrl'],
+      role: map['role'],
       createdAt: _parseDateTime(map['createdAt']),
       lastLoginAt: _parseDateTime(map['lastLoginAt']) ??
           _parseDateTime(map['lastLoginTime']),
@@ -97,6 +104,7 @@ class UserModel extends Equatable {
       if (phoneNumber != null) 'phoneNumber': phoneNumber,
       if (displayName != null) 'displayName': displayName,
       if (photoUrl != null) 'photoUrl': photoUrl,
+      if (role != null) 'role': role,
       if (createdAt != null) 'createdAt': Timestamp.fromDate(createdAt!),
       if (lastLoginAt != null) 'lastLoginAt': Timestamp.fromDate(lastLoginAt!),
     };

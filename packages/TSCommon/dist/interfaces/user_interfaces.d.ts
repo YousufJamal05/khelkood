@@ -21,6 +21,7 @@ export interface IOnboardUserRequest {
     displayName?: string;
     profileImageUrl?: string;
     role?: UserRole;
+    email?: string;
 }
 /**
  * Response for the getUserProfile Cloud Function.
