@@ -19,13 +19,20 @@ class AppTheme {
         error: AppColors.error,
       ),
       scaffoldBackgroundColor: AppColors.backgroundLight,
-      fontFamily: AppTextStyles.fontFamily,
+      fontFamily: AppTextStyles.bodyFont,
 
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
+        titleTextStyle: AppTextStyles.h2,
         systemOverlayStyle: SystemUiOverlayStyle.dark,
+      ),
+
+      cardTheme: CardThemeData(
+        color: AppColors.surfaceLight,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -36,20 +43,41 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          textStyle: AppTextStyles.button,
+          textStyle: AppTextStyles.buttonLarge,
           elevation: 0,
         ),
       ),
 
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: Colors.white,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.textSecondaryLight,
+        selectedLabelStyle: AppTextStyles.bottomNavLabel,
+        unselectedLabelStyle: AppTextStyles.bottomNavLabel,
+        type: BottomNavigationBarType.fixed,
+        elevation: 8,
+      ),
+
       textTheme: const TextTheme(
+        // Display (Poppins)
         displayLarge: AppTextStyles.h1,
         displayMedium: AppTextStyles.h2,
         displaySmall: AppTextStyles.h3,
-        headlineMedium: AppTextStyles.h4,
+        // Headline (Poppins)
+        headlineLarge: AppTextStyles.h1,
+        headlineMedium: AppTextStyles.h2,
+        headlineSmall: AppTextStyles.h3,
+        // Title (Poppins for emphasis)
+        titleLarge: AppTextStyles.h2,
+        titleMedium: AppTextStyles.h3,
+        titleSmall: AppTextStyles.bodyMedium,
+        // Body (Roboto)
         bodyLarge: AppTextStyles.bodyLarge,
         bodyMedium: AppTextStyles.bodyMedium,
         bodySmall: AppTextStyles.bodySmall,
-        labelLarge: AppTextStyles.label,
+        // Label (Roboto)
+        labelLarge: AppTextStyles.buttonLarge,
+        labelMedium: AppTextStyles.buttonSmall,
         labelSmall: AppTextStyles.caption,
       ),
     );
@@ -69,13 +97,20 @@ class AppTheme {
         brightness: Brightness.dark,
       ),
       scaffoldBackgroundColor: AppColors.backgroundDark,
-      fontFamily: AppTextStyles.fontFamily,
+      fontFamily: AppTextStyles.bodyFont,
 
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
+        titleTextStyle: AppTextStyles.h2,
         systemOverlayStyle: SystemUiOverlayStyle.light,
+      ),
+
+      cardTheme: CardThemeData(
+        color: AppColors.surfaceDark,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
 
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -86,12 +121,23 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          textStyle: AppTextStyles.button,
+          textStyle: AppTextStyles.buttonLarge,
           elevation: 0,
         ),
       ),
 
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: AppColors.backgroundDark,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.textSecondaryDark,
+        selectedLabelStyle: AppTextStyles.bottomNavLabel,
+        unselectedLabelStyle: AppTextStyles.bottomNavLabel,
+        type: BottomNavigationBarType.fixed,
+        elevation: 8,
+      ),
+
       textTheme: TextTheme(
+        // Display
         displayLarge: AppTextStyles.h1.copyWith(
           color: AppColors.textPrimaryDark,
         ),
@@ -101,9 +147,25 @@ class AppTheme {
         displaySmall: AppTextStyles.h3.copyWith(
           color: AppColors.textPrimaryDark,
         ),
-        headlineMedium: AppTextStyles.h4.copyWith(
+        // Headline
+        headlineLarge: AppTextStyles.h1.copyWith(
           color: AppColors.textPrimaryDark,
         ),
+        headlineMedium: AppTextStyles.h2.copyWith(
+          color: AppColors.textPrimaryDark,
+        ),
+        headlineSmall: AppTextStyles.h3.copyWith(
+          color: AppColors.textPrimaryDark,
+        ),
+        // Title
+        titleLarge: AppTextStyles.h2.copyWith(color: AppColors.textPrimaryDark),
+        titleMedium: AppTextStyles.h3.copyWith(
+          color: AppColors.textPrimaryDark,
+        ),
+        titleSmall: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.textPrimaryDark,
+        ),
+        // Body
         bodyLarge: AppTextStyles.bodyLarge.copyWith(
           color: AppColors.textPrimaryDark,
         ),
@@ -113,7 +175,11 @@ class AppTheme {
         bodySmall: AppTextStyles.bodySmall.copyWith(
           color: AppColors.textPrimaryDark,
         ),
-        labelLarge: AppTextStyles.label.copyWith(
+        // Label
+        labelLarge: AppTextStyles.buttonLarge.copyWith(
+          color: AppColors.textPrimaryDark,
+        ),
+        labelMedium: AppTextStyles.buttonSmall.copyWith(
           color: AppColors.textPrimaryDark,
         ),
         labelSmall: AppTextStyles.caption.copyWith(
