@@ -105,7 +105,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
                                 : AppColors.borderLight,
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
@@ -118,10 +118,8 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
                               child: Text(
                                 "Karachi",
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ),
                           ],
@@ -203,12 +201,12 @@ class _ExplorePageState extends ConsumerState<ExplorePage> {
                           onTap: () => context.push(AppRouter.search),
                           decoration: InputDecoration(
                             hintText: "Search courts, sports, or area",
-                            hintStyle: TextStyle(
-                              color: isDark
-                                  ? AppColors.textTertiaryDark
-                                  : AppColors.textTertiaryLight,
-                              fontSize: 14,
-                            ),
+                            hintStyle: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  color: isDark
+                                      ? AppColors.textTertiaryDark
+                                      : AppColors.textTertiaryLight,
+                                ),
                             border: InputBorder.none,
                             enabledBorder: InputBorder.none,
                             focusedBorder: InputBorder.none,

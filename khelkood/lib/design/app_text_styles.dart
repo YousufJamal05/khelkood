@@ -5,90 +5,89 @@ import 'app_colors.dart';
 class AppTextStyles {
   AppTextStyles._(); // Private constructor
 
-  static const String fontFamily = 'Inter';
+  static const String headerFont = 'Poppins';
+  static const String bodyFont = 'Roboto';
 
-  // Headings
+  // Headings (Poppins)
   static const TextStyle h1 = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 32,
-    fontWeight: FontWeight.w800,
-    color: AppColors.textPrimaryLight,
-    height: 1.2,
-    letterSpacing: -0.5,
-  );
-
-  static const TextStyle h2 = TextStyle(
-    fontFamily: fontFamily,
+    fontFamily: headerFont,
     fontSize: 28,
     fontWeight: FontWeight.w700,
     color: AppColors.textPrimaryLight,
     height: 1.2,
   );
 
-  static const TextStyle h3 = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 24,
-    fontWeight: FontWeight.w700,
+  static const TextStyle h2 = TextStyle(
+    fontFamily: headerFont,
+    fontSize: 22,
+    fontWeight: FontWeight.w600,
     color: AppColors.textPrimaryLight,
-    height: 1.3,
+    height: 1.2,
   );
 
-  static const TextStyle h4 = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 20,
+  static const TextStyle h3 = TextStyle(
+    fontFamily: headerFont,
+    fontSize: 18,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimaryLight,
     height: 1.3,
   );
 
-  // Body Text
+  // Body Text (Roboto)
   static const TextStyle bodyLarge = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 18,
-    fontWeight: FontWeight.w500,
-    color: AppColors.textPrimaryLight,
-    height: 1.5,
-  );
-
-  static const TextStyle bodyMedium = TextStyle(
-    fontFamily: fontFamily,
+    fontFamily: bodyFont,
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: AppColors.textPrimaryLight,
     height: 1.5,
   );
 
+  static const TextStyle bodyMedium = TextStyle(
+    fontFamily: bodyFont,
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textPrimaryLight,
+    height: 1.5,
+  );
+
   static const TextStyle bodySmall = TextStyle(
-    fontFamily: fontFamily,
+    fontFamily: bodyFont,
     fontSize: 14,
     fontWeight: FontWeight.w400,
     color: AppColors.textPrimaryLight,
     height: 1.5,
   );
 
-  // Caption/Label
-  static const TextStyle label = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 12,
-    fontWeight: FontWeight.w600,
-    color: AppColors.textPrimaryLight,
-    letterSpacing: 0.5,
-  );
-
   static const TextStyle caption = TextStyle(
-    fontFamily: fontFamily,
-    fontSize: 11,
-    fontWeight: FontWeight.w500,
-    color: AppColors.textTertiaryLight,
-    letterSpacing: 0.5,
+    fontFamily: bodyFont,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    color: AppColors.textSecondaryLight,
+    height: 1.4,
   );
 
-  // Button Text
-  static const TextStyle button = TextStyle(
-    fontFamily: fontFamily,
+  // Buttons (Roboto)
+  static const TextStyle buttonLarge = TextStyle(
+    fontFamily: bodyFont,
     fontSize: 16,
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.w700,
     color: Colors.white,
     letterSpacing: 0.5,
+  );
+
+  static const TextStyle buttonSmall = TextStyle(
+    fontFamily: bodyFont,
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
+    letterSpacing: 0.5,
+  );
+
+  // Bottom Navigation (Roboto)
+  static const TextStyle bottomNavLabel = TextStyle(
+    fontFamily: bodyFont,
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    height: 1.2,
   );
 }

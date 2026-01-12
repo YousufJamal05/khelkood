@@ -52,11 +52,10 @@ class KhelKhoodChip extends StatelessWidget {
             ],
             Text(
               label,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: isSelected
                     ? Colors.white
                     : (isDark ? Colors.white : AppColors.textPrimaryLight),
-                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
               ),
             ),
           ],

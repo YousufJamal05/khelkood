@@ -13,10 +13,7 @@ class BookingConfirmationPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Confirm Booking",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
+        title: const Text("Confirm Booking"),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -123,21 +120,19 @@ class BookingConfirmationPage extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           child: Column(
-                            children: const [
+                            children: [
                               Text(
                                 "Date",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 12,
-                                ),
+                                style: Theme.of(context).textTheme.labelSmall
+                                    ?.copyWith(
+                                      color: AppColors.textSecondaryLight,
+                                    ),
                               ),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               Text(
                                 "Oct 24, 2023",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                ),
+                                style: Theme.of(context).textTheme.titleSmall
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -154,7 +149,7 @@ class BookingConfirmationPage extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16),
                           child: Column(
-                            children: const [
+                            children: [
                               Text(
                                 "Time",
                                 style: TextStyle(
@@ -191,20 +186,18 @@ class BookingConfirmationPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
+                            Text(
                               "Total",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                              style: Theme.of(context).textTheme.titleMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                             ),
-                            const Text(
+                            Text(
                               "PKR 2,650",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                fontSize: 20,
-                                color: AppColors.primary,
-                              ),
+                              style: Theme.of(context).textTheme.headlineSmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w900,
+                                    color: AppColors.primary,
+                                  ),
                             ),
                           ],
                         ),
@@ -229,7 +222,7 @@ class BookingConfirmationPage extends StatelessWidget {
                 border: Border.all(color: AppColors.primary, width: 2),
               ),
               child: Row(
-                children: const [
+                children: [
                   Icon(Icons.payments, color: AppColors.primary),
                   SizedBox(width: 12),
                   Text(

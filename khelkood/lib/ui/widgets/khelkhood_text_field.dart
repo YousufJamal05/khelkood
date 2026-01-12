@@ -29,24 +29,17 @@ class KhelKhoodTextField extends StatelessWidget {
         if (label != null) ...[
           Padding(
             padding: const EdgeInsets.only(left: 4, bottom: 8),
-            child: Text(
-              label!,
-              style: Theme.of(
-                context,
-              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600),
-            ),
+            child: Text(label!, style: Theme.of(context).textTheme.bodyMedium),
           ),
         ],
         TextField(
           controller: controller,
           keyboardType: keyboardType,
           obscureText: obscureText,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+          style: Theme.of(context).textTheme.bodyMedium,
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(
+            hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: isDark
                   ? AppColors.textTertiaryDark
                   : AppColors.textTertiaryLight,

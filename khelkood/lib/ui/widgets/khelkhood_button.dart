@@ -40,11 +40,7 @@ class KhelKhoodButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: Colors.white,
-        minimumSize: const Size(double.infinity, 56),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 0,
+        // Colors and dimensions are now defined in AppTheme.elevatedButtonTheme
       ),
       child: _buildChild(),
     );
