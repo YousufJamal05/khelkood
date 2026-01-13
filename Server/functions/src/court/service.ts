@@ -14,11 +14,14 @@ export class CourtService {
    */
   async addCourt(request: IAddCourtRequest): Promise<string> {
     try {
-      const courtRef = this.db.collection(this.collection).doc();
-      const timestamp = Timestamp.now().toMillis();
+      const { courtId: providedId, ...courtData } = request as any;
+      const courtRef = providedId 
+        ? this.db.collection(this.collection).doc(providedId)
+        : this.db.collection(this.collection).doc();
+      const timestamp = Timestamp.now().toDate().toString();
 
       const newCourt: ICourt = {
-        ...request,
+        ...courtData,
         courtId: courtRef.id,
         isVerified: CourtStatus.PENDING,
         rating: 0,

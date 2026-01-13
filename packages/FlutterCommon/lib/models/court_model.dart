@@ -175,7 +175,7 @@ class CourtModel extends Equatable {
       'isVerified': isVerified,
       'rating': rating,
       'reviewCount': reviewCount,
-      if (createdAt != null) 'createdAt': createdAt!.millisecondsSinceEpoch,
+      if (createdAt != null) 'createdAt': createdAt!.toIso8601String(),
     };
   }
 
@@ -198,7 +198,7 @@ class CourtModel extends Equatable {
       'isVerified': isVerified,
       'rating': rating,
       'reviewCount': reviewCount,
-      if (createdAt != null) 'createdAt': Timestamp.fromDate(createdAt!),
+      if (createdAt != null) 'createdAt': createdAt!.toIso8601String(),
     };
   }
 }

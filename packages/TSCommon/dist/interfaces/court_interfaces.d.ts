@@ -33,12 +33,13 @@ export interface ICourt {
     isVerified: 'pending' | 'approved' | 'rejected';
     rating: number;
     reviewCount: number;
-    createdAt: number;
+    createdAt: string;
 }
 /**
  * Request payload for adding a new court.
  */
 export interface IAddCourtRequest extends Omit<ICourt, 'courtId' | 'isVerified' | 'rating' | 'reviewCount' | 'createdAt'> {
+    courtId?: string;
 }
 /**
  * Request payload for updating an existing court.

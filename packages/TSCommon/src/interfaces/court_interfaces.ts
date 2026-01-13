@@ -33,13 +33,15 @@ export interface ICourt {
   isVerified: 'pending' | 'approved' | 'rejected';
   rating: number;
   reviewCount: number;
-  createdAt: number; // Timestamp in ms
+  createdAt: string; // ISO String or human readable string matching user service
 }
 
 /**
  * Request payload for adding a new court.
  */
-export interface IAddCourtRequest extends Omit<ICourt, 'courtId' | 'isVerified' | 'rating' | 'reviewCount' | 'createdAt'> {}
+export interface IAddCourtRequest extends Omit<ICourt, 'courtId' | 'isVerified' | 'rating' | 'reviewCount' | 'createdAt'> {
+  courtId?: string;
+}
 
 /**
  * Request payload for updating an existing court.

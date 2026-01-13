@@ -1,7 +1,9 @@
 // This source code was written for the khelkood monorepo.
 
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/court_model.dart';
 import '../providers/firebase_provider.dart';
@@ -9,8 +11,9 @@ import '../providers/firebase_provider.dart';
 class CourtService {
   final FirebaseFirestore _firestore;
   final FirebaseFunctions _functions;
+  final FirebaseStorage _storage;
 
-  CourtService(this._firestore, this._functions);
+  CourtService(this._firestore, this._functions, this._storage);
 
   /// Collection reference for courts
   CollectionReference<CourtModel> get _courtsRef =>
@@ -18,6 +21,27 @@ class CourtService {
             fromFirestore: CourtModel.fromFirestore,
             toFirestore: (court, _) => court.toFirestore(),
           );
+
+  /// Generate a new unique document ID for a court locally
+  String generateCourtId() {
+    return _firestore.collection('courts').doc().id;
+  }
+
+  /// Upload court image to Firebase Storage
+  Future<String> uploadCourtImage({
+    required String? courtId,
+    required String fileName,
+    required List<int> imageBytes,
+    required String contentType,
+  }) async {
+    // If courtId is null (new court), we use a temp directory or just a guid
+    final folder = courtId ?? 'new_courts';
+    final ref = _storage.ref().child('courts').child(folder).child(fileName);
+    final metadata = SettableMetadata(contentType: contentType);
+    final uploadTask = ref.putData(Uint8List.fromList(imageBytes), metadata);
+    final snapshot = await uploadTask;
+    return await snapshot.ref.getDownloadURL();
+  }
 
   /// Add a new court via Cloud Function
   Future<void> addCourt(CourtModel court) async {
@@ -67,5 +91,6 @@ class CourtService {
 final courtServiceProvider = Provider<CourtService>((ref) {
   final firestore = ref.watch(firestoreProvider);
   final functions = ref.watch(firebaseFunctionsProvider);
-  return CourtService(firestore, functions);
+  final storage = ref.watch(firebaseStorageProvider);
+  return CourtService(firestore, functions, storage);
 });

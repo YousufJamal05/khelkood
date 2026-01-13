@@ -146,22 +146,38 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
       final user = ref.read(authStateProvider).value;
       if (user == null) throw Exception('User not logged in');
 
-      // In a real app, we would upload images to Storage first
-      // For this task, we'll use placeholder URLs since we can't upload local files here
-      final photoUrls = _images
-          .map((_) => 'https://via.placeholder.com/400')
-          .toList();
+      final courtService = ref.read(courtServiceProvider);
+
+      // Generate Court ID locally to organize images
+      final courtId = courtService.generateCourtId();
+
+      // Real image upload to Firebase Storage under courtId folder
+      final List<String> photoUrls = [];
+      for (int i = 0; i < _images.length; i++) {
+        final image = _images[i];
+        final bytes = await image.readAsBytes();
+        final extension = image.path.split('.').last;
+        final fileName = 'photo_$i.$extension';
+
+        final url = await courtService.uploadCourtImage(
+          courtId: courtId,
+          fileName: fileName,
+          imageBytes: bytes,
+          contentType: 'image/$extension',
+        );
+        photoUrls.add(url);
+      }
 
       final slotDurationMinutes =
           (double.tryParse(_slotDurationController.text) ?? 1.0 * 60).toInt();
 
       final court = CourtModel(
-        courtId: '', // Set by backend
+        courtId: courtId, // Pass the locally generated ID
         ownerId: user.uid,
         name: _nameController.text,
         description: _descriptionController.text,
         sportType: _selectedSport!.toLowerCase(),
-        area: 'Karachi', // Hardcoded for now or extracted from location
+        area: 'Karachi', // Hardcoded for now
         address: _locationController.text,
         location: _locationLinkController.text.isNotEmpty
             ? _locationLinkController.text
@@ -205,7 +221,8 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
         slotDuration: slotDurationMinutes,
         maxAdvanceBooking: 30,
         cancellationPolicy: {'noticeHours': 24, 'refundPercentage': 50},
-        createdAt: DateTime.now(),
+        createdAt:
+            DateTime.now(), // Model uses DateTime, toMap handles conversion
       );
 
       await ref.read(ownerCourtsProvider.notifier).addCourt(court);
@@ -265,6 +282,12 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
               KhelKhoodTextField(
                 controller: _nameController,
                 hint: 'e.g. Downtown Futsal Arena',
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter court name';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
 
@@ -283,6 +306,12 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
                   color: Colors.grey,
                   size: 20,
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter address';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
 
@@ -296,6 +325,18 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
                   color: Colors.grey,
                   size: 20,
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter location link';
+                  }
+                  final regex = RegExp(
+                    r'^(https?:\/\/)?(www\.)?(google\.com\/maps\/|maps\.app\.goo\.gl\/).+$',
+                  );
+                  if (!regex.hasMatch(value)) {
+                    return 'Please enter a valid Google Maps link';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
 
@@ -315,6 +356,11 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
                     ),
                   ),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Required';
+                  if (int.tryParse(value) == null) return 'Invalid number';
+                  return null;
+                },
               ),
               const SizedBox(height: 24),
 

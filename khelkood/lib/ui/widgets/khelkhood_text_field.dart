@@ -8,6 +8,7 @@ class KhelKhoodTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final Widget? prefix;
   final bool obscureText;
+  final String? Function(String?)? validator;
 
   const KhelKhoodTextField({
     super.key,
@@ -17,6 +18,7 @@ class KhelKhoodTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.prefix,
     this.obscureText = false,
+    this.validator,
   });
 
   @override
@@ -32,10 +34,11 @@ class KhelKhoodTextField extends StatelessWidget {
             child: Text(label!, style: Theme.of(context).textTheme.bodyMedium),
           ),
         ],
-        TextField(
+        TextFormField(
           controller: controller,
           keyboardType: keyboardType,
           obscureText: obscureText,
+          validator: validator,
           style: Theme.of(context).textTheme.bodyMedium,
           decoration: InputDecoration(
             hintText: hint,
@@ -66,6 +69,14 @@ class KhelKhoodTextField extends StatelessWidget {
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
               borderSide: const BorderSide(color: AppColors.primary, width: 2),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: const BorderSide(color: Colors.red, width: 2),
             ),
           ),
         ),
