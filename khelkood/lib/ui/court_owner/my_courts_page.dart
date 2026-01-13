@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import '../../design/app_colors.dart';
 import '../../design/app_dimensions.dart';
 import 'widgets/court_owner_card.dart';
-import 'package:go_router/go_router.dart';
-import '../../routing/app_router.dart';
-import 'widgets/court_owner_bottom_nav.dart';
+import 'widgets/court_owner_card.dart';
 
 class MyCourtsPage extends StatelessWidget {
   const MyCourtsPage({super.key});
@@ -73,15 +71,6 @@ class MyCourtsPage extends StatelessWidget {
           'Add New Court',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
-      ),
-      bottomNavigationBar: CourtOwnerBottomNav(
-        currentIndex: 2,
-        onTap: (index) {
-          if (index == 2) return;
-          if (index == 0) context.go(AppRouter.ownerHome);
-          if (index == 1) context.push(AppRouter.ownerBookings);
-          if (index == 3) context.push(AppRouter.ownerProfile);
-        },
       ),
     );
   }

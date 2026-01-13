@@ -4,7 +4,6 @@ import '../../design/app_dimensions.dart';
 import 'widgets/court_owner_card.dart';
 import 'package:go_router/go_router.dart';
 import '../../routing/app_router.dart';
-import 'widgets/court_owner_bottom_nav.dart';
 
 class CourtOwnerHomeScreen extends StatelessWidget {
   const CourtOwnerHomeScreen({super.key});
@@ -35,15 +34,6 @@ class CourtOwnerHomeScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: CourtOwnerBottomNav(
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 0) return;
-          if (index == 1) context.push(AppRouter.ownerBookings);
-          if (index == 2) context.push(AppRouter.ownerCourts);
-          if (index == 3) context.push(AppRouter.ownerProfile);
-        },
       ),
     );
   }

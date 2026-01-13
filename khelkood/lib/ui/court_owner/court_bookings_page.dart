@@ -4,7 +4,6 @@ import '../../design/app_dimensions.dart';
 import 'widgets/court_owner_card.dart';
 import 'package:go_router/go_router.dart';
 import '../../routing/app_router.dart';
-import 'widgets/court_owner_bottom_nav.dart';
 
 class CourtBookingsPage extends StatefulWidget {
   const CourtBookingsPage({super.key});
@@ -47,15 +46,6 @@ class _CourtBookingsPageState extends State<CourtBookingsPage>
             Expanded(child: _buildBookingsList(context, isDark)),
           ],
         ),
-      ),
-      bottomNavigationBar: CourtOwnerBottomNav(
-        currentIndex: 1,
-        onTap: (index) {
-          if (index == 1) return;
-          if (index == 0) context.go(AppRouter.ownerHome);
-          if (index == 2) context.push(AppRouter.ownerCourts);
-          if (index == 3) context.push(AppRouter.ownerProfile);
-        },
       ),
     );
   }

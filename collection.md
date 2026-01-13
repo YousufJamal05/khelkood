@@ -36,7 +36,7 @@ Contains details about each sports facility/court.
 | `sportType` | String | Type of sport: `cricket`, `futsal`, `padel` |
 | `area` | String | Geographic area in Karachi (e.g., `DHA`, `Clifton`) |
 | `address` | String | Physical address |
-| `location` | GeoPoint | Geographic coordinates for map display |
+| `location` | String | Google Maps location link (URL) |
 | `pricing` | Map | Pricing details: `{ "base": 2500, "peak": 3500, "weekend": 3000 }` |
 | `photos` | Array<String> | List of URLs to court images |
 | `amenities` | Array<String> | List of amenities (e.g., `["parking", "washroom", "drinking_water"]`) |

@@ -1,34 +1,231 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../design/app_colors.dart';
 import '../../design/app_dimensions.dart';
+import '../../design/app_text_styles.dart';
+import '../widgets/khelkhood_button.dart';
+import '../widgets/khelkhood_text_field.dart';
+import '../../providers/court_provider.dart';
+import 'package:common/common.dart';
 
-class AddCourtPage extends StatefulWidget {
+class AddCourtPage extends ConsumerStatefulWidget {
   const AddCourtPage({super.key});
 
   @override
-  State<AddCourtPage> createState() => _AddCourtPageState();
+  ConsumerState<AddCourtPage> createState() => _AddCourtPageState();
 }
 
-class _AddCourtPageState extends State<AddCourtPage> {
+class _AddCourtPageState extends ConsumerState<AddCourtPage> {
   final _formKey = GlobalKey<FormState>();
-  String? _selectedSport = 'Football';
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _locationLinkController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _slotDurationController = TextEditingController(
+    text: '1.0',
+  );
+
+  String? _selectedSport;
   final List<String> _sports = [
     'Football',
     'Cricket',
+    'Padel',
     'Tennis',
     'Badminton',
-    'Basketball',
   ];
 
-  Map<String, bool> _amenities = {
-    'Parking': true,
-    'Changing Room': true,
+  TimeOfDay _weekdayOpen = const TimeOfDay(hour: 9, minute: 0);
+  TimeOfDay _weekdayClose = const TimeOfDay(hour: 23, minute: 0);
+  TimeOfDay _weekendOpen = const TimeOfDay(hour: 10, minute: 0);
+  TimeOfDay _weekendClose = const TimeOfDay(hour: 23, minute: 59);
+
+  final List<XFile> _images = [];
+  final ImagePicker _picker = ImagePicker();
+
+  final Map<String, bool> _amenities = {
+    'Parking Area': true,
+    'Changing Room': false,
     'Floodlights': true,
-    'Drinking Water': true,
-    'Locker Room': false,
-    'First Aid': true,
+    'Drinking Water': false,
   };
+
+  final Map<String, IconData> _amenityIcons = {
+    'Parking Area': Icons.local_parking,
+    'Changing Room': Icons.dry_cleaning_outlined,
+    'Floodlights': Icons.lightbulb_outline,
+    'Drinking Water': Icons.water_drop_outlined,
+  };
+
+  bool _isLoading = false;
+
+  Future<void> _pickImage() async {
+    if (_images.length >= 3) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Maximum 3 images allowed')));
+      return;
+    }
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        _images.add(image);
+      });
+    }
+  }
+
+  void _removeImage(int index) {
+    setState(() {
+      _images.removeAt(index);
+    });
+  }
+
+  Future<void> _selectTime(bool isWeekday, bool isOpening) async {
+    final TimeOfDay initialTime = isWeekday
+        ? (isOpening ? _weekdayOpen : _weekdayClose)
+        : (isOpening ? _weekendOpen : _weekendClose);
+
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: initialTime,
+    );
+
+    if (picked != null) {
+      setState(() {
+        if (isWeekday) {
+          if (isOpening) {
+            _weekdayOpen = picked;
+          } else {
+            _weekdayClose = picked;
+          }
+        } else {
+          if (isOpening) {
+            _weekendOpen = picked;
+          } else {
+            _weekendClose = picked;
+          }
+        }
+      });
+    }
+  }
+
+  String _formatTime(TimeOfDay time) {
+    final now = DateTime.now();
+    final dt = DateTime(now.year, now.month, now.day, time.hour, time.minute);
+    return "${dt.hour.toString().padLeft(2, '0')}:${dt.minute.toString().padLeft(2, '0')}";
+  }
+
+  String _formatTimeDisplay(TimeOfDay time) {
+    final hour = time.hourOfPeriod == 0 ? 12 : time.hourOfPeriod;
+    final period = time.period == DayPeriod.am ? "AM" : "PM";
+    return "${hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')} $period";
+  }
+
+  Future<void> _saveCourt() async {
+    if (!_formKey.currentState!.validate()) return;
+    if (_images.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please upload at least one image')),
+      );
+      return;
+    }
+    if (_selectedSport == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a sport type')),
+      );
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    try {
+      final user = ref.read(authStateProvider).value;
+      if (user == null) throw Exception('User not logged in');
+
+      // In a real app, we would upload images to Storage first
+      // For this task, we'll use placeholder URLs since we can't upload local files here
+      final photoUrls = _images
+          .map((_) => 'https://via.placeholder.com/400')
+          .toList();
+
+      final slotDurationMinutes =
+          (double.tryParse(_slotDurationController.text) ?? 1.0 * 60).toInt();
+
+      final court = CourtModel(
+        courtId: '', // Set by backend
+        ownerId: user.uid,
+        name: _nameController.text,
+        description: _descriptionController.text,
+        sportType: _selectedSport!.toLowerCase(),
+        area: 'Karachi', // Hardcoded for now or extracted from location
+        address: _locationController.text,
+        location: _locationLinkController.text.isNotEmpty
+            ? _locationLinkController.text
+            : null,
+        pricing: {'base': int.parse(_priceController.text)},
+        photos: photoUrls,
+        amenities: _amenities.entries
+            .where((e) => e.value)
+            .map((e) => e.key.toLowerCase().replaceAll(' ', '_'))
+            .toList(),
+        operationalHours: {
+          'mon': {
+            'open': _formatTime(_weekdayOpen),
+            'close': _formatTime(_weekdayClose),
+          },
+          'tue': {
+            'open': _formatTime(_weekdayOpen),
+            'close': _formatTime(_weekdayClose),
+          },
+          'wed': {
+            'open': _formatTime(_weekdayOpen),
+            'close': _formatTime(_weekdayClose),
+          },
+          'thu': {
+            'open': _formatTime(_weekdayOpen),
+            'close': _formatTime(_weekdayClose),
+          },
+          'fri': {
+            'open': _formatTime(_weekdayOpen),
+            'close': _formatTime(_weekdayClose),
+          },
+          'sat': {
+            'open': _formatTime(_weekendOpen),
+            'close': _formatTime(_weekendClose),
+          },
+          'sun': {
+            'open': _formatTime(_weekendOpen),
+            'close': _formatTime(_weekendClose),
+          },
+        },
+        slotDuration: slotDurationMinutes,
+        maxAdvanceBooking: 30,
+        cancellationPolicy: {'noticeHours': 24, 'refundPercentage': 50},
+        createdAt: DateTime.now(),
+      );
+
+      await ref.read(ownerCourtsProvider.notifier).addCourt(court);
+
+      if (mounted) {
+        context.pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Court saved successfully!')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error saving court: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,19 +234,13 @@ class _AddCourtPageState extends State<AddCourtPage> {
     return Scaffold(
       backgroundColor: isDark
           ? AppColors.backgroundDark
-          : AppColors.backgroundLight,
+          : const Color(0xFFF9FAFB),
       appBar: AppBar(
-        title: Text(
-          'Add New Court',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black,
-          ),
-        ),
+        title: Text('Add New Court', style: AppTextStyles.h3),
         centerTitle: true,
         leading: IconButton(
           onPressed: () => context.pop(),
-          icon: Icon(Icons.close, color: isDark ? Colors.white : Colors.black),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
       body: SingleChildScrollView(
@@ -59,347 +250,375 @@ class _AddCourtPageState extends State<AddCourtPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildImageUpload(isDark),
-              const SizedBox(height: AppDimensions.paddingLG),
-              _buildSectionTitle('Basic Information', isDark),
-              _buildTextField(
-                'Court Name',
-                'e.g. Downtown Futsal Arena',
-                isDark,
+              _buildSectionLabel('Court Images'),
+              const SizedBox(height: 12),
+              _buildImageSelection(),
+              const SizedBox(height: 8),
+              const Text(
+                'Upload at least one high-quality image of the facility.',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
               ),
-              _buildSportSelector(isDark),
-              _buildTextField(
-                'Location',
-                'e.g. Block 5, Gulshan-e-Iqbal',
-                isDark,
-                icon: Icons.location_on_outlined,
+              const SizedBox(height: 24),
+
+              _buildSectionLabel('Court Name'),
+              const SizedBox(height: 8),
+              KhelKhoodTextField(
+                controller: _nameController,
+                hint: 'e.g. Downtown Futsal Arena',
               ),
-              const SizedBox(height: AppDimensions.paddingLG),
-              _buildSectionTitle('Pricing & Availability', isDark),
-              _buildTextField(
-                'Price per Hour (PKR)',
-                'e.g. 2500',
-                isDark,
+              const SizedBox(height: 20),
+
+              _buildSectionLabel('Sport Type'),
+              const SizedBox(height: 8),
+              _buildSportDropdown(isDark),
+              const SizedBox(height: 20),
+
+              _buildSectionLabel('Address'),
+              const SizedBox(height: 8),
+              KhelKhoodTextField(
+                controller: _locationController,
+                hint: 'e.g. Block 4, Clifton, Karachi',
+                prefix: const Icon(
+                  Icons.location_on,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              _buildSectionLabel('Google Maps Location Link'),
+              const SizedBox(height: 8),
+              KhelKhoodTextField(
+                controller: _locationLinkController,
+                hint: 'e.g. https://maps.app.goo.gl/xxxx',
+                prefix: const Icon(
+                  Icons.map_outlined,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(height: 20),
+
+              _buildSectionLabel('Pricing per Hour (PKR)'),
+              const SizedBox(height: 8),
+              KhelKhoodTextField(
+                controller: _priceController,
+                hint: '0',
                 keyboardType: TextInputType.number,
+                prefix: const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Text(
+                    'Rs',
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
-              _buildTextField(
-                'Operating Hours',
-                'e.g. 08:00 AM - 12:00 AM',
-                isDark,
-                icon: Icons.schedule_outlined,
+              const SizedBox(height: 24),
+
+              _buildSectionLabel('Slot Duration (Hours)'),
+              const SizedBox(height: 8),
+              KhelKhoodTextField(
+                controller: _slotDurationController,
+                hint: 'e.g. 1.0',
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                prefix: const Icon(
+                  Icons.timer_outlined,
+                  color: Colors.grey,
+                  size: 20,
+                ),
               ),
-              const SizedBox(height: AppDimensions.paddingLG),
-              _buildSectionTitle('Amenities', isDark),
-              _buildAmenitiesGrid(isDark),
-              const SizedBox(height: 100), // Space for button
+              const SizedBox(height: 24),
+
+              _buildSectionLabel('Operating Hours (Weekdays)'),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildTimePickerField(
+                      'Opens at',
+                      _weekdayOpen,
+                      () => _selectTime(true, true),
+                      isDark,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildTimePickerField(
+                      'Closes at',
+                      _weekdayClose,
+                      () => _selectTime(true, false),
+                      isDark,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+
+              _buildSectionLabel('Operating Hours (Weekends)'),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildTimePickerField(
+                      'Opens at',
+                      _weekendOpen,
+                      () => _selectTime(false, true),
+                      isDark,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: _buildTimePickerField(
+                      'Closes at',
+                      _weekendClose,
+                      () => _selectTime(false, false),
+                      isDark,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 32),
+
+              _buildSectionLabel('Amenities'),
+              const SizedBox(height: 12),
+              ..._amenities.keys.map(
+                (amenity) => _buildAmenityToggle(amenity, isDark),
+              ),
+
+              const SizedBox(height: 40),
+              KhelKhoodButton(
+                text: 'Save Court',
+                onPressed: _saveCourt,
+                isLoading: _isLoading,
+                icon: Icons.save_outlined,
+              ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
       ),
-      bottomSheet: _buildStickyFooter(isDark),
     );
   }
 
-  Widget _buildImageUpload(bool isDark) {
+  Widget _buildSectionLabel(String label) {
+    return Text(
+      label,
+      style: const TextStyle(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF1F2937),
+      ),
+    );
+  }
+
+  Widget _buildImageSelection() {
+    return Container(
+      height: 100,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        itemCount: _images.length + 1,
+        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        itemBuilder: (context, index) {
+          if (index == 0) {
+            return GestureDetector(
+              onTap: _pickImage,
+              child: Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFE8F5E9),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(
+                    color: AppColors.primary,
+                    style: BorderStyle.solid,
+                  ),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        color: AppColors.primary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.camera_alt,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      'Add Photo',
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          final imageIndex = index - 1;
+          return Stack(
+            children: [
+              Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    image: FileImage(File(_images[imageIndex].path)),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 4,
+                right: 4,
+                child: GestureDetector(
+                  onTap: () => _removeImage(imageIndex),
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.black54,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.close,
+                      size: 12,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSportDropdown(bool isDark) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.surfaceDark : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedSport,
+          hint: const Text(
+            'Select a sport',
+            style: TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+          isExpanded: true,
+          icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+          onChanged: (String? newValue) {
+            setState(() {
+              _selectedSport = newValue;
+            });
+          },
+          items: _sports.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(value: value, child: Text(value));
+          }).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimePickerField(
+    String label,
+    TimeOfDay time,
+    VoidCallback onTap,
+    bool isDark,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Photos',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          height: 140,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: [
-              _buildAddImageButton(isDark),
-              const SizedBox(width: 12),
-              _buildMockImage(
-                isDark,
-                'https://lh3.googleusercontent.com/aida-public/AB6AXuAY01BT97KxZ2rszgJrRACrqlqOGfSPOkA_cK0I86j-Nq26E_5zubbCs6OVkZWLxuEZLYaXENPI8DtylEbL_NtZjePfDqpUjHu0hC3N5Ec7As0qmB5g4cex5G7blYMGKWfOEyYInNwMjKC_4Z_8XnXScLQcuesUrtaJr93W0VpECB-vZubPt4zi9T96tU2Yl55jvr4Kq5tuGmQyoQJebzD-S6R5palEpgEH8WOGDzHptiXzU7W95e-yra0POObIQ2VOrPu6qMZrTnU',
-              ),
-            ],
+        Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
+        const SizedBox(height: 4),
+        GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.surfaceDark : Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0xFFE5E7EB)),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  _formatTimeDisplay(time),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const Icon(Icons.access_time, color: Colors.grey, size: 18),
+              ],
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildAddImageButton(bool isDark) {
+  Widget _buildAmenityToggle(String amenity, bool isDark) {
     return Container(
-      width: 120,
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : AppColors.white,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-        border: Border.all(color: AppColors.primary, style: BorderStyle.solid),
+        color: isDark ? AppColors.surfaceDark : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE5E7EB)),
+        boxShadow: [
+          if (!isDark)
+            BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+        ],
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              shape: BoxShape.circle,
+              color: const Color(0xFFF3F4F6),
+              borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(Icons.add_a_photo_outlined, color: AppColors.primary),
+            child: Icon(
+              _amenityIcons[amenity],
+              color: const Color(0xFF1F2937),
+              size: 18,
+            ),
           ),
-          const SizedBox(height: 8),
-          const Text(
-            'Add Photo',
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primary,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              amenity,
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
             ),
+          ),
+          Switch(
+            value: _amenities[amenity]!,
+            onChanged: (val) => setState(() => _amenities[amenity] = val),
+            activeColor: AppColors.primary,
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildMockImage(bool isDark, String url) {
-    return Container(
-      width: 120,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-        image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 4,
-            right: 4,
-            child: Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.close, size: 12, color: Colors.white),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title, bool isDark) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: isDark
-              ? AppColors.textPrimaryDark
-              : AppColors.textPrimaryLight,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildTextField(
-    String label,
-    String hint,
-    bool isDark, {
-    IconData? icon,
-    TextInputType? keyboardType,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey,
-            ),
-          ),
-          const SizedBox(height: 8),
-          TextFormField(
-            keyboardType: keyboardType,
-            style: TextStyle(color: isDark ? Colors.white : Colors.black),
-            decoration: InputDecoration(
-              hintText: hint,
-              hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
-              prefixIcon: icon != null
-                  ? Icon(icon, color: AppColors.primary, size: 20)
-                  : null,
-              filled: true,
-              fillColor: isDark ? AppColors.surfaceDark : AppColors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-                borderSide: BorderSide(
-                  color: isDark ? AppColors.borderDark : Colors.grey.shade100,
-                ),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-                borderSide: BorderSide(
-                  color: isDark ? AppColors.borderDark : Colors.grey.shade100,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-                borderSide: const BorderSide(
-                  color: AppColors.primary,
-                  width: 2,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSportSelector(bool isDark) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Sport Type',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: Colors.grey,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-            decoration: BoxDecoration(
-              color: isDark ? AppColors.surfaceDark : AppColors.white,
-              borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-              border: Border.all(
-                color: isDark ? AppColors.borderDark : Colors.grey.shade100,
-              ),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: _selectedSport,
-                isExpanded: true,
-                dropdownColor: isDark ? AppColors.surfaceDark : AppColors.white,
-                items: _sports.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(
-                      value,
-                      style: TextStyle(
-                        color: isDark ? Colors.white : Colors.black,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (val) {
-                  if (val != null) setState(() => _selectedSport = val);
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAmenitiesGrid(bool isDark) {
-    return Container(
-      padding: const EdgeInsets.all(AppDimensions.paddingLG),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : AppColors.white,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-        border: Border.all(
-          color: isDark ? AppColors.borderDark : Colors.grey.shade100,
-        ),
-      ),
-      child: GridView.count(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        crossAxisCount: 2,
-        childAspectRatio: 3,
-        children: _amenities.keys.map((name) {
-          return Row(
-            children: [
-              SizedBox(
-                height: 24,
-                width: 24,
-                child: Checkbox(
-                  value: _amenities[name],
-                  onChanged: (val) =>
-                      setState(() => _amenities[name] = val ?? false),
-                  activeColor: AppColors.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                name,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: isDark ? Colors.white : Colors.black54,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildStickyFooter(bool isDark) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: AppDimensions.paddingLG,
-        right: AppDimensions.paddingLG,
-        top: AppDimensions.paddingMD,
-        bottom: MediaQuery.of(context).padding.bottom + AppDimensions.paddingMD,
-      ),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : AppColors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
-          minimumSize: const Size(double.infinity, 56),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-          ),
-          elevation: 4,
-          shadowColor: AppColors.primary.withOpacity(0.4),
-        ),
-        child: const Text(
-          'Save Court',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
       ),
     );
   }

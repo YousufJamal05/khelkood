@@ -19,6 +19,7 @@ import '../ui/pages/notifications_page.dart';
 import '../ui/pages/favorite_courts_page.dart';
 import '../ui/pages/reviews_page.dart';
 import '../ui/pages/complete_profile_page.dart';
+import '../ui/court_owner/court_owner_main_screen.dart';
 import '../ui/court_owner/court_owner_home_screen.dart';
 import '../ui/court_owner/court_bookings_page.dart';
 import '../ui/court_owner/court_analytics_page.dart';
@@ -178,22 +179,45 @@ class AppRouter {
           path: completeProfile,
           builder: (context, state) => const CompleteProfilePage(),
         ),
-        // Court Owner Routes
-        GoRoute(
-          path: ownerHome,
-          builder: (context, state) => const CourtOwnerHomeScreen(),
-        ),
-        GoRoute(
-          path: ownerBookings,
-          builder: (context, state) => const CourtBookingsPage(),
-        ),
-        GoRoute(
-          path: ownerAnalytics,
-          builder: (context, state) => const CourtAnalyticsPage(),
-        ),
-        GoRoute(
-          path: ownerCourts,
-          builder: (context, state) => const MyCourtsPage(),
+        // ... existing routes ...
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) {
+            return CourtOwnerMainScreen(navigationShell: navigationShell);
+          },
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: ownerHome,
+                  builder: (context, state) => const CourtOwnerHomeScreen(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: ownerBookings,
+                  builder: (context, state) => const CourtBookingsPage(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: ownerCourts,
+                  builder: (context, state) => const MyCourtsPage(),
+                ),
+              ],
+            ),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: ownerProfile,
+                  builder: (context, state) => const CourtOwnerProfilePage(),
+                ),
+              ],
+            ),
+          ],
         ),
         GoRoute(
           path: ownerAddCourt,
@@ -204,8 +228,8 @@ class AppRouter {
           builder: (context, state) => const BlockSlotsPage(),
         ),
         GoRoute(
-          path: ownerProfile,
-          builder: (context, state) => const CourtOwnerProfilePage(),
+          path: ownerAnalytics,
+          builder: (context, state) => const CourtAnalyticsPage(),
         ),
       ],
     );
