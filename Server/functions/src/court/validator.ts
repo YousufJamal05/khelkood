@@ -15,6 +15,7 @@ export class CourtValidator {
     }
 
     return {
+      courtId: data.courtId,
       ownerId: data.ownerId,
       name: data.name,
       description: data.description || "",

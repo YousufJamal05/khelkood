@@ -29,14 +29,12 @@ class CourtService {
 
   /// Upload court image to Firebase Storage
   Future<String> uploadCourtImage({
-    required String? courtId,
+    required String courtId,
     required String fileName,
     required List<int> imageBytes,
     required String contentType,
   }) async {
-    // If courtId is null (new court), we use a temp directory or just a guid
-    final folder = courtId ?? 'new_courts';
-    final ref = _storage.ref().child('courts').child(folder).child(fileName);
+    final ref = _storage.ref().child('courts').child(courtId).child(fileName);
     final metadata = SettableMetadata(contentType: contentType);
     final uploadTask = ref.putData(Uint8List.fromList(imageBytes), metadata);
     final snapshot = await uploadTask;
