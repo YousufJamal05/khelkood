@@ -83,7 +83,7 @@ class AppRouter {
               isOtp ||
               isRoleSelection)
             return null;
-          return auth;
+          return roleSelection;
         }
 
         // isLoggedIn == true
