@@ -12,7 +12,8 @@ import '../../providers/court_provider.dart';
 import 'package:common/common.dart';
 
 class AddCourtPage extends ConsumerStatefulWidget {
-  const AddCourtPage({super.key});
+  final CourtModel? existingCourt;
+  const AddCourtPage({super.key, this.existingCourt});
 
   @override
   ConsumerState<AddCourtPage> createState() => _AddCourtPageState();
@@ -26,11 +27,8 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
   final TextEditingController _locationLinkController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _slotDurationController = TextEditingController(
-    text: '1.0',
-  );
 
-  String? _selectedSport;
+  final List<String> _selectedSports = [];
   final List<String> _sports = [
     'Football',
     'Cricket',
@@ -62,6 +60,45 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
   };
 
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.existingCourt != null) {
+      final court = widget.existingCourt!;
+      _nameController.text = court.name;
+      _locationController.text = court.address;
+      _locationLinkController.text = court.location ?? '';
+      _priceController.text = court.pricing['base']?.toString() ?? '0';
+      _descriptionController.text = court.description ?? '';
+
+      _selectedSports.clear();
+      _selectedSports.addAll(
+        court.sportTypes.map((s) => s[0].toUpperCase() + s.substring(1)),
+      );
+
+      // Pre-fill amenities
+      for (var amenity in _amenities.keys) {
+        final key = amenity.toLowerCase().replaceAll(' ', '_');
+        _amenities[amenity] = court.amenities.contains(key);
+      }
+
+      // Pre-fill operational hours (taking Monday and Saturday as defaults for weekday/weekend)
+      if (court.operationalHours.containsKey('mon')) {
+        _weekdayOpen = _parseTime(court.operationalHours['mon']!['open']!);
+        _weekdayClose = _parseTime(court.operationalHours['mon']!['close']!);
+      }
+      if (court.operationalHours.containsKey('sat')) {
+        _weekendOpen = _parseTime(court.operationalHours['sat']!['open']!);
+        _weekendClose = _parseTime(court.operationalHours['sat']!['close']!);
+      }
+    }
+  }
+
+  TimeOfDay _parseTime(String time) {
+    final parts = time.split(':');
+    return TimeOfDay(hour: int.parse(parts[0]), minute: int.parse(parts[1]));
+  }
 
   Future<void> _pickImage() async {
     if (_images.length >= 3) {
@@ -126,16 +163,17 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
   }
 
   Future<void> _saveCourt() async {
-    if (!_formKey.currentState!.validate()) return;
-    if (_images.isEmpty) {
+    if (_selectedSports.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please upload at least one image')),
+        const SnackBar(content: Text('Please select at least one sport type')),
       );
       return;
     }
-    if (_selectedSport == null) {
+
+    // Only require images for new courts
+    if (widget.existingCourt == null && _images.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a sport type')),
+        const SnackBar(content: Text('Please upload at least one image')),
       );
       return;
     }
@@ -148,16 +186,21 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
 
       final courtService = ref.read(courtServiceProvider);
 
-      // Generate Court ID locally to organize images
-      final courtId = courtService.generateCourtId();
+      final courtId =
+          widget.existingCourt?.courtId ?? courtService.generateCourtId();
 
       // Real image upload to Firebase Storage under courtId folder
-      final List<String> photoUrls = [];
+      final List<String> photoUrls = widget.existingCourt != null
+          ? List<String>.from(widget.existingCourt!.photos)
+          : [];
+
       for (int i = 0; i < _images.length; i++) {
         final image = _images[i];
         final bytes = await image.readAsBytes();
         final extension = image.path.split('.').last;
-        final fileName = 'photo_$i.$extension';
+        // Use a more unique filename to avoid overwriting existing ones during edit
+        final fileName =
+            'photo_${DateTime.now().millisecondsSinceEpoch}_$i.$extension';
 
         final url = await courtService.uploadCourtImage(
           courtId: courtId,
@@ -168,15 +211,12 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
         photoUrls.add(url);
       }
 
-      final slotDurationMinutes =
-          (double.tryParse(_slotDurationController.text) ?? 1.0 * 60).toInt();
-
       final court = CourtModel(
         courtId: courtId, // Pass the locally generated ID
         ownerId: user.uid,
         name: _nameController.text,
         description: _descriptionController.text,
-        sportType: _selectedSport!.toLowerCase(),
+        sportTypes: _selectedSports.map((s) => s.toLowerCase()).toList(),
         area: 'Karachi', // Hardcoded for now
         address: _locationController.text,
         location: _locationLinkController.text.isNotEmpty
@@ -218,14 +258,18 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
             'close': _formatTime(_weekendClose),
           },
         },
-        slotDuration: slotDurationMinutes,
+
         maxAdvanceBooking: 30,
         cancellationPolicy: {'noticeHours': 24, 'refundPercentage': 50},
         createdAt:
             DateTime.now(), // Model uses DateTime, toMap handles conversion
       );
 
-      await ref.read(ownerCourtsProvider.notifier).addCourt(court);
+      if (widget.existingCourt != null) {
+        await ref.read(ownerCourtsProvider.notifier).updateCourt(court);
+      } else {
+        await ref.read(ownerCourtsProvider.notifier).addCourt(court);
+      }
 
       if (mounted) {
         context.pop();
@@ -253,7 +297,10 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
           ? AppColors.backgroundDark
           : const Color(0xFFF9FAFB),
       appBar: AppBar(
-        title: Text('Add New Court', style: AppTextStyles.h3),
+        title: Text(
+          widget.existingCourt != null ? 'Edit Court' : 'Add New Court',
+          style: AppTextStyles.h3,
+        ),
         centerTitle: true,
         leading: IconButton(
           onPressed: () => context.pop(),
@@ -293,7 +340,7 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
 
               _buildSectionLabel('Sport Type'),
               const SizedBox(height: 8),
-              _buildSportDropdown(isDark),
+              _buildSportChips(isDark),
               const SizedBox(height: 20),
 
               _buildSectionLabel('Address'),
@@ -364,22 +411,6 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
               ),
               const SizedBox(height: 24),
 
-              _buildSectionLabel('Slot Duration (Hours)'),
-              const SizedBox(height: 8),
-              KhelKhoodTextField(
-                controller: _slotDurationController,
-                hint: 'e.g. 1.0',
-                keyboardType: const TextInputType.numberWithOptions(
-                  decimal: true,
-                ),
-                prefix: const Icon(
-                  Icons.timer_outlined,
-                  color: Colors.grey,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(height: 24),
-
               _buildSectionLabel('Operating Hours (Weekdays)'),
               const SizedBox(height: 8),
               Row(
@@ -438,7 +469,9 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
 
               const SizedBox(height: 40),
               KhelKhoodButton(
-                text: 'Save Court',
+                text: widget.existingCourt != null
+                    ? 'Update Court'
+                    : 'Save Court',
                 onPressed: _saveCourt,
                 isLoading: _isLoading,
                 icon: Icons.save_outlined,
@@ -552,33 +585,44 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
     );
   }
 
-  Widget _buildSportDropdown(bool isDark) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE5E7EB)),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: _selectedSport,
-          hint: const Text(
-            'Select a sport',
-            style: TextStyle(color: Colors.grey, fontSize: 14),
-          ),
-          isExpanded: true,
-          icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
-          onChanged: (String? newValue) {
+  Widget _buildSportChips(bool isDark) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: _sports.map((sport) {
+        final isSelected = _selectedSports.contains(sport);
+        return FilterChip(
+          label: Text(sport),
+          selected: isSelected,
+          onSelected: (selected) {
             setState(() {
-              _selectedSport = newValue;
+              if (selected) {
+                _selectedSports.add(sport);
+              } else {
+                _selectedSports.remove(sport);
+              }
             });
           },
-          items: _sports.map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(value: value, child: Text(value));
-          }).toList(),
-        ),
-      ),
+          selectedColor: AppColors.primary.withOpacity(0.2),
+          checkmarkColor: AppColors.primary,
+          labelStyle: TextStyle(
+            color: isSelected
+                ? AppColors.primary
+                : (isDark
+                      ? AppColors.textPrimaryDark
+                      : AppColors.textPrimaryLight),
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            fontSize: 13,
+          ),
+          backgroundColor: isDark ? AppColors.surfaceDark : Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(
+              color: isSelected ? AppColors.primary : Colors.grey.shade300,
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 

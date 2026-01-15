@@ -6,7 +6,7 @@ export interface ICourt {
     ownerId: string;
     name: string;
     description: string;
-    sportType: string;
+    sportTypes: string[];
     area: string;
     address: string;
     location?: string;
@@ -24,7 +24,6 @@ export interface ICourt {
             close: string;
         };
     };
-    slotDuration: number;
     maxAdvanceBooking: number;
     cancellationPolicy: {
         noticeHours: number;

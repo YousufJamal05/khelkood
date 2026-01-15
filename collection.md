@@ -33,7 +33,7 @@ Contains details about each sports facility/court.
 | `ownerId` | String | `uid` of the court owner |
 | `name` | String | Name of the facility |
 | `description` | String | Detailed description of the court |
-| `sportType` | String | Type of sport: `cricket`, `futsal`, `padel` |
+| `sportTypes` | Array<String> | Types of sports: `["cricket", "futsal"]` |
 | `area` | String | Geographic area in Karachi (e.g., `DHA`, `Clifton`) |
 | `address` | String | Physical address |
 | `location` | String | Google Maps location link (URL) |
@@ -41,7 +41,7 @@ Contains details about each sports facility/court.
 | `photos` | Array<String> | List of URLs to court images |
 | `amenities` | Array<String> | List of amenities (e.g., `["parking", "washroom", "drinking_water"]`) |
 | `operationalHours` | Map | Weekly schedule: `{ "mon": { "open": "09:00", "close": "22:00" }, ... }` |
-| `slotDuration` | Number | Duration of a single slot in minutes (e.g., `60`) |
+
 | `maxAdvanceBooking` | Number | Maximum days in advance a user can book |
 | `cancellationPolicy`| Map | Details: `{ "noticeHours": 24, "refundPercentage": 50 }` |
 | `isVerified` | Boolean | Whether the court is verified by admin |
