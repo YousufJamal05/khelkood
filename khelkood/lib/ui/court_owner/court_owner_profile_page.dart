@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import '../../design/app_colors.dart';
 import '../../design/app_dimensions.dart';
 import 'widgets/court_owner_card.dart';
+import 'package:common/providers/auth_state_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CourtOwnerProfilePage extends StatelessWidget {
+class CourtOwnerProfilePage extends ConsumerWidget {
   const CourtOwnerProfilePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -82,7 +84,7 @@ class CourtOwnerProfilePage extends StatelessWidget {
                 ),
               ], isDark),
               const SizedBox(height: AppDimensions.paddingXXL),
-              _buildLogoutButton(isDark),
+              _buildLogoutButton(isDark, ref),
               const SizedBox(height: AppDimensions.paddingXXL),
             ],
           ),
@@ -256,9 +258,12 @@ class CourtOwnerProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildLogoutButton(bool isDark) {
+  Widget _buildLogoutButton(bool isDark, WidgetRef ref) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () async {
+        final authService = ref.read(authServiceProvider);
+        await authService.signOut();
+      },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.red.withOpacity(0.1),
         foregroundColor: Colors.red,
