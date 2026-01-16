@@ -6,7 +6,7 @@ export class CourtValidator {
    * Validates the add court request.
    */
   static validateAddCourt(data: any): IAddCourtRequest {
-    if (!data.name || !data.sportType || !data.area || !data.address) {
+    if (!data.name || !data.sportTypes || !Array.isArray(data.sportTypes) || data.sportTypes.length === 0 || !data.area || !data.address) {
       throw new HttpsError("invalid-argument", "Missing required court fields.");
     }
 
@@ -19,7 +19,7 @@ export class CourtValidator {
       ownerId: data.ownerId,
       name: data.name,
       description: data.description || "",
-      sportType: data.sportType,
+      sportTypes: data.sportTypes,
       area: data.area,
       address: data.address,
       location: data.location,
@@ -27,7 +27,7 @@ export class CourtValidator {
       photos: data.photos,
       amenities: data.amenities || [],
       operationalHours: data.operationalHours || {},
-      slotDuration: data.slotDuration || 60,
+
       maxAdvanceBooking: data.maxAdvanceBooking || 30,
       cancellationPolicy: data.cancellationPolicy || { noticeHours: 24, refundPercentage: 50 },
     };
@@ -49,7 +49,7 @@ export class CourtValidator {
       courtId: data.courtId,
       name: data.name,
       description: data.description,
-      sportType: data.sportType,
+      sportTypes: data.sportTypes,
       area: data.area,
       address: data.address,
       location: data.location,
@@ -57,7 +57,7 @@ export class CourtValidator {
       photos: data.photos,
       amenities: data.amenities,
       operationalHours: data.operationalHours,
-      slotDuration: data.slotDuration,
+
       maxAdvanceBooking: data.maxAdvanceBooking,
       cancellationPolicy: data.cancellationPolicy,
     };

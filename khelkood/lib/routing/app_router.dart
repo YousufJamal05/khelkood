@@ -1,3 +1,4 @@
+import 'package:common/common.dart';
 import 'package:common/providers/auth_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -221,7 +222,10 @@ class AppRouter {
         ),
         GoRoute(
           path: ownerAddCourt,
-          builder: (context, state) => const AddCourtPage(),
+          builder: (context, state) {
+            final court = state.extra as CourtModel?;
+            return AddCourtPage(existingCourt: court);
+          },
         ),
         GoRoute(
           path: ownerBlockSlot,

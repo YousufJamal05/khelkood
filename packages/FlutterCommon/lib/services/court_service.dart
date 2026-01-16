@@ -66,7 +66,7 @@ class CourtService {
     if (data == null) return [];
 
     return data
-        .map((e) => CourtModel.fromMap(e as Map<String, dynamic>))
+        .map((e) => CourtModel.fromMap(Map<String, dynamic>.from(e as Map)))
         .toList();
   }
 

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:common/common.dart';
 import '../../design/app_colors.dart';
 import '../../design/app_dimensions.dart';
-import 'widgets/court_owner_card.dart';
+import '../../providers/court_provider.dart';
+import '../../routing/app_router.dart';
 import 'widgets/court_owner_card.dart';
 
-class MyCourtsPage extends StatelessWidget {
+class MyCourtsPage extends ConsumerWidget {
   const MyCourtsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final courtsAsync = ref.watch(ownerCourtsProvider);
 
     return Scaffold(
       backgroundColor: isDark
@@ -20,51 +25,67 @@ class MyCourtsPage extends StatelessWidget {
           children: [
             _buildHeader(context, isDark),
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.all(AppDimensions.paddingLG),
-                children: [
-                  _buildCourtCard(
-                    context,
-                    name: 'Futsal Arena A',
-                    type: 'Indoor Football • 5-a-side',
-                    status: 'Active',
-                    maxPlayers: '12 Max',
-                    price: 'PKR 2500/hr',
-                    icon: Icons.sports_soccer_outlined,
-                    isDark: isDark,
-                  ),
-                  const SizedBox(height: AppDimensions.paddingLG),
-                  _buildCourtCard(
-                    context,
-                    name: 'Badminton Court 1',
-                    type: 'Indoor • Standard',
-                    status: 'Active',
-                    maxPlayers: '4 Max',
-                    price: 'PKR 1200/hr',
-                    icon: Icons.sports_tennis_outlined,
-                    isDark: isDark,
-                  ),
-                  const SizedBox(height: AppDimensions.paddingLG),
-                  _buildCourtCard(
-                    context,
-                    name: 'Tennis Court B',
-                    type: 'Outdoor • Clay',
-                    status: 'Inactive',
-                    maxPlayers: '4 Max',
-                    price: 'PKR 2000/hr',
-                    icon: Icons.sports_tennis_outlined,
-                    isDark: isDark,
-                    isActive: false,
-                  ),
-                  const SizedBox(height: 80), // Space for FAB
-                ],
+              child: RefreshIndicator(
+                onRefresh: () =>
+                    ref.read(ownerCourtsProvider.notifier).refresh(),
+                child: courtsAsync.when(
+                  data: (courts) {
+                    if (courts.isEmpty) {
+                      return ListView(
+                        children: [
+                          const SizedBox(height: 100),
+                          Center(
+                            child: Column(
+                              children: [
+                                Icon(
+                                  Icons.sports_soccer,
+                                  size: 64,
+                                  color: Colors.grey.withOpacity(0.5),
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'No courts added yet',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.grey.withOpacity(0.8),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return ListView.separated(
+                      padding: const EdgeInsets.all(AppDimensions.paddingLG),
+                      itemCount: courts.length + 1, // +1 for the FAB space
+                      separatorBuilder: (_, __) =>
+                          const SizedBox(height: AppDimensions.paddingLG),
+                      itemBuilder: (context, index) {
+                        if (index == courts.length) {
+                          return const SizedBox(height: 80); // Space for FAB
+                        }
+                        final court = courts[index];
+                        return _buildCourtCard(
+                          context,
+                          ref,
+                          court: court,
+                          isDark: isDark,
+                        );
+                      },
+                    );
+                  },
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (err, stack) => Center(child: Text('Error: $err')),
+                ),
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () => context.push(AppRouter.ownerAddCourt),
         backgroundColor: AppColors.primary,
         icon: const Icon(Icons.add, color: Colors.white),
         label: const Text(
@@ -91,44 +112,39 @@ class MyCourtsPage extends StatelessWidget {
                   : AppColors.textPrimaryLight,
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: isDark ? AppColors.surfaceDark : AppColors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: isDark ? AppColors.borderDark : Colors.grey.shade100,
-              ),
-            ),
-            child: Row(
-              children: [
-                Text(
-                  '3 Courts',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primary,
-                  ),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
   }
 
   Widget _buildCourtCard(
-    BuildContext context, {
-    required String name,
-    required String type,
-    required String status,
-    required String maxPlayers,
-    required String price,
-    required IconData icon,
+    BuildContext context,
+    WidgetRef ref, {
+    required CourtModel court,
     required bool isDark,
-    bool isActive = true,
   }) {
+    final status = court.isVerified.toLowerCase();
+    Color statusColor;
+    String statusText;
+
+    switch (status) {
+      case 'approved':
+        statusColor = AppColors.primary;
+        statusText = 'ACTIVE';
+        break;
+      case 'rejected':
+        statusColor = Colors.red;
+        statusText = 'REJECTED';
+        break;
+      case 'pending':
+      default:
+        statusColor = Colors.orange;
+        statusText = 'PENDING';
+        break;
+    }
+
+    final isActive = status == 'approved' || status == 'pending';
+
     return CourtOwnerCard(
       padding: EdgeInsets.zero,
       child: Column(
@@ -144,7 +160,11 @@ class MyCourtsPage extends StatelessWidget {
                     color: AppColors.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
                   ),
-                  child: Icon(icon, color: AppColors.primary, size: 32),
+                  child: Icon(
+                    _getSportIcon(court.sportTypes.first),
+                    color: AppColors.primary,
+                    size: 32,
+                  ),
                 ),
                 const SizedBox(width: AppDimensions.paddingLG),
                 Expanded(
@@ -156,7 +176,7 @@ class MyCourtsPage extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              name,
+                              court.name,
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -172,17 +192,13 @@ class MyCourtsPage extends StatelessWidget {
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: isActive
-                                  ? AppColors.primary.withOpacity(0.1)
-                                  : Colors.grey.withOpacity(0.1),
+                              color: statusColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              status.toUpperCase(),
+                              statusText,
                               style: TextStyle(
-                                color: isActive
-                                    ? AppColors.primary
-                                    : Colors.grey,
+                                color: statusColor,
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -191,7 +207,7 @@ class MyCourtsPage extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        type,
+                        '${court.sportTypes.map((s) => s[0].toUpperCase() + s.substring(1)).join(' • ')} • ${court.area}',
                         style: TextStyle(
                           fontSize: 14,
                           color: isDark
@@ -203,14 +219,8 @@ class MyCourtsPage extends StatelessWidget {
                       Row(
                         children: [
                           _buildSmallIconInfo(
-                            Icons.groups_outlined,
-                            maxPlayers,
-                            isDark,
-                          ),
-                          const SizedBox(width: 16),
-                          _buildSmallIconInfo(
                             Icons.payments_outlined,
-                            price,
+                            'PKR ${court.pricing['base']}/hr',
                             isDark,
                           ),
                         ],
@@ -229,9 +239,21 @@ class MyCourtsPage extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                _buildActionButton(Icons.edit, 'Edit', isDark),
+                _buildActionButton(
+                  Icons.edit,
+                  'Edit',
+                  isDark,
+                  onTap: () {
+                    context.push(AppRouter.ownerAddCourt, extra: court);
+                  },
+                ),
                 const SizedBox(width: 8),
-                _buildActionButton(Icons.calendar_month, 'Schedule', isDark),
+                _buildActionButton(
+                  Icons.calendar_month,
+                  'Schedule',
+                  isDark,
+                  onTap: () {},
+                ),
                 const SizedBox(width: 8),
                 _buildActionButton(
                   isActive ? Icons.power_settings_new : Icons.play_arrow,
@@ -239,6 +261,7 @@ class MyCourtsPage extends StatelessWidget {
                   isDark,
                   isDestructive: isActive,
                   isPositive: !isActive,
+                  onTap: () {},
                 ),
               ],
             ),
@@ -246,6 +269,22 @@ class MyCourtsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  IconData _getSportIcon(String sportType) {
+    switch (sportType.toLowerCase()) {
+      case 'football':
+        return Icons.sports_soccer_outlined;
+      case 'cricket':
+        return Icons.sports_cricket_outlined;
+      case 'padel':
+      case 'tennis':
+        return Icons.sports_tennis_outlined;
+      case 'badminton':
+        return Icons.sports_tennis_outlined;
+      default:
+        return Icons.sports_outlined;
+    }
   }
 
   Widget _buildSmallIconInfo(IconData icon, String text, bool isDark) {
@@ -270,6 +309,7 @@ class MyCourtsPage extends StatelessWidget {
     IconData icon,
     String label,
     bool isDark, {
+    required VoidCallback onTap,
     bool isDestructive = false,
     bool isPositive = false,
   }) {
@@ -288,7 +328,7 @@ class MyCourtsPage extends StatelessWidget {
 
     return Expanded(
       child: InkWell(
-        onTap: () {},
+        onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 10),

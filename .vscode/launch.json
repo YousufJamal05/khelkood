@@ -28,7 +28,7 @@
       "name": "[Server] Run Firebase Emulators with Imported Data",
       "type": "node-terminal",
       "request": "launch",
-      "command": "firebase emulators:start --import=\"./firebase-export-17653971512406Kqkm3\"",
+      "command": "firebase emulators:start --import=\"./firebase-export-1768573440677u6fML0\"",
       "cwd": "${workspaceFolder}/server/functions"
     },
     {

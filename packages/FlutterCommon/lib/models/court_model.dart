@@ -8,7 +8,7 @@ class CourtModel extends Equatable {
   final String ownerId;
   final String name;
   final String description;
-  final String sportType;
+  final List<String> sportTypes;
   final String area;
   final String address;
   final String? location; // Changed to String for Google Maps link
@@ -16,7 +16,6 @@ class CourtModel extends Equatable {
   final List<String> photos;
   final List<String> amenities;
   final Map<String, dynamic> operationalHours;
-  final int slotDuration;
   final int maxAdvanceBooking;
   final Map<String, dynamic> cancellationPolicy;
   final String isVerified; // 'pending', 'approved', 'rejected'
@@ -29,7 +28,7 @@ class CourtModel extends Equatable {
     required this.ownerId,
     required this.name,
     required this.description,
-    required this.sportType,
+    required this.sportTypes,
     required this.area,
     required this.address,
     this.location,
@@ -37,7 +36,6 @@ class CourtModel extends Equatable {
     required this.photos,
     required this.amenities,
     required this.operationalHours,
-    required this.slotDuration,
     required this.maxAdvanceBooking,
     required this.cancellationPolicy,
     this.isVerified = 'pending',
@@ -52,7 +50,7 @@ class CourtModel extends Equatable {
         ownerId,
         name,
         description,
-        sportType,
+        sportTypes,
         area,
         address,
         location,
@@ -60,7 +58,6 @@ class CourtModel extends Equatable {
         photos,
         amenities,
         operationalHours,
-        slotDuration,
         maxAdvanceBooking,
         cancellationPolicy,
         isVerified,
@@ -74,7 +71,7 @@ class CourtModel extends Equatable {
     String? ownerId,
     String? name,
     String? description,
-    String? sportType,
+    List<String>? sportTypes,
     String? area,
     String? address,
     String? location,
@@ -82,7 +79,6 @@ class CourtModel extends Equatable {
     List<String>? photos,
     List<String>? amenities,
     Map<String, dynamic>? operationalHours,
-    int? slotDuration,
     int? maxAdvanceBooking,
     Map<String, dynamic>? cancellationPolicy,
     String? isVerified,
@@ -95,7 +91,7 @@ class CourtModel extends Equatable {
       ownerId: ownerId ?? this.ownerId,
       name: name ?? this.name,
       description: description ?? this.description,
-      sportType: sportType ?? this.sportType,
+      sportTypes: sportTypes ?? this.sportTypes,
       area: area ?? this.area,
       address: address ?? this.address,
       location: location ?? this.location,
@@ -103,7 +99,6 @@ class CourtModel extends Equatable {
       photos: photos ?? this.photos,
       amenities: amenities ?? this.amenities,
       operationalHours: operationalHours ?? this.operationalHours,
-      slotDuration: slotDuration ?? this.slotDuration,
       maxAdvanceBooking: maxAdvanceBooking ?? this.maxAdvanceBooking,
       cancellationPolicy: cancellationPolicy ?? this.cancellationPolicy,
       isVerified: isVerified ?? this.isVerified,
@@ -127,7 +122,7 @@ class CourtModel extends Equatable {
       ownerId: map['ownerId'] ?? '',
       name: map['name'] ?? '',
       description: map['description'] ?? '',
-      sportType: map['sportType'] ?? '',
+      sportTypes: List<String>.from(map['sportTypes'] ?? []),
       area: map['area'] ?? '',
       address: map['address'] ?? '',
       location: map['location']?.toString(), // Google Maps Link
@@ -136,7 +131,6 @@ class CourtModel extends Equatable {
       amenities: List<String>.from(map['amenities'] ?? []),
       operationalHours:
           Map<String, dynamic>.from(map['operationalHours'] ?? {}),
-      slotDuration: map['slotDuration'] ?? 60,
       maxAdvanceBooking: map['maxAdvanceBooking'] ?? 30,
       cancellationPolicy:
           Map<String, dynamic>.from(map['cancellationPolicy'] ?? {}),
@@ -161,7 +155,7 @@ class CourtModel extends Equatable {
       'ownerId': ownerId,
       'name': name,
       'description': description,
-      'sportType': sportType,
+      'sportTypes': sportTypes,
       'area': area,
       'address': address,
       if (location != null) 'location': location,
@@ -169,7 +163,6 @@ class CourtModel extends Equatable {
       'photos': photos,
       'amenities': amenities,
       'operationalHours': operationalHours,
-      'slotDuration': slotDuration,
       'maxAdvanceBooking': maxAdvanceBooking,
       'cancellationPolicy': cancellationPolicy,
       'isVerified': isVerified,
@@ -184,7 +177,7 @@ class CourtModel extends Equatable {
       'ownerId': ownerId,
       'name': name,
       'description': description,
-      'sportType': sportType,
+      'sportTypes': sportTypes,
       'area': area,
       'address': address,
       if (location != null) 'location': location,
@@ -192,7 +185,6 @@ class CourtModel extends Equatable {
       'photos': photos,
       'amenities': amenities,
       'operationalHours': operationalHours,
-      'slotDuration': slotDuration,
       'maxAdvanceBooking': maxAdvanceBooking,
       'cancellationPolicy': cancellationPolicy,
       'isVerified': isVerified,
