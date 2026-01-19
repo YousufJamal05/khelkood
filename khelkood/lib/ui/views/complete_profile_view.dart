@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../design/app_colors.dart';
 import '../../providers/complete_profile_provider.dart';
 import '../../providers/user_role_provider.dart';
+import '../../providers/feedback_service.dart';
 import '../widgets/khelkhood_button.dart';
 
 class CompleteProfileView extends ConsumerStatefulWidget {
@@ -45,16 +46,25 @@ class _CompleteProfileViewState extends ConsumerState<CompleteProfileView> {
     final isOwner = selectedRole == UserRole.owner;
 
     if (_nameController.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please enter your name')));
+      ref
+          .read(feedbackServiceProvider)
+          .showError(
+            context,
+            title: 'Name Required',
+            message: 'Please enter your name to complete your profile.',
+          );
       return;
     }
 
     if (isOwner && _emailController.text.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Please enter your email')));
+      ref
+          .read(feedbackServiceProvider)
+          .showError(
+            context,
+            title: 'Email Required',
+            message:
+                'Please enter your business email to receive booking updates.',
+          );
       return;
     }
 

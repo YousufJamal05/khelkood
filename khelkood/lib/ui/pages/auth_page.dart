@@ -8,6 +8,7 @@ import 'package:khelkood/providers/auth_providers.dart';
 
 import '../../design/app_colors.dart';
 import '../../routing/app_router.dart';
+import '../../providers/feedback_service.dart';
 import '../widgets/khelkhood_button.dart';
 import '../widgets/khelkhood_text_field.dart';
 
@@ -22,9 +23,13 @@ class AuthPage extends ConsumerWidget {
       // Navigation handled by router
     } catch (e) {
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Google Sign-In failed: $e')));
+        ref
+            .read(feedbackServiceProvider)
+            .showError(
+              context,
+              title: 'Sign-In Failed',
+              message: 'Google Sign-In was unsuccessful. Please try again.',
+            );
       }
     } finally {
       ref.read(authLoadingProvider.notifier).setLoading(false);
@@ -35,9 +40,14 @@ class AuthPage extends ConsumerWidget {
     final phoneController = ref.read(authPhoneControllerProvider);
 
     if (phoneController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a phone number')),
-      );
+      ref
+          .read(feedbackServiceProvider)
+          .showError(
+            context,
+            title: 'Phone Number Required',
+            message:
+                'Please enter your phone number to receive an verification code.',
+          );
       return;
     }
 
@@ -53,9 +63,13 @@ class AuthPage extends ConsumerWidget {
         },
         onVerificationFailed: (FirebaseAuthException e) {
           ref.read(authLoadingProvider.notifier).setLoading(false);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Verification failed: ${e.message}')),
-          );
+          ref
+              .read(feedbackServiceProvider)
+              .showError(
+                context,
+                title: 'Verification Failed',
+                message: e.message ?? 'Wait a moment and try again.',
+              );
         },
         onCodeSent: (String verificationId, int? resendToken) {
           ref.read(authLoadingProvider.notifier).setLoading(false);
@@ -72,9 +86,14 @@ class AuthPage extends ConsumerWidget {
     } catch (e) {
       ref.read(authLoadingProvider.notifier).setLoading(false);
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Phone Sign-In failed: $e')));
+        ref
+            .read(feedbackServiceProvider)
+            .showError(
+              context,
+              title: 'Verification Error',
+              message:
+                  'We couldn\'t send the code. Please check your connection and try again.',
+            );
       }
     }
   }

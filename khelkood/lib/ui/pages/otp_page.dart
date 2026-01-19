@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../design/app_colors.dart';
 import 'package:khelkood/providers/auth_providers.dart';
+import '../../providers/feedback_service.dart';
 import '../widgets/khelkhood_button.dart';
 
 class OtpPage extends ConsumerWidget {
@@ -31,9 +32,13 @@ class OtpPage extends ConsumerWidget {
     final otp = controllers.map((c) => c.text).join();
 
     if (otp.length != 6) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a complete 6-digit code')),
-      );
+      ref
+          .read(feedbackServiceProvider)
+          .showError(
+            context,
+            title: 'Incomplete Code',
+            message: 'Please enter the full 6-digit verification code.',
+          );
       return;
     }
 
@@ -45,9 +50,14 @@ class OtpPage extends ConsumerWidget {
     } catch (e) {
       ref.read(authLoadingProvider.notifier).setLoading(false);
       if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Invalid code: $e')));
+        ref
+            .read(feedbackServiceProvider)
+            .showError(
+              context,
+              title: 'Verification Error',
+              message:
+                  'The code you entered is incorrect. Double-check and try again.',
+            );
       }
     }
   }

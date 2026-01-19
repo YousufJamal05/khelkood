@@ -9,6 +9,7 @@ import '../../design/app_text_styles.dart';
 import '../widgets/khelkhood_button.dart';
 import '../widgets/khelkhood_text_field.dart';
 import '../../providers/court_provider.dart';
+import '../../providers/feedback_service.dart';
 import 'package:common/common.dart';
 
 class AddCourtPage extends ConsumerStatefulWidget {
@@ -102,9 +103,13 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
 
   Future<void> _pickImage() async {
     if (_images.length >= 3) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Maximum 3 images allowed')));
+      ref
+          .read(feedbackServiceProvider)
+          .showError(
+            context,
+            title: 'Image Limit Reached',
+            message: 'You can only upload up to 3 photos for each court.',
+          );
       return;
     }
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -164,17 +169,27 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
 
   Future<void> _saveCourt() async {
     if (_selectedSports.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select at least one sport type')),
-      );
+      ref
+          .read(feedbackServiceProvider)
+          .showError(
+            context,
+            title: 'Sport Type Missing',
+            message:
+                'Please select at least one sport available at this court.',
+          );
       return;
     }
 
     // Only require images for new courts
     if (widget.existingCourt == null && _images.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please upload at least one image')),
-      );
+      ref
+          .read(feedbackServiceProvider)
+          .showError(
+            context,
+            title: 'Photos Required',
+            message:
+                'Add at least one photo to help users recognize your court.',
+          );
       return;
     }
 
@@ -273,15 +288,28 @@ class _AddCourtPageState extends ConsumerState<AddCourtPage> {
 
       if (mounted) {
         context.pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Court saved successfully!')),
-        );
+        ref
+            .read(feedbackServiceProvider)
+            .showSuccess(
+              context,
+              title: widget.existingCourt != null
+                  ? 'Court Updated!'
+                  : 'Court Added!',
+              message: widget.existingCourt != null
+                  ? 'Your changes have been saved successfully.'
+                  : 'Your new court is now live and ready for bookings.',
+            );
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Error saving court: $e')));
+        ref
+            .read(feedbackServiceProvider)
+            .showError(
+              context,
+              title: 'Failed to Save',
+              message:
+                  'Something went wrong while saving your court. Please try again.',
+            );
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
