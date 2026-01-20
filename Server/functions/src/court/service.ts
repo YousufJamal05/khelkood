@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
 import { Timestamp } from "firebase-admin/firestore";
 import { logger } from "firebase-functions";
-import { ICourt, IAddCourtRequest, IUpdateCourtRequest, IGetCourtsRequest, CourtStatus } from "@khelkood/common";
+import { ICourt, IAddCourtRequest, IUpdateCourtRequest, IGetCourtsRequest, CourtStatus, IBlockSlotsRequest } from "@khelkood/common";
 
 export class CourtService {
   private get db() {
@@ -79,6 +79,46 @@ export class CourtService {
       return snapshot.docs.map((doc) => doc.data() as ICourt);
     } catch (error) {
       logger.error("Error in CourtService.getCourts:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Blocks slots for a court.
+   */
+  async blockSlots(request: IBlockSlotsRequest): Promise<void> {
+    const { courtId, date, slots, reason, additionalNotes } = request;
+    const availabilityRef = this.db.collection(this.collection).doc(courtId).collection("availability").doc(date);
+
+    try {
+      await this.db.runTransaction(async (transaction) => {
+        const doc = await transaction.get(availabilityRef);
+        const data = doc.data() || { slots: {} };
+        const currentSlots = data.slots || {};
+
+        // Check for conflicts
+        for (const slot of slots) {
+          if (currentSlots[slot]?.status === "booked") {
+            throw new Error(`Slot ${slot} is already booked.`);
+          }
+        }
+
+        // Update slots
+        const updatedSlots = { ...currentSlots };
+        for (const slot of slots) {
+          updatedSlots[slot] = {
+            status: "blocked",
+            reason,
+            additionalNotes: additionalNotes || "",
+            updatedAt: Timestamp.now().toDate().toString(),
+          };
+        }
+
+        transaction.set(availabilityRef, { slots: updatedSlots }, { merge: true });
+      });
+      logger.info(`Slots blocked for court ${courtId} on ${date}.`);
+    } catch (error) {
+      logger.error(`Error in CourtService.blockSlots for ${courtId}:`, error);
       throw error;
     }
   }

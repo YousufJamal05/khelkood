@@ -50,3 +50,18 @@ export const getCourts = onCall<any, Promise<ICourt[]>>(async (request) => {
     throw new HttpsError("internal", "Failed to fetch courts.");
   }
 });
+/**
+ * Blocks slots for a court.
+ */
+export const blockSlots = onCall<any, Promise<{ success: boolean }>>(async (request) => {
+  CourtValidator.checkAuth(request.auth);
+  const validatedData = CourtValidator.validateBlockSlots(request.data);
+
+  try {
+    await courtService.blockSlots(validatedData);
+    return { success: true };
+  } catch (error: any) {
+    if (error instanceof HttpsError) throw error;
+    throw new HttpsError("internal", error.message || "Failed to block slots.");
+  }
+});

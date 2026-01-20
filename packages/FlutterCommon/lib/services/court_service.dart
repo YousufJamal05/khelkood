@@ -83,6 +83,35 @@ class CourtService {
     final doc = await _courtsRef.doc(courtId).get();
     return doc.data();
   }
+
+  /// Watch availability for a specific court and date
+  Stream<Map<String, dynamic>> watchAvailability(String courtId, String date) {
+    return _firestore
+        .collection('courts')
+        .doc(courtId)
+        .collection('availability')
+        .doc(date)
+        .snapshots()
+        .map((doc) => doc.data()?['slots'] as Map<String, dynamic>? ?? {});
+  }
+
+  /// Block specific slots for a court and date via Cloud Function
+  Future<void> blockSlots({
+    required String courtId,
+    required String date,
+    required List<String> slots,
+    required String reason,
+    String? additionalNotes,
+  }) async {
+    final HttpsCallable callable = _functions.httpsCallable('blockSlots');
+    await callable.call({
+      'courtId': courtId,
+      'date': date,
+      'slots': slots,
+      'reason': reason,
+      if (additionalNotes != null) 'additionalNotes': additionalNotes,
+    });
+  }
 }
 
 /// Provider for CourtService

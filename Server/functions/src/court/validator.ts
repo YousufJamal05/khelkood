@@ -1,5 +1,5 @@
 import { HttpsError } from "firebase-functions/v2/https";
-import { IAddCourtRequest, IUpdateCourtRequest } from "@khelkood/common";
+import { IAddCourtRequest, IUpdateCourtRequest, IBlockSlotsRequest } from "@khelkood/common";
 
 export class CourtValidator {
   /**
@@ -60,6 +60,23 @@ export class CourtValidator {
 
       maxAdvanceBooking: data.maxAdvanceBooking,
       cancellationPolicy: data.cancellationPolicy,
+    };
+  }
+
+  /**
+   * Validates the block slots request.
+   */
+  static validateBlockSlots(data: any): IBlockSlotsRequest {
+    if (!data.courtId || !data.date || !data.slots || !Array.isArray(data.slots) || data.slots.length === 0 || !data.reason) {
+      throw new HttpsError("invalid-argument", "Missing required block slots fields.");
+    }
+
+    return {
+      courtId: data.courtId,
+      date: data.date,
+      slots: data.slots,
+      reason: data.reason,
+      additionalNotes: data.additionalNotes,
     };
   }
 

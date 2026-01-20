@@ -1,50 +1,54 @@
+import 'package:common/common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../design/app_colors.dart';
 import '../../design/app_dimensions.dart';
+import '../../providers/court_provider.dart';
+import '../../providers/feedback_service.dart';
+import './widgets/block_slots/court_dropdown.dart';
+import './widgets/block_slots/date_scroller.dart';
+import './widgets/block_slots/slot_item.dart';
+import './widgets/block_slots/reason_selector.dart';
+import './widgets/block_slots/block_footer.dart';
 
-class BlockSlotsPage extends StatefulWidget {
+class BlockSlotsPage extends ConsumerStatefulWidget {
   const BlockSlotsPage({super.key});
 
   @override
-  State<BlockSlotsPage> createState() => _BlockSlotsPageState();
+  ConsumerState<BlockSlotsPage> createState() => _BlockSlotsPageState();
 }
 
-class _BlockSlotsPageState extends State<BlockSlotsPage> {
-  String _selectedCourt = 'Futsal Arena A';
-  final Set<String> _selectedSlots = {'12:00 PM'};
+class _BlockSlotsPageState extends ConsumerState<BlockSlotsPage> {
+  DateTime _selectedDate = DateTime.now();
+  CourtModel? _selectedCourt;
+  final Set<String> _selectedSlots = {};
   String _selectedReason = 'Maintenance';
+  final TextEditingController _detailsController = TextEditingController();
+  final GlobalKey _gridKey = GlobalKey();
 
-  final List<String> _slots = [
-    '08:00 AM',
-    '09:00 AM',
-    '10:00 AM',
-    '11:00 AM',
-    '12:00 PM',
-    '01:00 PM',
-    '02:00 PM',
-    '03:00 PM',
-    '04:00 PM',
-    '05:00 PM',
-    '06:00 PM',
-    '07:00 PM',
-    '08:00 PM',
-    '09:00 PM',
-    '10:00 PM',
-    '11:00 PM',
-    '12:00 AM', // Fixed ambiguity
-  ];
+  // For drag selection
+  final Set<int> _draggedIndices = {};
+  int? _dragStartRow;
+  int? _dragStartIndex;
 
   final List<String> _reasons = [
     'Maintenance',
-    'Event',
-    'Personal',
-    'Staff Training',
+    'Private Event',
+    'Personal Use',
+    'Holiday',
     'Other',
   ];
 
   @override
+  void dispose() {
+    _detailsController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final courtsAsync = ref.watch(ownerCourtsProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -52,254 +56,213 @@ class _BlockSlotsPageState extends State<BlockSlotsPage> {
           ? AppColors.backgroundDark
           : AppColors.backgroundLight,
       appBar: AppBar(
-        title: Text(
-          'Block Slots',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black,
-          ),
-        ),
-        centerTitle: true,
+        title: const Text('Block Slots'),
         leading: IconButton(
           onPressed: () => context.pop(),
-          icon: Icon(Icons.close, color: isDark ? Colors.white : Colors.black),
+          icon: const Icon(Icons.arrow_back),
         ),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppDimensions.paddingLG),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildCourtSelector(isDark),
-            const SizedBox(height: AppDimensions.paddingLG),
-            _buildDateSelector(isDark),
-            const SizedBox(height: AppDimensions.paddingLG),
-            _buildSlotGrid(isDark),
-            const SizedBox(height: AppDimensions.paddingLG),
-            _buildReasonSelector(isDark),
-            const SizedBox(height: AppDimensions.paddingLG),
-            _buildAdditionalDetails(isDark),
-            const SizedBox(height: 100), // Space for bottom button
-          ],
-        ),
-      ),
-      bottomSheet: _buildStickyFooter(isDark),
-    );
-  }
+      body: courtsAsync.when(
+        data: (courts) {
+          if (courts.isEmpty) {
+            return const Center(child: Text('No courts found.'));
+          }
+          _selectedCourt ??= courts.first;
 
-  Widget _buildCourtSelector(bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Select Court',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-          decoration: BoxDecoration(
-            color: isDark ? AppColors.surfaceDark : AppColors.white,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-            border: Border.all(
-              color: isDark ? AppColors.borderDark : Colors.grey.shade100,
-            ),
-          ),
-          child: DropdownButtonHideUnderline(
-            child: DropdownButton<String>(
-              value: _selectedCourt,
-              isExpanded: true,
-              dropdownColor: isDark ? AppColors.surfaceDark : AppColors.white,
-              items: ['Futsal Arena A', 'Badminton Court 1', 'Tennis Court B']
-                  .map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(
-                          color: isDark ? Colors.white : Colors.black,
-                          fontWeight: FontWeight.w500,
+          return SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: AppDimensions.paddingMD,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CourtDropdown(
+                          courts: courts,
+                          selectedCourt: _selectedCourt,
+                          onSelected: (court) {
+                            setState(() {
+                              _selectedCourt = court;
+                              _selectedSlots.clear();
+                            });
+                          },
+                          isDark: isDark,
                         ),
-                      ),
-                    );
-                  })
-                  .toList(),
-              onChanged: (val) {
-                if (val != null) setState(() => _selectedCourt = val);
-              },
+                        const SizedBox(height: AppDimensions.paddingLG),
+                        DateScroller(
+                          selectedDate: _selectedDate,
+                          onDateSelected: (date) {
+                            setState(() {
+                              _selectedDate = date;
+                              _selectedSlots.clear();
+                            });
+                          },
+                          onCalendarTap: _showDatePicker,
+                          isDark: isDark,
+                        ),
+                        const SizedBox(height: AppDimensions.paddingLG),
+                        _buildSlotGridSection(isDark),
+                        const SizedBox(height: AppDimensions.paddingLG),
+                        ReasonSelector(
+                          reasons: _reasons,
+                          selectedReason: _selectedReason,
+                          onReasonSelected: (reason) {
+                            setState(() => _selectedReason = reason);
+                          },
+                          detailsController: _detailsController,
+                          isDark: isDark,
+                        ),
+                        const SizedBox(height: AppDimensions.paddingLG),
+                      ],
+                    ),
+                  ),
+                ),
+                BlockFooter(
+                  selectedSlotsCount: _selectedSlots.length,
+                  selectedSlotsText: _selectedSlots.isEmpty
+                      ? 'None'
+                      : _selectedSlots.join(', '),
+                  onBlockPressed: _selectedSlots.isEmpty
+                      ? null
+                      : _handleBlockSlots,
+                  isDark: isDark,
+                ),
+              ],
             ),
-          ),
-        ),
-      ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (err, stack) => Center(child: Text('Error: $err')),
+      ),
     );
   }
 
-  Widget _buildDateSelector(bool isDark) {
+  Future<void> _showDatePicker() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 90)),
+    );
+    if (date != null) {
+      setState(() {
+        _selectedDate = date;
+        _selectedSlots.clear();
+      });
+    }
+  }
+
+  Widget _buildSlotGridSection(bool isDark) {
+    if (_selectedCourt == null) return const SizedBox.shrink();
+
+    final hours = SlotUtility.getHoursForDate(
+      _selectedDate,
+      _selectedCourt!.operationalHours,
+    );
+    if (hours == null || hours['open'] == null || hours['close'] == null) {
+      return const Padding(
+        padding: EdgeInsets.all(AppDimensions.paddingLG),
+        child: Center(child: Text('Court is closed on this day.')),
+      );
+    }
+
+    final slots = SlotUtility.generateSlots(
+      openTime: hours['open'],
+      closeTime: hours['close'],
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Select Date',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: isDark ? AppColors.surfaceDark : AppColors.white,
-            borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-            border: Border.all(
-              color: isDark ? AppColors.borderDark : Colors.grey.shade100,
-            ),
+        Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.paddingLG,
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'October 24, 2023',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.white : Colors.black,
-                ),
+              const Text(
+                'Available Slots',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              Icon(Icons.calendar_month_outlined, color: AppColors.primary),
+              if (_selectedSlots.isNotEmpty)
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    'Selected (${_selectedSlots.length})',
+                    style: const TextStyle(
+                      color: AppColors.primary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
-      ],
-    );
-  }
-
-  Widget _buildSlotGrid(bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Text(
-              'Select Time Slots',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
-            ),
-            Text(
-              '${_selectedSlots.length} Selected',
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primary,
-              ),
-            ),
-          ],
-        ),
         const SizedBox(height: 12),
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-            childAspectRatio: 1.8,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
-          ),
-          itemCount: _slots.length,
-          itemBuilder: (context, index) {
-            final slot = _slots[index];
-            final isSelected = _selectedSlots.contains(slot);
-            return GestureDetector(
-              onTap: () {
-                setState(() {
-                  if (isSelected) {
-                    _selectedSlots.remove(slot);
-                  } else {
-                    _selectedSlots.add(slot);
-                  }
-                });
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? AppColors.primary
-                      : (isDark ? AppColors.surfaceDark : AppColors.white),
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusMD),
-                  border: Border.all(
-                    color: isSelected
-                        ? AppColors.primary
-                        : (isDark
-                              ? AppColors.borderDark
-                              : Colors.grey.shade100),
+        StreamBuilder<Map<String, dynamic>>(
+          stream: ref
+              .read(courtServiceProvider)
+              .watchAvailability(
+                _selectedCourt!.courtId,
+                SlotUtility.formatDateForDoc(_selectedDate),
+              ),
+          builder: (context, snapshot) {
+            final availability = snapshot.data ?? {};
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppDimensions.paddingLG,
+              ),
+              child: GestureDetector(
+                onPanStart: (details) =>
+                    _onPanStart(details, slots, availability),
+                onPanUpdate: (details) =>
+                    _onPanUpdate(details, slots, availability),
+                onPanEnd: (details) => _onPanEnd(),
+                child: GridView.builder(
+                  key: _gridKey,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 2.2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
                   ),
-                  boxShadow: isSelected
-                      ? [
-                          BoxShadow(
-                            color: AppColors.primary.withOpacity(0.3),
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ]
-                      : null,
-                ),
-                child: Stack(
-                  children: [
-                    if (isSelected)
-                      Positioned(
-                        top: 4,
-                        right: 4,
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.check,
-                            size: 8,
-                            color: AppColors.primary,
-                          ),
-                        ),
-                      ),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            slot,
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontWeight: isSelected
-                                  ? FontWeight.bold
-                                  : FontWeight.w500,
-                              color: isSelected
-                                  ? Colors.white
-                                  : (isDark ? Colors.white : Colors.black),
-                            ),
-                          ),
-                          if (isSelected)
-                            const Text(
-                              'Selected',
-                              style: TextStyle(
-                                fontSize: 8,
-                                color: Colors.white70,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  ],
+                  itemCount: slots.length,
+                  itemBuilder: (context, index) {
+                    final slot = slots[index];
+                    final status = availability[slot]?['status'] ?? 'available';
+                    final isSelected = _selectedSlots.contains(slot);
+                    final isBeingDragged = _draggedIndices.contains(index);
+
+                    return SlotItem(
+                      slot: slot,
+                      status: status,
+                      isSelected: isSelected || isBeingDragged,
+                      isDark: isDark,
+                      onTap: () {
+                        setState(() {
+                          if (_selectedSlots.contains(slot)) {
+                            _selectedSlots.remove(slot);
+                          } else {
+                            _selectedSlots.add(slot);
+                          }
+                        });
+                      },
+                    );
+                  },
                 ),
               ),
             );
@@ -309,166 +272,141 @@ class _BlockSlotsPageState extends State<BlockSlotsPage> {
     );
   }
 
-  Widget _buildReasonSelector(bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Reason for Blocking',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-          ),
-        ),
-        const SizedBox(height: 12),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: _reasons.map((reason) {
-            final isSelected = _selectedReason == reason;
-            return GestureDetector(
-              onTap: () => setState(() => _selectedReason = reason),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: isSelected
-                      ? AppColors.primary.withOpacity(0.1)
-                      : (isDark ? AppColors.surfaceDark : AppColors.white),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: isSelected
-                        ? AppColors.primary
-                        : (isDark
-                              ? AppColors.borderDark
-                              : Colors.grey.shade100),
-                  ),
-                ),
-                child: Text(
-                  reason,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                    color: isSelected
-                        ? AppColors.primary
-                        : (isDark ? Colors.grey : Colors.black54),
-                  ),
-                ),
-              ),
+  void _onPanStart(
+    DragStartDetails details,
+    List<String> slots,
+    Map<String, dynamic> availability,
+  ) {
+    final result = _calculateIndex(details.globalPosition, slots.length);
+    if (result != null) {
+      _dragStartRow = result.row;
+      _dragStartIndex = result.index;
+      _updateSelection(details.globalPosition, slots, availability);
+    }
+  }
+
+  void _onPanUpdate(
+    DragUpdateDetails details,
+    List<String> slots,
+    Map<String, dynamic> availability,
+  ) {
+    _updateSelection(details.globalPosition, slots, availability);
+  }
+
+  void _onPanEnd() {
+    setState(() {
+      _dragStartRow = null;
+      _dragStartIndex = null;
+      _draggedIndices.clear();
+    });
+  }
+
+  ({int index, int row, int col})? _calculateIndex(
+    Offset globalPosition,
+    int totalSlots,
+  ) {
+    final RenderBox? renderBox =
+        _gridKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox == null) return null;
+
+    final Offset localOffset = renderBox.globalToLocal(globalPosition);
+    final double gridWidth = renderBox.size.width;
+
+    const int crossAxisCount = 3;
+    const double spacing = 10.0;
+    const double aspectRatio = 2.2;
+
+    final double columnWidth =
+        (gridWidth - (crossAxisCount - 1) * spacing) / crossAxisCount;
+    final double rowHeight = (columnWidth / aspectRatio) + spacing;
+
+    final int col = (localOffset.dx / (columnWidth + spacing)).floor();
+    final int row = (localOffset.dy / rowHeight).floor();
+
+    if (col >= 0 && col < crossAxisCount && row >= 0) {
+      final int index = row * crossAxisCount + col;
+      if (index >= 0 && index < totalSlots) {
+        return (index: index, row: row, col: col);
+      }
+    }
+    return null;
+  }
+
+  void _updateSelection(
+    Offset globalPosition,
+    List<String> slots,
+    Map<String, dynamic> availability,
+  ) {
+    final result = _calculateIndex(globalPosition, slots.length);
+    if (result == null || _dragStartRow == null || _dragStartIndex == null)
+      return;
+
+    // Restrict to same row
+    if (result.row != _dragStartRow) return;
+
+    final int start = _dragStartIndex!;
+    final int end = result.index;
+
+    // Select all slots between start and end (within the row)
+    final int minIdx = start < end ? start : end;
+    final int maxIdx = start < end ? end : start;
+
+    setState(() {
+      for (int i = minIdx; i <= maxIdx; i++) {
+        final slot = slots[i];
+        final status = availability[slot]?['status'] ?? 'available';
+        if (status == 'available') {
+          _selectedSlots.add(slot);
+        }
+      }
+    });
+  }
+
+  Future<void> _handleBlockSlots() async {
+    if (_selectedCourt == null || _selectedSlots.isEmpty) return;
+
+    try {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      await ref
+          .read(courtServiceProvider)
+          .blockSlots(
+            courtId: _selectedCourt!.courtId,
+            date: SlotUtility.formatDateForDoc(_selectedDate),
+            slots: _selectedSlots.toList(),
+            reason: _selectedReason,
+            additionalNotes: _detailsController.text,
+          );
+
+      if (mounted) {
+        context.pop(); // Close loading
+        ref
+            .read(feedbackServiceProvider)
+            .showSuccess(
+              context,
+              title: 'Success',
+              message: 'Successfully blocked ${_selectedSlots.length} slots.',
             );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAdditionalDetails(bool isDark) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Additional Details',
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey,
-          ),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          maxLines: 4,
-          style: TextStyle(color: isDark ? Colors.white : Colors.black),
-          decoration: InputDecoration(
-            hintText: 'Add specific details about the maintenance work...',
-            hintStyle: const TextStyle(fontSize: 12, color: Colors.grey),
-            filled: true,
-            fillColor: isDark ? AppColors.surfaceDark : AppColors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-              borderSide: BorderSide(
-                color: isDark ? AppColors.borderDark : Colors.grey.shade100,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-              borderSide: BorderSide(
-                color: isDark ? AppColors.borderDark : Colors.grey.shade100,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-              borderSide: const BorderSide(color: AppColors.primary, width: 2),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStickyFooter(bool isDark) {
-    return Container(
-      padding: EdgeInsets.only(
-        left: AppDimensions.paddingLG,
-        right: AppDimensions.paddingLG,
-        top: AppDimensions.paddingMD,
-        bottom: MediaQuery.of(context).padding.bottom + AppDimensions.paddingMD,
-      ),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceDark : AppColors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Blocking',
-                  style: TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                Text(
-                  '${_selectedSlots.length} Slots on Oct 24',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusLG),
-              ),
-              elevation: 4,
-              shadowColor: Colors.red.withOpacity(0.4),
-            ),
-            child: const Text(
-              'Confirm Blocking',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+        setState(() {
+          _selectedSlots.clear();
+          _detailsController.clear();
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        context.pop(); // Close loading
+        ref
+            .read(feedbackServiceProvider)
+            .showError(
+              context,
+              title: 'Error',
+              message: 'Failed to block slots: $e',
+            );
+      }
+    }
   }
 }

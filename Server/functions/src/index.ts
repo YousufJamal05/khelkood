@@ -18,7 +18,7 @@ if (admin.apps.length === 0) {
 setGlobalOptions({ maxInstances: 10 });
 
 import { onboardUser, getUserProfile } from "./user/function";
-import { addCourt, updateCourt, getCourts } from "./court/function";
+import { addCourt, updateCourt, getCourts, blockSlots } from "./court/function";
 
 // Export Functions
 export { 
@@ -26,5 +26,6 @@ export {
   getUserProfile,
   addCourt,
   updateCourt,
-  getCourts
+  getCourts,
+  blockSlots
 };

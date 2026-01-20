@@ -58,3 +58,14 @@ export interface IGetCourtsRequest {
   sportType?: string;
   area?: string;
 }
+
+/**
+ * Request payload for blocking slots.
+ */
+export interface IBlockSlotsRequest {
+  courtId: string;
+  date: string; // YYYY-MM-DD
+  slots: string[]; // ["18:00", "19:00"]
+  reason: string;
+  additionalNotes?: string;
+}
