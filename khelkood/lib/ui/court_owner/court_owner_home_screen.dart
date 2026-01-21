@@ -4,41 +4,53 @@ import '../../design/app_dimensions.dart';
 import 'widgets/court_owner_card.dart';
 import 'package:go_router/go_router.dart';
 import '../../routing/app_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:common/providers/auth_state_provider.dart';
 
-class CourtOwnerHomeScreen extends StatelessWidget {
+class CourtOwnerHomeScreen extends ConsumerWidget {
   const CourtOwnerHomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final currentUserAsync = ref.watch(currentUserProvider);
 
     return Scaffold(
       backgroundColor: isDark
           ? AppColors.backgroundDark
           : AppColors.backgroundLight,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(context, isDark),
-              const SizedBox(height: AppDimensions.paddingLG),
-              _buildStatsCarousel(context, isDark),
-              const SizedBox(height: AppDimensions.paddingXXL),
-              _buildQuickActions(context, isDark),
-              const SizedBox(height: AppDimensions.paddingXXL),
-              _buildScheduleSection(context, isDark),
-              const SizedBox(height: AppDimensions.paddingXXL),
-              _buildTodaysBookings(context, isDark),
-              const SizedBox(height: 100),
-            ],
-          ),
+        child: currentUserAsync.when(
+          data: (user) {
+            if (user == null) {
+              return const Center(child: Text("User not found"));
+            }
+            return SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildHeader(isDark, user),
+                  const SizedBox(height: AppDimensions.paddingLG),
+                  _buildStatsCarousel(context, isDark),
+                  const SizedBox(height: AppDimensions.paddingXXL),
+                  _buildQuickActions(context, isDark),
+                  const SizedBox(height: AppDimensions.paddingXXL),
+                  _buildScheduleSection(context, isDark),
+                  const SizedBox(height: AppDimensions.paddingXXL),
+                  _buildTodaysBookings(context, isDark),
+                  const SizedBox(height: 100),
+                ],
+              ),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (error, stackTrace) => Center(child: Text(error.toString())),
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context, bool isDark) {
+  Widget _buildHeader(bool isDark, var user) {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppDimensions.paddingLG,
@@ -60,9 +72,12 @@ class CourtOwnerHomeScreen extends StatelessWidget {
                         color: AppColors.primary.withOpacity(0.2),
                         width: 2,
                       ),
-                      image: const DecorationImage(
+                      image: DecorationImage(
                         image: NetworkImage(
-                          'https://lh3.googleusercontent.com/aida-public/AB6AXuBLG7AWxmKyggNZ3CDrpKO6m6ZDKwLDO0WSulz4T19_0iuZiGIJRlIXo8ujF-1SwHboJzg2_UkA9z1r6LtMad1mRdNoHYfvbRkf5ZWOpvYHBphU5EnYEVuDMKfa6Khuutb1xnR1bWBzuvoTD_az7CJhgJl8CnNfiytfQ9793WLjT9Oizx1xtrkyERj6O7dA8e3sbcjrQhbOLfXXh6Lj40LHLgfUvAhpDxe1gFaUsYjgfSGszUm8-yX9fTMVTexms3YlJAPLn0jpw10',
+                          (user.photoUrl != null &&
+                                  user.photoUrl!.startsWith('http'))
+                              ? user.photoUrl!
+                              : 'https://lh3.googleusercontent.com/aida-public/AB6AXuBLG7AWxmKyggNZ3CDrpKO6m6ZDKwLDO0WSulz4T19_0iuZiGIJRlIXo8ujF-1SwHboJzg2_UkA9z1r6LtMad1mRdNoHYfvbRkf5ZWOpvYHBphU5EnYEVuDMKfa6Khuutb1xnR1bWBzuvoTD_az7CJhgJl8CnNfiytfQ9793WLjT9Oizx1xtrkyERj6O7dA8e3sbcjrQhbOLfXXh6Lj40LHLgfUvAhpDxe1gFaUsYjgfSGszUm8-yX9fTMVTexms3YlJAPLn0jpw10',
                         ),
                         fit: BoxFit.cover,
                       ),
@@ -102,7 +117,7 @@ class CourtOwnerHomeScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'Ahmed Riaz',
+                    user.displayName,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
