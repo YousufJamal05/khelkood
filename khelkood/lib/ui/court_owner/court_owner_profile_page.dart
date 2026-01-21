@@ -4,6 +4,7 @@ import '../../design/app_dimensions.dart';
 import 'widgets/court_owner_card.dart';
 import 'package:common/providers/auth_state_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'widgets/edit_profile_dialog.dart';
 
 class CourtOwnerProfilePage extends ConsumerWidget {
   const CourtOwnerProfilePage({super.key});
@@ -27,7 +28,7 @@ class CourtOwnerProfilePage extends ConsumerWidget {
               padding: const EdgeInsets.all(AppDimensions.paddingLG),
               child: Column(
                 children: [
-                  _buildProfileHeader(isDark, user),
+                  _buildProfileHeader(context, isDark, user),
                   const SizedBox(height: AppDimensions.paddingXXL),
                   _buildInfoSection('Personal Information', [
                     _buildInfoItem(
@@ -86,7 +87,7 @@ class CourtOwnerProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildProfileHeader(bool isDark, var user) {
+  Widget _buildProfileHeader(BuildContext context, bool isDark, var user) {
     return Column(
       children: [
         Stack(
@@ -114,14 +115,24 @@ class CourtOwnerProfilePage extends ConsumerWidget {
             Positioned(
               bottom: 0,
               right: 0,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                  color: AppColors.primary,
-                  shape: BoxShape.circle,
-                  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
+              child: GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => EditProfileDialog(user: user),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black26, blurRadius: 4),
+                    ],
+                  ),
+                  child: const Icon(Icons.edit, color: Colors.white, size: 16),
                 ),
-                child: const Icon(Icons.edit, color: Colors.white, size: 16),
               ),
             ),
           ],
