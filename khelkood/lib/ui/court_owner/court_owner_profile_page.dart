@@ -11,68 +11,82 @@ class CourtOwnerProfilePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final currentUserAsync = ref.watch(currentUserProvider);
 
     return Scaffold(
       backgroundColor: isDark
           ? AppColors.backgroundDark
           : AppColors.backgroundLight,
       body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppDimensions.paddingLG),
-          child: Column(
-            children: [
-              _buildProfileHeader(isDark),
-              const SizedBox(height: AppDimensions.paddingXXL),
-              _buildInfoSection('Personal Information', [
-                _buildInfoItem(
-                  Icons.person_outline,
-                  'Full Name',
-                  'Ahmed Riaz',
-                  isDark,
-                ),
-                _buildInfoItem(
-                  Icons.phone_outlined,
-                  'Phone Number',
-                  '+92 300 1234567',
-                  isDark,
-                ),
-                _buildInfoItem(
-                  Icons.email_outlined,
-                  'Email Address',
-                  'ahmed.riaz@email.com',
-                  isDark,
-                ),
-              ], isDark),
-              const SizedBox(height: AppDimensions.paddingLG),
-              _buildInfoSection('Settings & Preferences', [
-                _buildMenuItem(
-                  Icons.notifications_active_outlined,
-                  'Notification Settings',
-                  isDark,
-                ),
-                _buildMenuItem(Icons.lock_outline, 'Change Password', isDark),
-                _buildMenuItem(
-                  Icons.help_outline,
-                  'Get Help & Support',
-                  isDark,
-                ),
-                _buildMenuItem(
-                  Icons.description_outlined,
-                  'Terms & Policies',
-                  isDark,
-                ),
-              ], isDark),
-              const SizedBox(height: AppDimensions.paddingXXL),
-              _buildLogoutButton(isDark, ref),
-              const SizedBox(height: AppDimensions.paddingXXL),
-            ],
-          ),
+        child: currentUserAsync.when(
+          data: (user) {
+            if (user == null) {
+              return const Center(child: Text("User not found"));
+            }
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(AppDimensions.paddingLG),
+              child: Column(
+                children: [
+                  _buildProfileHeader(isDark, user),
+                  const SizedBox(height: AppDimensions.paddingXXL),
+                  _buildInfoSection('Personal Information', [
+                    _buildInfoItem(
+                      Icons.person_outline,
+                      'Full Name',
+                      user.displayName ?? 'N/A',
+                      isDark,
+                    ),
+                    _buildInfoItem(
+                      Icons.phone_outlined,
+                      'Phone Number',
+                      user.phoneNumber ?? 'N/A',
+                      isDark,
+                    ),
+                    _buildInfoItem(
+                      Icons.email_outlined,
+                      'Email Address',
+                      user.email ?? 'N/A',
+                      isDark,
+                    ),
+                  ], isDark),
+                  const SizedBox(height: AppDimensions.paddingLG),
+                  _buildInfoSection('Settings & Preferences', [
+                    _buildMenuItem(
+                      Icons.notifications_active_outlined,
+                      'Notification Settings',
+                      isDark,
+                    ),
+                    _buildMenuItem(
+                      Icons.lock_outline,
+                      'Change Password',
+                      isDark,
+                    ),
+                    _buildMenuItem(
+                      Icons.help_outline,
+                      'Get Help & Support',
+                      isDark,
+                    ),
+                    _buildMenuItem(
+                      Icons.description_outlined,
+                      'Terms & Policies',
+                      isDark,
+                    ),
+                  ], isDark),
+                  const SizedBox(height: AppDimensions.paddingXXL),
+                  _buildLogoutButton(isDark, ref),
+                  const SizedBox(height: AppDimensions.paddingXXL),
+                ],
+              ),
+            );
+          },
+          loading: () => const Center(child: CircularProgressIndicator()),
+          error: (err, stack) => Center(child: Text('Error: $err')),
         ),
       ),
     );
   }
 
-  Widget _buildProfileHeader(bool isDark) {
+  Widget _buildProfileHeader(bool isDark, var user) {
     return Column(
       children: [
         Stack(
@@ -86,13 +100,16 @@ class CourtOwnerProfilePage extends ConsumerWidget {
                   color: AppColors.primary.withOpacity(0.2),
                   width: 4,
                 ),
-                image: const DecorationImage(
+                image: DecorationImage(
                   image: NetworkImage(
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBLG7AWxmKyggNZ3CDrpKO6m6ZDKwLDO0WSulz4T19_0iuZiGIJRlIXo8ujF-1SwHboJzg2_UkA9z1r6LtMad1mRdNoHYfvbRkf5ZWOpvYHBphU5EnYEVuDMKfa6Khuutb1xnR1bWBzuvoTD_az7CJhgJl8CnNfiytfQ9793WLjT9Oizx1xtrkyERj6O7dA8e3sbcjrQhbOLfXXh6Lj40LHLgfUvAhpDxe1gFaUsYjgfSGszUm8-yX9fTMVTexms3YlJAPLn0jpw10',
+                    (user.photoUrl != null && user.photoUrl!.startsWith('http'))
+                        ? user.photoUrl!
+                        : 'https://lh3.googleusercontent.com/aida-public/AB6AXuBLG7AWxmKyggNZ3CDrpKO6m6ZDKwLDO0WSulz4T19_0iuZiGIJRlIXo8ujF-1SwHboJzg2_UkA9z1r6LtMad1mRdNoHYfvbRkf5ZWOpvYHBphU5EnYEVuDMKfa6Khuutb1xnR1bWBzuvoTD_az7CJhgJl8CnNfiytfQ9793WLjT9Oizx1xtrkyERj6O7dA8e3sbcjrQhbOLfXXh6Lj40LHLgfUvAhpDxe1gFaUsYjgfSGszUm8-yX9fTMVTexms3YlJAPLn0jpw10',
                   ),
                   fit: BoxFit.cover,
                 ),
               ),
+              child: null,
             ),
             Positioned(
               bottom: 0,
@@ -111,15 +128,15 @@ class CourtOwnerProfilePage extends ConsumerWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          'Ahmed Riaz',
+          user.displayName ?? 'No Name',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
             color: isDark ? Colors.white : Colors.black,
           ),
         ),
-        Text(
-          'Owner, Downtown Sports Arena',
+        const Text(
+          'Owner', // Role is hardcoded as Owner for this page, or could be user.role
           style: TextStyle(
             fontSize: 14,
             color: Colors.grey,
