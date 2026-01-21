@@ -44,27 +44,6 @@ class CourtOwnerProfilePage extends ConsumerWidget {
                 ),
               ], isDark),
               const SizedBox(height: AppDimensions.paddingLG),
-              _buildInfoSection('Facility Details', [
-                _buildInfoItem(
-                  Icons.business_outlined,
-                  'Facility Name',
-                  'Downtown Sports Arena',
-                  isDark,
-                ),
-                _buildInfoItem(
-                  Icons.location_on_outlined,
-                  'Address',
-                  'Plot 12, Block 5, Gulshan-e-Iqbal',
-                  isDark,
-                ),
-                _buildInfoItem(
-                  Icons.contact_support_outlined,
-                  'Contact Person',
-                  'Management Office',
-                  isDark,
-                ),
-              ], isDark),
-              const SizedBox(height: AppDimensions.paddingLG),
               _buildInfoSection('Settings & Preferences', [
                 _buildMenuItem(
                   Icons.notifications_active_outlined,
