@@ -4,7 +4,7 @@ import '../../design/app_dimensions.dart';
 import 'widgets/court_owner_card.dart';
 import 'package:common/providers/auth_state_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'widgets/edit_profile_dialog.dart';
+import '../widgets/edit_profile_dialog.dart';
 
 class CourtOwnerProfilePage extends ConsumerWidget {
   const CourtOwnerProfilePage({super.key});

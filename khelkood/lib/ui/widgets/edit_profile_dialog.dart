@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:common/models/user_model.dart';
 import 'package:common/services/user_service.dart';
-import '../../../design/app_colors.dart';
-import '../../../design/app_dimensions.dart';
+import '../../design/app_colors.dart';
+import '../../design/app_dimensions.dart';
 
 class EditProfileDialog extends ConsumerStatefulWidget {
   final UserModel user;
