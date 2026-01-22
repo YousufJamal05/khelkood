@@ -6,6 +6,7 @@ import '../widgets/khelkhood_button.dart';
 import '../views/bottom_nav_view.dart';
 import 'package:go_router/go_router.dart';
 import '../../routing/app_router.dart';
+import '../widgets/edit_profile_dialog.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -68,22 +69,32 @@ class ProfilePage extends ConsumerWidget {
                             )
                           : null,
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: isDark
-                              ? AppColors.backgroundDark
-                              : Colors.white,
-                          width: 3,
+                    GestureDetector(
+                      onTap: () {
+                        if (user != null) {
+                          showDialog(
+                            context: context,
+                            builder: (context) => EditProfileDialog(user: user),
+                          );
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isDark
+                                ? AppColors.backgroundDark
+                                : Colors.white,
+                            width: 3,
+                          ),
                         ),
-                      ),
-                      child: const Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                        size: 16,
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 16,
+                        ),
                       ),
                     ),
                   ],
