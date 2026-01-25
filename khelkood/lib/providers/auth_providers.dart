@@ -38,9 +38,10 @@ final otpFocusNodesProvider = Provider.autoDispose<List<FocusNode>>((ref) {
 
 /// Provider for loading state during auth operations
 
-final authLoadingProvider = NotifierProvider<AuthLoadingNotifier, bool>(
-  AuthLoadingNotifier.new,
-);
+final authLoadingProvider =
+    NotifierProvider.autoDispose<AuthLoadingNotifier, bool>(
+      AuthLoadingNotifier.new,
+    );
 
 class AuthLoadingNotifier extends Notifier<bool> {
   @override

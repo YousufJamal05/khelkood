@@ -81,7 +81,9 @@ class AuthPage extends ConsumerWidget {
             },
           );
         },
-        onCodeAutoRetrievalTimeout: (String verificationId) {},
+        onCodeAutoRetrievalTimeout: (String verificationId) {
+          ref.read(authLoadingProvider.notifier).setLoading(false);
+        },
       );
     } catch (e) {
       ref.read(authLoadingProvider.notifier).setLoading(false);
