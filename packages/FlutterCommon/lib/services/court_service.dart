@@ -84,6 +84,26 @@ class CourtService {
     return doc.data();
   }
 
+  /// Stream approved courts with optional sport type filter for players
+  ///
+  /// Returns only courts with `isVerified: 'approved'` status.
+  /// Optionally filters by sport type if provided (case-insensitive).
+  Stream<List<CourtModel>> watchApprovedCourts({String? sportType}) {
+    Query<CourtModel> query = _courtsRef.where(
+      'isVerified',
+      isEqualTo: 'approved',
+    );
+    if (sportType != null && sportType.toLowerCase() != 'all') {
+      query = query.where(
+        'sportTypes',
+        arrayContains: sportType.toLowerCase(),
+      );
+    }
+    return query
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => doc.data()).toList());
+  }
+
   /// Watch availability for a specific court and date
   Stream<Map<String, dynamic>> watchAvailability(String courtId, String date) {
     return _firestore

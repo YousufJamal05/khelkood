@@ -1,3 +1,4 @@
+import 'package:common/models/court_model.dart';
 import 'package:flutter/material.dart';
 import '../../design/app_colors.dart';
 
@@ -20,6 +21,25 @@ class CourtCardList extends StatelessWidget {
     required this.imageUrl,
     required this.onTap,
   });
+
+  /// Creates a CourtCardList from a CourtModel
+  factory CourtCardList.fromModel({
+    Key? key,
+    required CourtModel court,
+    required VoidCallback onTap,
+  }) {
+    final basePrice = court.pricing['base'] ?? 0;
+    return CourtCardList(
+      key: key,
+      title: court.name,
+      location: court.area,
+      distance: court.area, // Using area since distance is not implemented
+      price: 'PKR $basePrice/hr',
+      rating: court.rating.toStringAsFixed(1),
+      imageUrl: court.photos.isNotEmpty ? court.photos.first : '',
+      onTap: onTap,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
